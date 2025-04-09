@@ -1,0 +1,116 @@
+body {
+  /* background: #1b1b1b; */
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.demo {
+  height: 500px;
+  width: 1200px;
+  margin: 0 auto;
+  background: #fff;
+  -webkit-box-shadow: -1px 9px 18px -5px rgba(199, 199, 199, 1);
+  -moz-box-shadow: -1px 9px 18px -5px rgba(199, 199, 199, 1);
+  box-shadow: -1px 9px 18px -5px rgba(199, 199, 199, 1);
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+.instruction {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  width: 100%;
+  max-width: max-content;
+}
+
+.instruction_link:link,
+.instruction_link:visited {
+  text-decoration: none;
+  font-family: sans-serif;
+  font-size: 50px;
+  letter-spacing: 1.5px;
+  color: #999;
+  transition: all 0.5s;
+}
+.instruction_link:hover,
+.instruction_link:active {
+  color: #d6d6d6;
+}
+/* 解决三角形抖动问题 */
+.shape {
+  position: absolute;
+  opacity: 0.8;
+  transform: scale(1);
+  transition: all 0.3s ease-in-out;
+  border: none;
+  outline: none;
+}
+
+.shape:hover {
+  cursor: pointer;
+}
+
+/* 新增信息框样式 */
+.info-box {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  display: none; /* 默认隐藏 */
+}
+
+/* .shape {
+  position: absolute;
+  opacity: 0.5;
+  transform: scale(0);
+  transition: all 0.4s;
+} */
+.shape--bg {
+  background-color: red;
+}
+.circle {
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+}
+.square {
+  width: 100px;
+  height: 100px;
+}
+.triangle {
+  width: 0;
+  height: 0;
+}
+.whole-triangle {
+  border-left: 50px solid transparent;
+  border-right: 50px solid transparent;
+  border-bottom: 100px solid;
+}
+.left-triangle {
+  border-bottom: 100px solid;
+  border-right: 100px solid transparent;
+}
+
+.right-triangle {
+  border-bottom: 100px solid;
+  border-left: 100px solid transparent;
+}
+.rectangle-vertical {
+  width: 100px;
+  height: 200px;
+}
+
+.rectangle-horizontal {
+  width: 200px;
+  height: 100px;
+}
