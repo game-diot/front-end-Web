@@ -1,0 +1,74 @@
+:root {
+  --bg: #d1f3ff;
+  --empty: #69e6ff;
+  --wrong: #98143d;
+  --included: #ffe699;
+  --correct: #a9d18e;
+  --letters: 000;
+}
+body {
+  background-color: var(--bg);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0 auto;
+  font-size: clamp(0.5rem, 2.5vmin, 1.5rem);
+}
+#dancer {
+  transition: 0.5s ease-in-out;
+}
+/* Parent container for SVG and keyboard */
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+/* Placeholder (SVG) section */
+#dancerArea {
+  flex: 3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.keyboard {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(20, minmax(auto, 1.25rem));
+  grid-auto-rows: 3em;
+  gap: 0.25em;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+.key {
+  font-size: inherit;
+  grid-column: span 2;
+  border: none;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--empty);
+  color: var(--letters);
+  fill: white;
+  text-transform: uppercase;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  user-select: none;
+}
+.key.large {
+  grid-column: span 3;
+}
+.key.active,
+.key:active {
+  background: var(--correct);
+}
+
+.key > svg {
+  width: 70%;
+  height: 70%;
+}
+.key:hover,
+.key:focus {
+  opacity: 0.8;
+}

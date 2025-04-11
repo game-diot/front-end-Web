@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <svg viewBox="0 0 100 100" id="dancerArea">
+            <defs>
+                <g fill="none" stroke="#333" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+                    <path class="A"
+                        d="M 50 43 l 1 -12 m -1 12 q -13 -9 -17 -21 m 17 21 q 12 -8 21 -19 m -21 19 l -1 11 q -4 9 -5 30 l -8 1 m 13 -31 q 23 1 4 19 l 8 5 m -10 -47 a 6 6 0 1 0 -0.01 0 z" />
+                    <path class="B"
+                        d="M 50 43 l 1 -12 m -1 12 q 0 0 0 0 m 0 0 q 0 0 0 0 m 0 0 l -1 11 q -9 5 -16 26 l -9 0 m 25 -26 q 23 1 4 19 l 8 5 m -10 -47 a 6 6 0 1 0 -0.01 0 z" />
+                    <path class="C"
+                        d="M 50 43 l 1 -12 m -1 12 q -13 -9 -17 -21 m 17 21 q 0 0 0 0 m 0 0 l -1 11 q -24 -2 -11 18 l -7 4 m 18 -22 q 23 1 4 19 l 8 5 m -10 -47 a 6 6 0 1 0 -0.01 0 z" />
+                    <path class="D"
+                        d="M 49 54 l -1 12 m 1 -12 q 11 6 18 21 m -18 -21 q 0 0 0 0 m 0 0 l 1 -11 q 14 -10 16 -28 l 9 2 m -25 26 q -7 -12 -7 -28 l -8 0 m 13 51 a 6 6 180 1 0 0.01 0 z" />
+                    <path class="E"
+                        d="M 50 43 l 1 -12 m -1 12 q -13 -9 -17 -21 m 17 21 q 12 -8 21 -19 m -21 19 l -1 11 q -13 8 -16 27 l -7 0 m 23 -27 q 6 5 6 27 l 9 1 m -13 -51 a 6 6 0 1 0 -0.01 0 z" />
+                    <path class="F"
+                        d="M 50 43 l 1 -12 m -1 12 q -23 -3 -11 -23 m 11 23 q 12 -8 21 -19 m -21 19 l -1 11 q -13 8 -16 27 l -7 0 m 23 -27 q 22 3 3 20 l 8 5 m -9 -48 a 6 6 0 1 0 -0.01 0 z" />
+                    <path class="G"
+                        d="M 50 43 l 1 -12 m -1 12 q 0 0 0 0 m 0 0 q 12 -8 21 -19 m -21 19 l -1 11 q -25 -5 -12 19 l -7 2 m 19 -21 q 0 4 -6 30 l 9 1 m -1 -54 a 6 6 0 1 0 -0.01 0 z" />
+                    <path class="H"
+                        d="M 50 43 l 1 -12 m -1 12 q -14 -9 -17 -21 m 17 21 q 12 -8 21 -19 m -21 19 l -1 11 q -4 20 -5 32 l -8 0 m 13 -32 q 0 4 -4 32 l 7 0 m -1 -55 a 6 6 0 1 0 -0.01 0 z" />
+                    <path class="I"
+                        d="M 50 43 l 1 -12 m -1 12 q -14 -9 -17 -21 m 17 21 q 12 -8 21 -19 m -21 19 l -1 11 q -12 -2 -25 3 l 0 -8 m 25 5 q 0 4 -4 32 l 7 0 m -1 -55 a 6 6 0 1 0 -0.01 0 z" />
+                    <path class="J"
+                        d="M 50 43 l 1 -12 m -1 12 q 0 0 0 0 m 0 0 q 12 -8 21 -19 m -21 19 l -1 11 q -25 -2 -11 18 l -9 4 m 20 -22 q 0 4 -4 32 l 7 0 m -1 -55 a 6 6 0 1 0 -0.01 0 z" />
+                    <path class="K"
+                        d="M 50 43 l 1 -12 m -0.5 5 q -28.5 3 -1.5 14 m 1 -7 q 12 -8 21 -19 m -21 19 l -1 11 q -12 5 -17 27 l -7 -1 m 24 -26 q 9 4 7 27 l 9 1 m -14 -51 a 6 6 0 1 0 -0.01 0 z" />
+                    <path class="L"
+                        d="M 50 43 l 1 -12 m -1 12 q -23 -2 -11 -22 m 11.5 17 q 25.5 2 -0.5 13 m 0 -8 l -1 11 q -25 0 -11 19 l -8 4 m 19 -23 q 24 3 3 21 l 8 3 m -9 -47 a 6 6 0 1 0 -0.01 0 z" />
+                    <path class="M"
+                        d="M 50 43 l 1 -12 m -1 12 q -12 -5 -18 -20 m 18 20 q 10 -4 21 -19 m -21 19 l -1 11 q -25 0 -11 19 l -8 4 m 19 -23 q 24 3 3 21 l 8 3 m -9 -47 a 6 6 0 1 0 -0.01 0 z" />
+                    <path class="N"
+                        d="M 50 43 l 1 -12 m -0.5 6 q -31.5 1 -1.5 15 m 1 -9 q 10 -4 21 -19 m -21 19 l -1 11 q -25 0 -11 19 l -8 4 m 19 -23 q 24 3 3 21 l 8 3 m -9 -47 a 6 6 0 1 0 -0.01 0 z" />
+                    <path class="O"
+                        d="M 50 43 l 1 -12 m -1 12 q -12 -8 -19 -21 m 19 21 q 10 -4 21 -19 m -21 19 l -1 11 q -25 0 -11 19 l -8 4 m 19 -23 q 5 5 6 28 l 9 0 m -13 -51 a 6 6 0 1 0 -0.01 0 z" />
+                    <path class="P"
+                        d="M 50 43 l 1 -12 m -1 12 q 0 0 0 0 m 0 0 q 0 0 0 0 m 0 0 l -1 11 q -11 4 -18 28 l -7 -1 m 25 -27 q -1 12 -5 31 l 8 1 m -1 -55 a 6 6 0 1 0 -0.01 0 z" />
+                    <path class="Q"
+                        d="M 50 43 l 1 -12 m -1 12 q 0 0 0 0 m 0 0 q 0 0 0 0 m 0 0 l -1 11 q -1 12 -5 30 l -8 2 m 13 -32 q 8 8 8 29 l 8 0 m -14 -52 a 6 6 0 1 0 -0.01 0 z" />
+                    <path class="R"
+                        d="M 50 43 l 1 -12 m -1 12 q -12 -8 -19 -21 m 19 21 q 10 -4 21 -19 m -21 19 l -1 11 q -1 12 -5 30 l -8 2 m 13 -32 q 8 -2 22 5 l 2 -8 m -22 -20 a 6 6 0 1 0 -0.01 0 z" />
+                    <path class="S"
+                        d="M 50 43 l 1 -12 m -1 12 q -24 -2 -11 -22 m 11 22 q 25 -2 15 -21 m -15 21 l -1 11 q -25 -1 -11 19 l -8 4 m 19 -23 q 22 2 5 21 l 6 4 m -9 -48 a 6 6 0 1 0 -0.01 0 z" />
+                    <path class="T"
+                        d="M 49 54 l -1 12 m 1 -12 q 11 6 18 21 m -18 -21 q -12 5 -21 19 m 21 -19 l 1 -11 q 14 -10 16 -28 l 9 2 m -25 26 q -7 -12 -7 -28 l -8 0 m 13 51 a 6 6 180 1 0 0.01 0 z" />
+                    <path class="U"
+                        d="M 49 54 l -1 12 m 1 -12 q 11 6 18 21 m -18 -21 q -12 5 -21 19 m 21 -19 l 1 -11 q 24 1 11 -20 l 8 -3 m -19 23 q -23 -1 -5 -22 l -7 -3 m 10 48 a 6 6 180 1 0 0.01 0 z" />
+                    <path class="V"
+                        d="M 50 43 l 1 -12 m -1 12 q 0 0 0 0 m 0 0 q 0 0 0 0 m 0 0 l -1 11 q -16 -3 -26 4 l 1 -9 m 25 5 q 0 9 -5 30 l 8 2 m -1 -55 a 6 6 0 1 0 -0.01 0 z" />
+                    <path class="W"
+                        d="M 50 43 l 1 -12 m -1 12 q 0 0 0 0 m 0 0 q 0 0 0 0 m 0 0 l -1 11 q -4 11 -6 30 l -8 1 m 14 -31 q 9 -1 23 5 l 2 -8 m -23 -20 a 6 6 0 1 0 -0.01 0 z" />
+                    <path class="X"
+                        d="M 49 54 l -1 12 m 1 -12 q 0 0 0 0 m 0 0 q -12 5 -21 19 m 21 -19 l 1 -11 q 24 1 11 -20 l 8 -3 m -19 23 q -23 -1 -5 -22 l -7 -3 m 10 48 a 6 6 180 1 0 0.01 0 z" />
+                    <path class="Y"
+                        d="M 50 43 l 1 -12 m -1 12 q 0 0 0 0 m 0 0 q 12 -8 21 -19 m -21 19 l -1 11 q -25 -3 -12 19 l -7 4 m 19 -23 q 23 1 4 19 l 8 5 m -10 -47 a 6 6 0 1 0 -0.01 0 z" />
+                    <path class="Z"
+                        d="M 49 54 l -1 12 m 1 -12 q 12 5 18 20 m -18 -20 q 0 0 0 0 m 0 0 l 1 -11 q 24 1 11 -20 l 8 -3 m -19 23 q -23 -1 -5 -22 l -7 -3 m 10 48 a 6 6 180 1 0 0.01 0 z" />
+                </g>
+            </defs>
+            <g fill="none" stroke="#333" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+                <path id="dancer"
+                    d="M 50 43 l 1 -12 m -1 12 q -13 -9 -17 -21 m 17 21 q 12 -8 21 -19 m -21 19 l -1 11 q -4 9 -5 30 l -8 1 m 13 -31 q 23 1 4 19 l 8 5 m -10 -47 a 6 6 0 1 0 -0.01 0 z" />
+            </g>
+        </svg>
+        <div data-keyboard class="keyboard">
+            <button class="key" data-key="Q">Q</button>
+            <button class="key" data-key="W">W</button>
+            <button class="key" data-key="E">E</button>
+            <button class="key" data-key="R">R</button>
+            <button class="key" data-key="T">T</button>
+            <button class="key" data-key="Y">Y</button>
+            <button class="key" data-key="U">U</button>
+            <button class="key" data-key="I">I</button>
+            <button class="key" data-key="O">O</button>
+            <button class="key" data-key="P">P</button>
+            <button class="space"></button>
+            <button class="key" data-key="A">A</button>
+            <button class="key" data-key="S">S</button>
+            <button class="key" data-key="D">D</button>
+            <button class="key" data-key="F">F</button>
+            <button class="key" data-key="G">G</button>
+            <button class="key" data-key="H">H</button>
+            <button class="key" data-key="J">J</button>
+            <button class="key" data-key="K">K</button>
+            <button class="key" data-key="L">L</button>
+            <button class="space"></button>
+            <button class="space"></button>
+            <button class="space"></button>
+            <button class="space"></button>
+            <button class="key" data-key="Z">Z</button>
+            <button class="key" data-key="X">X</button>
+            <button class="key" data-key="C">C</button>
+            <button class="key" data-key="V">V</button>
+            <button class="key" data-key="B">B</button>
+            <button class="key" data-key="N">N</button>
+            <button class="key" data-key="M">M</button>
+            <button class="space"></button>
+            <button class="space"></button>
+            <button class="space"></button>
+
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>

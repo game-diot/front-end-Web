@@ -1,0 +1,193 @@
+/*右上转5°*/
+@keyframes float1 {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate(10px, -10px) rotate(5deg);
+  }
+}
+/*左下逆8°*/
+@keyframes float2 {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate(-15px, 5px) rotate(-8deg);
+  }
+}
+
+@keyframes float3 {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate(8px, 12px) rotate(12deg);
+  }
+}
+
+@keyframes float4 {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate(-12px, -8px) rotate(-15deg);
+  }
+}
+
+@keyframes float5 {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate(15px, -5px) rotate(10deg);
+  }
+}
+
+@keyframes float6 {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate(-8px, 12px) rotate(-12deg);
+  }
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1e1b4b 0%, #4c1d95 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+.interactive-container {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  /**/
+  backdrop-filter: blur(50px);
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(255, 0.1);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+.interactive-container:hover {
+  /**/
+  transform: scale(1.05) rotate(1deg);
+  border-color: rgba(255, 0.3);
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.3), inset 0 0 20px rgba(255, 0.1);
+}
+.shape {
+  position: absolute;
+  /**/
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.shape1 {
+  width: 100px;
+  height: 100px;
+  background: linear-gradient(45deg, #ff3366, #ff6b6b);
+  /**/
+  clip-path: polyhon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  top: 50px;
+  left: 50px;
+  /**/
+  mix-blend-mode: screen;
+  animation: float1 4s infinite ease-in-out;
+}
+.shape2 {
+  width: 120px;
+  height: 120px;
+  background: linear-gradient(135deg, #4facfe, #00f2fe);
+  clip-path: circle(50% at 50% 50%);
+  bottom: 50px;
+  right: 50px;
+  mix-blend-mode: screen;
+  animation: float2 5s infinite ease-in-out;
+}
+
+.shape3 {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(225deg, #ffd86f, #fc6262);
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  top: 100px;
+  right: 80px;
+  mix-blend-mode: screen;
+  animation: float3 6s infinite ease-in-out;
+}
+
+.shape4 {
+  width: 90px;
+  height: 90px;
+  background: linear-gradient(315deg, #a8edea, #fed6e3);
+  clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+  bottom: 80px;
+  left: 80px;
+  mix-blend-mode: screen;
+  animation: float4 7s infinite ease-in-out;
+}
+
+.shape5 {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(45deg, #bf0fff, #cbff49);
+  clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+  top: 30px;
+  right: 30px;
+  mix-blend-mode: screen;
+  animation: float5 5.5s infinite ease-in-out;
+}
+
+.shape6 {
+  width: 70px;
+  height: 70px;
+  background: linear-gradient(135deg, #00ff87, #60efff);
+  clip-path: circle(50% at 50% 50%);
+  bottom: 30px;
+  left: 30px;
+  mix-blend-mode: screen;
+  animation: float6 6.5s infinite ease-in-out;
+}
+.interactive-container:hover .shape {
+  transform: scale(1.2) rotate(15deg);
+  filter: brightness(1.2) rotate(15deg);
+}
+.interactive-container:has(.shape:hover) .shape:not(:hover) {
+  transform: scale(0.8) rotate(-15deg);
+  opacity: 0.6;
+  filter: blur(2px);
+}
+.glow {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at var(--x, 50%) var(--y, 50%),
+    rgba(255, 255, 255, 0.2) 0%,
+    rgba(255, 255, 255, 0) 60%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+.interactive-container:hover .glow {
+  opacity: 1;
+}

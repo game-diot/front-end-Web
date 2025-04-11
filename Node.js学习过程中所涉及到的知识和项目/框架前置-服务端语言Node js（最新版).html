@@ -1,0 +1,706 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>框架前置-服务端语言Node.js（最新版）</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-default_background {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.highlight-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.block-color-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: undefined; }
+.select-value-color-pink { background-color: rgba(225, 136, 179, 0.27); }
+.select-value-color-purple { background-color: rgba(168, 129, 197, 0.27); }
+.select-value-color-green { background-color: rgba(123, 183, 129, 0.27); }
+.select-value-color-gray { background-color: rgba(84, 72, 49, 0.15); }
+.select-value-color-transparentGray { background-color: undefined; }
+.select-value-color-translucentGray { background-color: undefined; }
+.select-value-color-orange { background-color: rgba(224, 124, 57, 0.27); }
+.select-value-color-brown { background-color: rgba(210, 162, 141, 0.35); }
+.select-value-color-red { background-color: rgba(244, 171, 159, 0.4); }
+.select-value-color-yellow { background-color: rgba(236, 191, 66, 0.39); }
+.select-value-color-blue { background-color: rgba(93, 165, 206, 0.27); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="1ce694d5-ea46-803d-9caf-f6707ae3a965" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">🤔</span></div><h1 class="page-title">框架前置-服务端语言Node.js（最新版）</h1><p class="page-description"></p></header><div class="page-body"><p id="1ce694d5-ea46-80f6-a1c5-dcb38d6df718" class=""><mark class="highlight-red"><strong>Node.js的前置掌握知识</strong></mark></p><ul id="1ce694d5-ea46-8050-a0bd-d94e9752a3cc" class="bulleted-list"><li style="list-style-type:disc">词汇结构</li></ul><ul id="1ce694d5-ea46-80d4-9fa7-e140faaa3527" class="bulleted-list"><li style="list-style-type:disc">表达式</li></ul><ul id="1ce694d5-ea46-80cc-9885-c0bdc7d79911" class="bulleted-list"><li style="list-style-type:disc">数据类型</li></ul><ul id="1ce694d5-ea46-805b-a8bf-ca741cfde2ee" class="bulleted-list"><li style="list-style-type:disc">类</li></ul><ul id="1ce694d5-ea46-8080-b910-e273b325e1fe" class="bulleted-list"><li style="list-style-type:disc">变量</li></ul><ul id="1ce694d5-ea46-8089-8fca-ed8c6b154741" class="bulleted-list"><li style="list-style-type:disc">函数</li></ul><ul id="1ce694d5-ea46-80b7-b5ce-e4a23c55b378" class="bulleted-list"><li style="list-style-type:disc">this操作符</li></ul><ul id="1ce694d5-ea46-804e-a40b-dc0b9d2b12e4" class="bulleted-list"><li style="list-style-type:disc">箭头函数</li></ul><ul id="1ce694d5-ea46-80c6-89f1-cb60e205b72f" class="bulleted-list"><li style="list-style-type:disc">循环</li></ul><ul id="1ce694d5-ea46-80d1-a9f1-caae2b7456cf" class="bulleted-list"><li style="list-style-type:disc">作用域</li></ul><ul id="1ce694d5-ea46-8099-b5c8-da9aa4d01b4c" class="bulleted-list"><li style="list-style-type:disc">模板字面量</li></ul><ul id="1ce694d5-ea46-8062-9251-fe603301f4d9" class="bulleted-list"><li style="list-style-type:disc">严格模式</li></ul><ul id="1ce694d5-ea46-8074-982a-f46c52fbaa14" class="bulleted-list"><li style="list-style-type:disc">ES6及以上</li></ul><p id="1ce694d5-ea46-8067-b2d7-d136a6619cf3" class="">
+</p><p id="1ce694d5-ea46-805c-bc39-d1e58435b316" class=""><mark class="highlight-red"><strong>异步编程</strong></mark></p><ul id="1ce694d5-ea46-80c2-bdae-f8dd042f8a66" class="bulleted-list"><li style="list-style-type:disc"><strong>异步编程和回调：回调函数，异步大类</strong></li></ul><ul id="1ce694d5-ea46-8065-8b7a-d9c79c98efd7" class="bulleted-list"><li style="list-style-type:disc"><strong>定时器</strong></li></ul><ul id="1ce694d5-ea46-802f-a1cd-e88882c589c1" class="bulleted-list"><li style="list-style-type:disc"><strong>Promise</strong></li></ul><ul id="1ce694d5-ea46-80df-ad82-d13f95c18a4d" class="bulleted-list"><li style="list-style-type:disc"><strong>异步和等待</strong></li></ul><ul id="1ce694d5-ea46-80e2-92d7-fbc6152d3520" class="bulleted-list"><li style="list-style-type:disc"><strong>闭包：可以是函数访问外部作用域的变量，</strong></li></ul><ul id="1ce694d5-ea46-80ff-b08f-d90acb815c6b" class="bulleted-list"><li style="list-style-type:disc"><strong>事件循环</strong></li></ul><p id="1ce694d5-ea46-8085-9771-d6f802737977" class="">
+</p><p id="1ce694d5-ea46-80cd-ae6d-e3f724b2943c" class=""><strong><span style="border-bottom:0.05em solid">1.Node.js创建第一个应用：</span></strong></p><p id="1ce694d5-ea46-80ce-a2e6-fe901d16caec" class="">在传统的PHP开发中需要Apache等HTTP服务器，而且需要配置mod_php来处理PHP脚本，从而生成动态内容，也就是说PHP依赖于外部的HTTP服务器来接受请求并提供Web页面</p><p id="1ce694d5-ea46-8075-bb95-d821451f0ca8" class="">Node.js本身就内置了HTTP服务器模块，一位置Node.js在开发时，可以直接使用Node.js的HTTP模块来创建服务器、处理HTTP请求、生成Web页面，因此Node.js中Web应用的逻辑和HTTP服务器的实现时紧密集成的，不用再依赖外部的HTTP服务器软件。</p><p id="1ce694d5-ea46-80d7-90a1-ed19ad4d137b" class=""><strong>创建Node.js前了解以下Node.js应用由下几部分组成：</strong></p><ul id="1ce694d5-ea46-8025-9197-c7b374201d53" class="bulleted-list"><li style="list-style-type:disc">require指令：在Node.js中使用require指令来加载和隐入模块，引入的模块可以是内置的也可以是第三方模块或自定义模块</li></ul><ul id="1ce694d5-ea46-80d5-9da3-f61788e7129c" class="bulleted-list"><li style="list-style-type:disc">创建服务器：服务器可以监听客户端的请求，类似于Apache、Nginx等HTTP服务器</li></ul><ul id="1ce694d5-ea46-806c-9c98-caeacb430a2d" class="bulleted-list"><li style="list-style-type:disc">接受请求与响应请求：服务器很容易创建，客户端可以使用浏览器或终端发送HTTP请求，服务器接受请求后返回响应数据。</li></ul><p id="1ce694d5-ea46-8032-95c0-fe5a34af960b" class=""><strong>创建Node.js应用：</strong></p><ul id="1ce694d5-ea46-807f-a294-c40c606af503" class="bulleted-list"><li style="list-style-type:disc">使用require指令来加载和引入模块<ul id="1ce694d5-ea46-80f1-b642-ee485f3f4a50" class="bulleted-list"><li style="list-style-type:circle">语法格式如下：<ul id="1ce694d5-ea46-80dc-a966-c9d1da724715" class="bulleted-list"><li style="list-style-type:square"><strong>const module = require（“module-name”）；</strong></li></ul><ul id="1ce694d5-ea46-80c6-bccb-eb252052c7b9" class="bulleted-list"><li style="list-style-type:square">module-name可以是文件路径，也可以是模块名称，如果是模块Node.js会自动在node_modules目录中查找该模块</li></ul><ul id="1ce694d5-ea46-803b-929e-f14de59518c7" class="bulleted-list"><li style="list-style-type:square">require指定会返回被加载的模块的到处对象，可以通过该对象来访问模块中定义的属性和方法，如果模块中有多个到处对象，则可以使用解构赋值的方式来获取</li></ul><ul id="1ce694d5-ea46-8049-88c3-c9c1c5e23054" class="bulleted-list"><li style="list-style-type:square">使用require指令来载入http模块，并将实例化的HTTP赋值给变量http，示例如下：<ul id="1ce694d5-ea46-80b9-893e-da6b1b462a96" class="bulleted-list"><li style="list-style-type:disc">var http = require（“http”）；</li></ul></li></ul></li></ul></li></ul><ul id="1ce694d5-ea46-8033-ac96-e8fdcb2d21f7" class="bulleted-list"><li style="list-style-type:disc">创建服务器<ul id="1ce694d5-ea46-80ad-a79f-d28c2b3d1a4b" class="bulleted-list"><li style="list-style-type:circle">使用http.createServer（）的方法来创建服务器，并使用listen方法绑定8888端口，函数通过request，response参数来接收和响应数据，示例如下，在项目的根目录创建server.js的文件并写入代码<blockquote id="1ce694d5-ea46-803e-9c49-ff035d3e824f" class=""><p id="1ce694d5-ea46-8011-bbd0-df629eef6611" class=""><code>var http = require(&#x27;http&#x27;);</code></p><p id="1ce694d5-ea46-80fb-8dd2-efd467521185" class=""><code>http.createServer(function (request, response) {</code></p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1ce694d5-ea46-806d-8996-f6e9b7bc537c" class="code"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">    // 发送 HTTP 头部
+    // HTTP 状态值: 200 : OK
+    // 内容类型: text/plain
+    response.writeHead(200, {&#x27;Content-Type&#x27;: &#x27;text/plain&#x27;});
+
+    // 发送响应数据 &quot;Hello World&quot;
+    response.end(&#x27;Hello World\\n&#x27;);
+</code></pre><p id="1ce694d5-ea46-80bd-94ce-d69d048a461e" class=""><code>}).listen(8888);</code></p><p id="1ce694d5-ea46-8036-89ac-f33612725be0" class=""><code>// 终端打印如下信息<br/>console.log(&#x27;Server running at <br/></code><code><a href="http://127.0.0.1:8888/">http://127.0.0.1:8888/</a></code><code>&#x27;);</code></p></blockquote></li></ul></li></ul><ul id="1ce694d5-ea46-805a-ac44-d6c17bd4809d" class="bulleted-list"><li style="list-style-type:disc">打开浏览器访问<ul id="1ce694d5-ea46-80e9-ad5c-f238730ff9fd" class="bulleted-list"><li style="list-style-type:circle">使用node命令来执行上述代码<ul id="1ce694d5-ea46-8000-9500-efc2faf61eff" class="bulleted-list"><li style="list-style-type:square">node server.js</li></ul><ul id="1ce694d5-ea46-80b9-b1ac-ea398599aa0e" class="bulleted-list"><li style="list-style-type:square">Server running at http：//127.0.0.1：8888/</li></ul></li></ul></li></ul><p id="1ce694d5-ea46-80b5-9007-d0f3e4114238" class=""><strong>分析Node.js的HTTP服务器</strong></p><ul id="1ce694d5-ea46-8071-8f5c-de46b17adc84" class="bulleted-list"><li style="list-style-type:disc">const http = require（‘http’）；导入Node.js内置的http模块</li></ul><ul id="1ce694d5-ea46-809c-a86f-dc3f0bd27fb5" class="bulleted-list"><li style="list-style-type:disc">http.createServer（（req，res） ⇒ {…}）；创建一个新的HTTP服务器，每次请求都会执行回调函数。</li></ul><ul id="1ce694d5-ea46-8082-ab98-db432ce937ef" class="bulleted-list"><li style="list-style-type:disc">res.writeHead（200，{‘Content-Type‘：‘text/plain’}）；设置响应状态码和内容类型</li></ul><ul id="1ce694d5-ea46-80a4-9090-d0ffdad3fd73" class="bulleted-list"><li style="list-style-type:disc">res.end（’Hello World\n’）；响应结束并发送数据</li></ul><ul id="1ce694d5-ea46-806d-bff4-ecf0e9bee8fd" class="bulleted-list"><li style="list-style-type:disc">server.listen（PORT,() ⇒ {…}）；监听指定端口并在服务器启动后输入信息</li></ul><p id="1ce694d5-ea46-8087-8101-dd67302119ff" class=""><strong>Node.js的工作机制</strong></p><figure id="1ce694d5-ea46-8049-885b-dbfd7ecf7988" class="image"><a href="image.png"><img style="width:561.1875px" src="image.png"/></a></figure><ul id="1ce694d5-ea46-8014-8639-cc3eff6ec493" class="bulleted-list"><li style="list-style-type:disc">V8（js Engine）：Node.js核心，负责执行js代码，时Chrome浏览器的JS引擎，他将js代码编译成机器码来提高执行效率</li></ul><ul id="1ce694d5-ea46-802d-a8d8-fdc768ad2cf7" class="bulleted-list"><li style="list-style-type:disc">Node.js Bindings（Node API）：提供了一组API，允许js代码与操作系统交互，这些API包括文件系统、网络、进程等操作</li></ul><ul id="1ce694d5-ea46-8012-a372-d2dfd3e0d22b" class="bulleted-list"><li style="list-style-type:disc">Libuv（Asynchronous L/O）：Libuv是一个跨平台异步i/o库，在Node.js下允许，用于处理文件系统、网络和进程等异步操作，Libuv使用事件循环和工作线程来处理这些操作，而不会阻塞主线程</li></ul><ul id="1ce694d5-ea46-80b6-afe8-d5d036083426" class="bulleted-list"><li style="list-style-type:disc">Event Loop：这是Node.js的核心概念之一，事件循环不断检查事件队列，处理时间和执行回调函数，他确保了Node.js的非阻塞和事件驱动的特性。</li></ul><ul id="1ce694d5-ea46-804e-9395-f7f04aed4510" class="bulleted-list"><li style="list-style-type:disc">Event Queue：事件队列用于存储即将处理的事件，当一个异步操作完成时，相关的回调函数会被放入队列中，等待事件循环处理</li></ul><ul id="1ce694d5-ea46-8090-8b79-cad4c88b0a48" class="bulleted-list"><li style="list-style-type:disc">Worker Threads：这些是用于处理阻塞操作的线程，如文件读写、网络请求等，他们允许Node.js在不阻塞主线程的情况下执行这些操作</li></ul><ul id="1ce694d5-ea46-80c8-95c6-d85030ccdc3f" class="bulleted-list"><li style="list-style-type:disc">Blocking Operation：这些事可能阻塞线程的操作，同步的文件读写，Node.js中通常被放在工作线程中执行，避免阻塞事件循环</li></ul><ul id="1ce694d5-ea46-8034-9f1b-f1472dd664d0" class="bulleted-list"><li style="list-style-type:disc">Execute Callback：一旦一个异步操作完成，他的回调函数会被执行，这是通过事件循环来管理的。</li></ul><p id="1ce694d5-ea46-8077-ba45-dbc097b685bb" class="">
+</p><p id="1ce694d5-ea46-80b7-99b9-ea30e149db26" class=""><strong><span style="border-bottom:0.05em solid">2.NPM使用介绍：</span></strong></p><p id="1ce694d5-ea46-80ea-b591-f22ac3fdbb5e" class="">NPM（node package manager）是一个js包管理工具，也是node.js默认包管理器，</p><p id="1ce694d5-ea46-80ba-aa4f-c23e29115a33" class="">NPM允许开发者轻松下载、安装、共享、管理项目的依赖库和工具。</p><p id="1ce694d5-ea46-8079-9cce-c3a497882f36" class="">NPM是Node.js自带的包管理工具</p><p id="1ce694d5-ea46-8099-84a4-e006100d42f6" class=""><strong>NPM主要功能如下：</strong></p><ul id="1ce694d5-ea46-8003-ba90-def21cb99686" class="bulleted-list"><li style="list-style-type:disc">包管理：NPM可以安装管理项目所需的各种第三方库，可以通过命令来安装、更新、删除依赖</li></ul><ul id="1ce694d5-ea46-80b0-a110-ca496c89b369" class="bulleted-list"><li style="list-style-type:disc">版本管理：NPM支持版本控制，可以锁定某个特定版本的以来，或者根据需求选择最新的版本</li></ul><ul id="1ce694d5-ea46-809e-97fa-f48aa5105cf6" class="bulleted-list"><li style="list-style-type:disc">包发布：NPM允许开发者将自己的库发布到NPM仓库中，其他开发者可以通过NPM来下载并使用这些库</li></ul><ul id="1ce694d5-ea46-8039-a06e-f7f36ee943df" class="bulleted-list"><li style="list-style-type:disc">命令行工具：NPM提供了强大的命令行工具，可以用于安装包、运行脚本、初始化项目等多种操作。</li></ul><p id="1ce694d5-ea46-80e4-93ba-c0ea258d788c" class=""><strong>使用NPM命令来安装模块：</strong></p><ul id="1ce694d5-ea46-8034-90c0-dc368706656f" class="bulleted-list"><li style="list-style-type:disc">NPM安装Node.js模块语法格式如下：<ul id="1ce694d5-ea46-80d0-9cfb-da204c964762" class="bulleted-list"><li style="list-style-type:circle">npm install &lt;Module Name&gt;</li></ul><ul id="1ce694d5-ea46-8078-aa67-d6318aa5379f" class="bulleted-list"><li style="list-style-type:circle">示例安装常用的web框架模块express<ul id="1ce694d5-ea46-8012-95c3-f700223fa1f8" class="bulleted-list"><li style="list-style-type:square">npm install express</li></ul></li></ul><ul id="1ce694d5-ea46-8088-aa06-ed0ac1dc8209" class="bulleted-list"><li style="list-style-type:circle">安装好之后，包置于node_modules目录中国，代码只需要通过直接使用就可以，不需指定第三方包路径<ul id="1ce694d5-ea46-80e3-8b40-c96d10382435" class="bulleted-list"><li style="list-style-type:square">var express = require（’express‘）；</li></ul></li></ul></li></ul><p id="1ce694d5-ea46-8028-add5-cdaa194ccc85" class=""><strong>全局安装与本地安装：</strong></p><p id="1ce694d5-ea46-8085-b4a2-fbad95b0be06" class="">npm包安装分为本地安装local和全局安装global两种，差别在于-g参数</p><p id="1ce694d5-ea46-8080-b43c-d0a163c40311" class="">本地安装：将包安装与node_modules目录，将信息保存到package.json的dependencies中</p><p id="1ce694d5-ea46-8062-a408-d2a8fd50613d" class="">全局安装：用于安装命令行工具或需要在多个项目中使用的包</p><p id="1ce694d5-ea46-80d9-a4f3-ca83e2b3dfcf" class="">如果报错为（npm err！Error：connect ECONNREFUSED 127.0.0.1：8087）</p><p id="1ce694d5-ea46-8012-9982-c937564bfa4d" class="">解决办法为（npm config set proxy null）</p><ul id="1ce694d5-ea46-8095-8ae6-d30728a23efe" class="bulleted-list"><li style="list-style-type:disc">本地安装</li></ul><ul id="1ce694d5-ea46-80ad-833b-e37b26ef27e7" class="bulleted-list"><li style="list-style-type:disc">全局安装：用于哪些不需要在每个项目中重复安装的工具和命令行实用程序。</li></ul><table id="1ce694d5-ea46-80a5-b374-f910b3da4c81" class="simple-table"><tbody><tr id="1ce694d5-ea46-801e-b0f9-da5be0a5512f"><td id="eb&lt;a" class="">特性</td><td id="Rvyl" class="">本地安装</td><td id="Cbf&gt;" class="">全局安装</td></tr><tr id="1ce694d5-ea46-80e8-90ee-c1655606b2ba"><td id="eb&lt;a" class=""><strong>安装范围</strong></td><td id="Rvyl" class="">仅在当前项目中可用</td><td id="Cbf&gt;" class="">在系统的全局环境中可用</td></tr><tr id="1ce694d5-ea46-80a7-b22b-f44bef3da07c"><td id="eb&lt;a" class=""><strong>命令使用</strong></td><td id="Rvyl" class=""><code>npm install package-name</code></td><td id="Cbf&gt;" class=""><code>npm install -g package-name</code></td></tr><tr id="1ce694d5-ea46-8010-8078-e0da68409b1c"><td id="eb&lt;a" class=""><strong>安装位置</strong></td><td id="Rvyl" class=""><code>node_modules</code> 目录</td><td id="Cbf&gt;" class="">系统全局目录（依 OS 而异）</td></tr><tr id="1ce694d5-ea46-80ec-a6d7-df486c8fa21c"><td id="eb&lt;a" class=""><strong>使用场景</strong></td><td id="Rvyl" class="">项目依赖（库、框架）</td><td id="Cbf&gt;" class="">CLI 工具、项目生成器</td></tr><tr id="1ce694d5-ea46-800f-9b34-c2866a78fbf5"><td id="eb&lt;a" class=""><strong>访问方式</strong></td><td id="Rvyl" class="">通过 <code>require()</code> 或 <code>import</code> 使用</td><td id="Cbf&gt;" class="">在命令行中直接使用</td></tr><tr id="1ce694d5-ea46-8011-8061-d3db8359f5e1"><td id="eb&lt;a" class=""><strong>依赖声明</strong></td><td id="Rvyl" class="">在 <code>package.json</code> 中记录</td><td id="Cbf&gt;" class="">不在 <code>package.json</code> 中记录</td></tr><tr id="1ce694d5-ea46-80e9-a6e8-e91e87a1e00b"><td id="eb&lt;a" class=""><strong>版本控制</strong></td><td id="Rvyl" class="">不同项目中可用不同版本</td><td id="Cbf&gt;" class="">系统中只保留一个版本</td></tr><tr id="1ce694d5-ea46-8058-9f40-d8c32e8a0800"><td id="eb&lt;a" class=""><strong>权限问题</strong></td><td id="Rvyl" class="">无需特殊权限</td><td id="Cbf&gt;" class="">可能需要管理员权限</td></tr></tbody></table><p id="1ce694d5-ea46-80f7-9c1c-fcc16e441362" class=""><strong>查看安装信息</strong></p><ul id="1ce694d5-ea46-80ca-8756-d88a5ed65d91" class="bulleted-list"><li style="list-style-type:disc">查看所有全局安装的模块<ul id="1ce694d5-ea46-802f-8784-e9a78479cb35" class="bulleted-list"><li style="list-style-type:circle">npm list -g</li></ul></li></ul><ul id="1ce694d5-ea46-800d-bc41-f753683e383b" class="bulleted-list"><li style="list-style-type:disc">查看某个模块的版本号<ul id="1ce694d5-ea46-80dd-a349-f28ebbda1323" class="bulleted-list"><li style="list-style-type:circle">npm list grunt</li></ul></li></ul><p id="1ce694d5-ea46-8096-ae65-c52f1ff8fa98" class=""><strong>卸载模块</strong></p><ul id="1ce694d5-ea46-80b8-ad61-c9d181cb8306" class="bulleted-list"><li style="list-style-type:disc">卸载Node.js模块<ul id="1ce694d5-ea46-800d-9708-e7c8a0165e17" class="bulleted-list"><li style="list-style-type:circle">npm uninstall express</li></ul></li></ul><ul id="1ce694d5-ea46-80e3-a964-c46c4c03e8c3" class="bulleted-list"><li style="list-style-type:disc">卸载后，到/node_modules/目录查看包是否还存在，或者使用以下命令查看<ul id="1ce694d5-ea46-80a9-8dfc-e8f000a9db33" class="bulleted-list"><li style="list-style-type:circle">npm ls</li></ul></li></ul><p id="1ce694d5-ea46-8005-b953-f7e4d84bb36f" class=""><strong>更新模块</strong></p><ul id="1ce694d5-ea46-8097-b44e-efbb4bdea5bd" class="bulleted-list"><li style="list-style-type:disc">使用以下命令来更新模块，模块名<ul id="1ce694d5-ea46-80a2-b62d-eb6d6556363b" class="bulleted-list"><li style="list-style-type:circle">npm update express</li></ul></li></ul><p id="1ce694d5-ea46-80f7-8e1a-f04fde451df9" class=""><strong>搜索模块</strong></p><ul id="1ce694d5-ea46-8040-830b-c30a7fad0e51" class="bulleted-list"><li style="list-style-type:disc">使用以下命令来搜索模块<ul id="1ce694d5-ea46-8040-b512-ddee9a63ea21" class="bulleted-list"><li style="list-style-type:circle">npm search express</li></ul></li></ul><p id="1ce694d5-ea46-802a-8312-e36cd88b4817" class=""><strong>创建模块：必须的package.jspn文件</strong></p><ul id="1ce694d5-ea46-8058-9ae8-e19915507ebb" class="bulleted-list"><li style="list-style-type:disc">初始化命令，自动生成package.json文件<ul id="1ce694d5-ea46-80dc-88ae-ca0d05fad1ec" class="bulleted-list"><li style="list-style-type:circle">npm init</li></ul></li></ul><ul id="1ce694d5-ea46-801c-af8d-d399aacf6259" class="bulleted-list"><li style="list-style-type:disc">使用命令在npm资源库注册用户，使用邮箱注册<ul id="1ce694d5-ea46-80c4-8867-e59f4f5686d1" class="bulleted-list"><li style="list-style-type:circle">npm adduser</li></ul></li></ul><ul id="1ce694d5-ea46-800d-8674-fa5740b72b85" class="bulleted-list"><li style="list-style-type:disc">使用命令来发布模块<ul id="1ce694d5-ea46-80e7-a9e1-f4e2bd8a721d" class="bulleted-list"><li style="list-style-type:circle">npm publish</li></ul></li></ul><p id="1ce694d5-ea46-8043-b21f-ca7d471d659b" class=""><strong>版本号</strong></p><p id="1ce694d5-ea46-800c-b56b-c37f922512ae" class="">版本号遵循语义化版本控制SemVer，格式为MAJOR.MINOR.PATCH，可附加额外标记</p><ul id="1ce694d5-ea46-80c1-93ff-f5a04c2234f6" class="bulleted-list"><li style="list-style-type:disc">MAJOR（主版本）：做了不兼容的API改动时增加版本，2.0.0</li></ul><ul id="1ce694d5-ea46-800c-87a5-f1efcfd9351d" class="bulleted-list"><li style="list-style-type:disc">MINOR（此版本）：添加新功能但保持向后兼容时增加版本，2.1.0</li></ul><ul id="1ce694d5-ea46-80a6-a0a0-e6c4407a5378" class="bulleted-list"><li style="list-style-type:disc">PATCH（补丁版本）：当你修复bug而不增加新功能时增加版本，2.1.1</li></ul><p id="1ce694d5-ea46-805b-92f1-d2b06a397689" class="">额外标记</p><ul id="1ce694d5-ea46-8060-8a62-c99d78793aee" class="bulleted-list"><li style="list-style-type:disc">预发布版本：如1.0.0-alpha或者1.0.0-beta.1，表示版本仍在测试中</li></ul><ul id="1ce694d5-ea46-8077-824c-c11cb30693f8" class="bulleted-list"><li style="list-style-type:disc">构建元数据：如1.0.0+build.1，提供有关构建的信息</li></ul><p id="1ce694d5-ea46-8066-a3a2-d9ca6fc13d9c" class="">安装示例</p><ul id="1ce694d5-ea46-80f4-895a-f2260fb01994" class="bulleted-list"><li style="list-style-type:disc">安装特定版本<ul id="1ce694d5-ea46-800d-b89f-e5affdf6db7f" class="bulleted-list"><li style="list-style-type:circle">npm install package-name@1.2.3</li></ul></li></ul><ul id="1ce694d5-ea46-8091-a05c-c05d26b7b3e9" class="bulleted-list"><li style="list-style-type:disc">安装最新的主版本<ul id="1ce694d5-ea46-807c-b8b7-c75934319347" class="bulleted-list"><li style="list-style-type:circle">npm install package-name@……1.2.3（安装1.x.x的最新版本）</li></ul></li></ul><p id="1ce694d5-ea46-80cc-afc8-d2688f4ad769" class=""><strong>npm常用命令：npm help查看</strong></p><table id="1ce694d5-ea46-80d2-8b55-d2b08a97afb5" class="simple-table"><tbody><tr id="1ce694d5-ea46-8078-902e-eb74fea7b6be"><td id="Z`\Z" class="">命令</td><td id="SN\u" class="">说明</td></tr><tr id="1ce694d5-ea46-806f-aacb-efaee9f02a7b"><td id="Z`\Z" class=""><code>npm init</code></td><td id="SN\u" class="">初始化一个新的 <code>package.json</code> 文件，交互式输入信息。</td></tr><tr id="1ce694d5-ea46-8061-bace-f01b60cc14a2"><td id="Z`\Z" class=""><code>npm init -y</code></td><td id="SN\u" class="">快速创建带有默认设置的 <code>package.json</code> 文件。</td></tr><tr id="1ce694d5-ea46-80f6-b7ad-e0abd8c7311a"><td id="Z`\Z" class=""><code>npm install package-name</code></td><td id="SN\u" class="">本地安装指定包。</td></tr><tr id="1ce694d5-ea46-807a-a9bc-e6aa0acb06b5"><td id="Z`\Z" class=""><code>npm install -g package-name</code></td><td id="SN\u" class="">全局安装指定包，使其在系统范围内可用。</td></tr><tr id="1ce694d5-ea46-80fd-a812-e12a6ba2e763"><td id="Z`\Z" class=""><code>npm install</code></td><td id="SN\u" class="">安装 <code>package.json</code> 中列出的所有依赖。</td></tr><tr id="1ce694d5-ea46-804c-8375-d64ef4ee2951"><td id="Z`\Z" class=""><code>npm install package-name --save-dev</code></td><td id="SN\u" class="">安装包并添加到 <code>devDependencies</code>。</td></tr><tr id="1ce694d5-ea46-80f5-876c-e53f7331ab4d"><td id="Z`\Z" class=""><code>npm update package-name</code></td><td id="SN\u" class="">更新指定的依赖包。</td></tr><tr id="1ce694d5-ea46-80c6-a4f8-fe4af5782c63"><td id="Z`\Z" class=""><code>npm uninstall package-name</code></td><td id="SN\u" class="">卸载指定的依赖包。</td></tr><tr id="1ce694d5-ea46-80ac-be9c-c849cb4c0429"><td id="Z`\Z" class=""><code>npm uninstall -g package-name</code></td><td id="SN\u" class="">全局卸载指定的包。</td></tr><tr id="1ce694d5-ea46-8004-85a7-f77b86c17a47"><td id="Z`\Z" class=""><code>npm list</code></td><td id="SN\u" class="">查看当前项目的已安装依赖包列表。</td></tr><tr id="1ce694d5-ea46-80e4-9169-cce1ac3f21b6"><td id="Z`\Z" class=""><code>npm list -g --depth=0</code></td><td id="SN\u" class="">查看全局已安装的依赖包列表（不展开依赖树）。</td></tr><tr id="1ce694d5-ea46-80f2-98b9-dbef240ccc7f"><td id="Z`\Z" class=""><code>npm info package-name</code></td><td id="SN\u" class="">查看包的详细信息，包括版本和依赖等。</td></tr><tr id="1ce694d5-ea46-8051-9b52-c40527dcbb06"><td id="Z`\Z" class=""><code>npm login</code></td><td id="SN\u" class="">登录到 NPM 账号。</td></tr><tr id="1ce694d5-ea46-803c-88d1-d937cfea01db"><td id="Z`\Z" class=""><code>npm publish</code></td><td id="SN\u" class="">发布当前包到 NPM 注册表。</td></tr><tr id="1ce694d5-ea46-80a5-af3b-fa11e5a28764"><td id="Z`\Z" class=""><code>npm unpublish package-name</code></td><td id="SN\u" class="">从 NPM 注册表中撤销发布的包（一般限 24 小时内）。</td></tr><tr id="1ce694d5-ea46-80fe-b32f-fd9bfa613f16"><td id="Z`\Z" class=""><code>npm cache clean --force</code></td><td id="SN\u" class="">清理 NPM 缓存。</td></tr><tr id="1ce694d5-ea46-80e1-8dc3-c80111fc5a65"><td id="Z`\Z" class=""><code>npm audit</code></td><td id="SN\u" class="">检查项目依赖中的安全漏洞。</td></tr><tr id="1ce694d5-ea46-8095-950f-d4eab81a9e83"><td id="Z`\Z" class=""><code>npm audit fix</code></td><td id="SN\u" class="">自动修复已知的漏洞。</td></tr><tr id="1ce694d5-ea46-8009-867f-e5831de922fd"><td id="Z`\Z" class=""><code>npm run script-name</code></td><td id="SN\u" class="">运行 <code>package.json</code> 中定义的脚本，例如 <code>npm run start</code>。</td></tr><tr id="1ce694d5-ea46-8041-a2b8-c25ac6b2173b"><td id="Z`\Z" class=""><code>npm start</code></td><td id="SN\u" class="">运行 <code>start</code> 脚本（等同于 <code>npm run start</code>）。</td></tr><tr id="1ce694d5-ea46-80a2-9b0f-fc20c042d2ae"><td id="Z`\Z" class=""><code>npm test</code></td><td id="SN\u" class="">运行 <code>test</code> 脚本。</td></tr><tr id="1ce694d5-ea46-80f5-9b0e-ed391213d47f"><td id="Z`\Z" class=""><code>npm build</code></td><td id="SN\u" class="">运行 <code>build</code> 脚本。</td></tr><tr id="1ce694d5-ea46-806a-b1af-fd8f913223bc"><td id="Z`\Z" class=""><code>npm outdated</code></td><td id="SN\u" class="">列出项目中有可更新版本的依赖包。</td></tr><tr id="1ce694d5-ea46-80e7-bd3e-e107d44389ac"><td id="Z`\Z" class=""><code>npm version patch/minor/major</code></td><td id="SN\u" class="">更新 <code>package.json</code> 中的版本号，自动更新版本。</td></tr><tr id="1ce694d5-ea46-8073-891b-c754c01dbc5a"><td id="Z`\Z" class=""><code>npm ci</code></td><td id="SN\u" class="">使用 <code>package-lock.json</code> 快速安装依赖，适用于 CI/CD 环境。</td></tr></tbody></table><p id="1ce694d5-ea46-803d-a1f4-d4cd13230834" class=""><strong>package.json的说明与使用</strong></p><p id="1ce694d5-ea46-80ab-8bfd-d36e2166c518" class="">该文件是Node.js项目中的核心文件，包含了项目的元数据、以来、脚本等信息</p><p id="1ce694d5-ea46-802e-95bc-e049b76b0089" class="">用于描述项目的元数据和依赖关系，通常位于项目的根目录中，而且是项目的配置文件</p><p id="1ce694d5-ea46-8020-89f7-f7d70f1fedfc" class="">是一个JSON格式的文件，包含以下基本字段</p><ul id="1ce694d5-ea46-80f6-8be1-f86e38a78de4" class="bulleted-list"><li style="list-style-type:disc"><code>name</code>：项目的名称，应该是唯一的，通常使用小写字母和连字符。</li></ul><ul id="1ce694d5-ea46-8042-b3a9-ce3fc7e0d93a" class="bulleted-list"><li style="list-style-type:disc"><code>version</code>：项目的版本号，遵循语义化版本控制（Semantic Versioning）。</li></ul><ul id="1ce694d5-ea46-8045-a90c-fbd5ae13e633" class="bulleted-list"><li style="list-style-type:disc"><code>description</code>：项目的简短描述。</li></ul><ul id="1ce694d5-ea46-801d-a623-f7daaf37d8d2" class="bulleted-list"><li style="list-style-type:disc"><code>main</code>：项目的入口文件，通常是应用程序的启动文件。</li></ul><ul id="1ce694d5-ea46-8076-81da-da2bca696a28" class="bulleted-list"><li style="list-style-type:disc"><code>scripts</code>：定义了一系列的命令行脚本，可以在项目中执行特定的任务。</li></ul><ul id="1ce694d5-ea46-80c8-9011-c5746cf924c1" class="bulleted-list"><li style="list-style-type:disc"><code>dependencies</code>：列出了项目运行所需的所有依赖包及其版本。</li></ul><ul id="1ce694d5-ea46-80cb-a656-ce97e7c632e8" class="bulleted-list"><li style="list-style-type:disc"><code>devDependencies</code>：列出了只在开发过程中需要的依赖包及其版本。</li></ul><ul id="1ce694d5-ea46-80ba-a15d-c95e18e3c63e" class="bulleted-list"><li style="list-style-type:disc"><code>peerDependencies</code>：列出了项目期望其依赖包也依赖的包。</li></ul><ul id="1ce694d5-ea46-80c0-a096-c2547d9ba0dc" class="bulleted-list"><li style="list-style-type:disc"><code>optionalDependencies</code>：列出了可选的依赖包。</li></ul><ul id="1ce694d5-ea46-8065-835e-d57f58bbdbaf" class="bulleted-list"><li style="list-style-type:disc"><code>engines</code>：指定了项目兼容的 Node.js 版本。</li></ul><ul id="1ce694d5-ea46-8019-abe7-f31f5996cbe2" class="bulleted-list"><li style="list-style-type:disc"><code>repository</code>：项目的代码仓库信息，如 GitHub 仓库的 URL。</li></ul><ul id="1ce694d5-ea46-80fb-8226-ffe646bf4308" class="bulleted-list"><li style="list-style-type:disc"><code>keywords</code>：项目的关键词，有助于在 npm 搜索中找到项目。</li></ul><ul id="1ce694d5-ea46-80f5-beb2-efdb947713bf" class="bulleted-list"><li style="list-style-type:disc"><code>author</code>：项目的作者信息。</li></ul><ul id="1ce694d5-ea46-800e-afa5-dc8daf2c067c" class="bulleted-list"><li style="list-style-type:disc"><code>license</code>：项目的许可证信息。</li></ul><p id="1ce694d5-ea46-807e-8f06-e812f544877f" class=""><strong>使用方法</strong></p><ol type="1" id="1ce694d5-ea46-80be-bac0-c0a43c2732b7" class="numbered-list" start="1"><li><strong>初始化项目</strong>：在项目目录中运行 <code>npm init</code> 命令，npm 会引导你创建一个 <code>package.json</code> 文件，或者自动生成一个包含默认值的 <code>package.json</code>。</li></ol><ol type="1" id="1ce694d5-ea46-807b-a85a-fa488a83ea7f" class="numbered-list" start="2"><li><strong>安装依赖</strong>：使用 <code>npm install &lt;package-name&gt;</code> 命令安装依赖，npm 会自动将依赖添加到 <code>package.json</code> 文件的 <code>dependencies</code> 或 <code>devDependencies</code> 中，并创建 <code>package-lock.json</code> 文件以锁定依赖的版本。</li></ol><ol type="1" id="1ce694d5-ea46-800a-8e55-ea27509de856" class="numbered-list" start="3"><li><strong>管理脚本</strong>：在 <code>scripts</code> 字段中定义命令，例如 <code>&quot;start&quot;: &quot;node app.js&quot;</code>，然后可以通过 <code>npm start</code> 命令来运行这些脚本。</li></ol><ol type="1" id="1ce694d5-ea46-8010-991e-d586fdbb38c4" class="numbered-list" start="4"><li><strong>版本控制</strong>：使用 <code>npm version</code> 命令来管理项目的版本号，npm 会自动更新 <code>package.json</code> 中的版本号，并生成一个新的 Git 标签。</li></ol><ol type="1" id="1ce694d5-ea46-8096-a063-dc589a9f6d59" class="numbered-list" start="5"><li><strong>发布包</strong>：当项目准备好发布到 npm 时，可以使用 <code>npm publish</code> 命令，npm 会读取 <code>package.json</code> 中的信息来发布包。</li></ol><ol type="1" id="1ce694d5-ea46-8079-9732-fe8be4fa88a2" class="numbered-list" start="6"><li><strong>依赖管理</strong>：<code>package.json</code> 和 <code>package-lock.json</code> 文件一起工作，确保项目在不同环境中的依赖版本一致。</li></ol><p id="1ce694d5-ea46-8069-b899-d38eb8324f65" class=""><strong>使用package.json的好处</strong></p><ul id="1ce694d5-ea46-808a-82fc-d9a821d28fee" class="bulleted-list"><li style="list-style-type:disc"><strong>依赖管理</strong>：集中管理项目的依赖项及其版本。</li></ul><ul id="1ce694d5-ea46-80fc-9b3f-c3a3b5d0d3a8" class="bulleted-list"><li style="list-style-type:disc"><strong>自动化任务</strong>：通过 <code>scripts</code> 字段可以方便地运行常见的任务。</li></ul><ul id="1ce694d5-ea46-803c-8483-c3371f7b844d" class="bulleted-list"><li style="list-style-type:disc"><strong>版本控制</strong>：确保项目及其依赖版本的一致性，便于团队协作。</li></ul><ul id="1ce694d5-ea46-8073-ac78-eba9355241b6" class="bulleted-list"><li style="list-style-type:disc"><strong>描述项目</strong>：为项目提供元数据信息，便于发布和共享。</li></ul><p id="1ce694d5-ea46-80a7-aed3-e90f0a272e37" class="">
+</p><p id="1ce694d5-ea46-8082-8344-f7c7d224b12d" class=""><strong>3.Node.js的REPL（交互式解释器），理解为命令行模式</strong></p><p id="1ce694d5-ea46-8005-adea-d1157afcf132" class="">Node.js提供了内置的REPL，这是一个交互式编程环境，可以在终端中运行js代码</p><p id="1ce694d5-ea46-8002-be37-cac33c3eefbb" class="">REPL主要操作：读取read、执行eval、打印print、循环loop</p><p id="1ce694d5-ea46-806a-8063-e35645556b6e" class="">Node自带的交互式解释器可以执行以下任务</p><ul id="1ce694d5-ea46-8052-bc6b-c1f8c399980d" class="bulleted-list"><li style="list-style-type:disc">读取：读取用户输入，解析输入的js数据结构并存储在内存中</li></ul><ul id="1ce694d5-ea46-8052-ab47-f67bbd77cd2d" class="bulleted-list"><li style="list-style-type:disc">执行：执行输入的数据结构</li></ul><ul id="1ce694d5-ea46-8017-941e-c9e8bb9eef94" class="bulleted-list"><li style="list-style-type:disc">打印：输出结果</li></ul><ul id="1ce694d5-ea46-8027-87fe-fc467ddec37f" class="bulleted-list"><li style="list-style-type:disc">循环：循环操作以上步骤直到用户两次点击ctrl+c退出</li></ul><p id="1ce694d5-ea46-8005-89be-dca8909c5b20" class=""><strong>常用命令与快捷键如下</strong></p><table id="1ce694d5-ea46-803f-bfa4-ca5549fd3729" class="simple-table"><tbody><tr id="1ce694d5-ea46-8029-b7f9-d6178c23b2a2"><td id="MR:p" class="">命令/快捷键</td><td id="DXge" class="">说明</td></tr><tr id="1ce694d5-ea46-80db-8927-d6355f1a2fa5"><td id="MR:p" class=""><code>.help</code></td><td id="DXge" class="">显示 REPL 中可用的所有命令及其说明。</td></tr><tr id="1ce694d5-ea46-80ac-a97d-c9a33c5bfd73"><td id="MR:p" class=""><code>.exit</code></td><td id="DXge" class="">退出 REPL 会话，相当于按 <code>Ctrl + D</code>。</td></tr><tr id="1ce694d5-ea46-80da-a350-e5e2d1f8e251"><td id="MR:p" class=""><code>.save &lt;filename&gt;</code></td><td id="DXge" class="">将当前的 REPL 会话保存到指定文件中。</td></tr><tr id="1ce694d5-ea46-805b-bef1-c90006dc1e75"><td id="MR:p" class=""><code>.load &lt;filename&gt;</code></td><td id="DXge" class="">从指定文件中加载并执行代码到 REPL。</td></tr><tr id="1ce694d5-ea46-80a9-a137-da3fe1061eca"><td id="MR:p" class=""><code>.break</code></td><td id="DXge" class="">退出多行表达式输入模式，返回到单行输入模式。</td></tr><tr id="1ce694d5-ea46-800b-bf64-dad8fcb3a17a"><td id="MR:p" class=""><code>.clear</code></td><td id="DXge" class="">重置 REPL 的上下文，相当于清除所有变量和状态。</td></tr><tr id="1ce694d5-ea46-807e-b245-fb17db2327b4"><td id="MR:p" class=""><code>Ctrl + C</code></td><td id="DXge" class="">强制退出当前输入或终止命令。如果按两次，则退出 REPL 会话。</td></tr><tr id="1ce694d5-ea46-80fd-9560-eaf1529afc92"><td id="MR:p" class=""><code>Ctrl + D</code></td><td id="DXge" class="">结束 REPL 会话，相当于 <code>.exit</code>。</td></tr><tr id="1ce694d5-ea46-8024-8db1-ca9b9759f2e8"><td id="MR:p" class=""><code>Ctrl + L</code></td><td id="DXge" class="">清除屏幕，类似于在终端中输入 <code>clear</code>。</td></tr><tr id="1ce694d5-ea46-8025-ad67-eae87ec15c06"><td id="MR:p" class=""><code>方向键（↑/↓）</code></td><td id="DXge" class="">浏览输入历史记录，查看并重新执行之前输入的命令。</td></tr><tr id="1ce694d5-ea46-80bf-8581-f37512895851"><td id="MR:p" class=""><code>Tab</code></td><td id="DXge" class="">自动补全输入，显示可能的选项或补全命令。</td></tr><tr id="1ce694d5-ea46-8051-89e3-f3a4964860b3"><td id="MR:p" class=""><code>_</code></td><td id="DXge" class="">用于访问上一次表达式的结果。</td></tr><tr id="1ce694d5-ea46-80c5-845a-c4d289f70ff9"><td id="MR:p" class=""><code>Ctrl + R</code></td><td id="DXge" class="">进入反向搜索历史，搜索先前输入的命令。</td></tr><tr id="1ce694d5-ea46-80fd-8143-fcfdd3006953"><td id="MR:p" class=""><code>Ctrl + U</code></td><td id="DXge" class="">删除当前行从光标到行首的所有内容。</td></tr><tr id="1ce694d5-ea46-806b-9306-cc17e0c53f28"><td id="MR:p" class=""><code>Ctrl + K</code></td><td id="DXge" class="">删除当前行从光标到行尾的所有内容。</td></tr><tr id="1ce694d5-ea46-803a-ba6d-ea09bbc1b32a"><td id="MR:p" class=""><code>Ctrl + A</code></td><td id="DXge" class="">移动光标到行首。</td></tr><tr id="1ce694d5-ea46-80eb-9f91-e716b9d91195"><td id="MR:p" class=""><code>Ctrl + E</code></td><td id="DXge" class="">移动光标到行尾。</td></tr><tr id="1ce694d5-ea46-801c-b09c-db5a534516f9"><td id="MR:p" class=""><code>Ctrl + B</code></td><td id="DXge" class="">向后移动光标一个字符。</td></tr><tr id="1ce694d5-ea46-8067-bd7c-cea8803dfde5"><td id="MR:p" class=""><code>Ctrl + F</code></td><td id="DXge" class="">向前移动光标一个字符。</td></tr><tr id="1ce694d5-ea46-80e5-bac1-df1872675f43"><td id="MR:p" class=""><code>Ctrl + N</code></td><td id="DXge" class="">显示下一条历史记录（与方向键 ↓ 相同）。</td></tr><tr id="1ce694d5-ea46-80fd-8f36-e6f6c2946d7c"><td id="MR:p" class=""><code>Ctrl + P</code></td><td id="DXge" class="">显示上一条历史记录（与方向键 ↑ 相同）。</td></tr><tr id="1ce694d5-ea46-800a-94cf-d819a64a8cdc"><td id="MR:p" class=""><code>Ctrl + Z</code></td><td id="DXge" class="">挂起 REPL 会话，将其置于后台（在某些系统中可用）。</td></tr></tbody></table><p id="1ce694d5-ea46-8075-ad70-f5dc2dfe68e0" class="">
+</p><p id="1ce694d5-ea46-804f-9187-cb5d48c65d32" class=""><strong><span style="border-bottom:0.05em solid">4.Node.js回调函数：</span></strong></p><p id="1ce694d5-ea46-8007-9ebc-c3b69829bf42" class="">Node.js是一个基于V8引擎的js运行环境，js可以脱离浏览器运行在服务端，核心特性之一是非阻塞i/o（输入/输出）模型，可以使得Node.js处理高并发的网络应用</p><p id="1ce694d5-ea46-8068-b9ec-cda4979eac6f" class="">Node.js异步编程的直接体现就是回调</p><p id="1ce694d5-ea46-80a9-b41c-c41fe9f7f54e" class="">在Node.js中回调函数是一种异步编程模式，用于处理i/o操作，如文件读写、数据库交互、网络请求，这些操作通常需要花费较长时间，采用同步方式，会阻塞整个程序的执行，指导操作完成</p><p id="1ce694d5-ea46-80c5-a9ca-e9c1cf13d748" class="">使用回调函数，Node.js可以在i/o操作进行时继续执行其他代码，一旦i/o操作完成，在执行回调函数</p><p id="1ce694d5-ea46-80e9-aad8-f7211667ba9b" class="">Node.js是单线程的，可以通过事件驱动和回调机制来实现异步操作。</p><p id="1ce694d5-ea46-809b-b601-f2c7c094c47d" class=""><strong>使用场景：</strong></p><ul id="1ce694d5-ea46-8022-90e8-ceca65809e1a" class="bulleted-list"><li style="list-style-type:disc">读取文件、写入文件等i/o操作</li></ul><ul id="1ce694d5-ea46-8057-a01a-d40adab4f75b" class="bulleted-list"><li style="list-style-type:disc">处理网络请求</li></ul><ul id="1ce694d5-ea46-809d-bbd0-f091d3646a3e" class="bulleted-list"><li style="list-style-type:disc">数据库查询</li></ul><p id="1ce694d5-ea46-80ca-9e1f-c761699195b4" class="">例如可以一边读取文件，一边执行其他命令。在文件读取完成后，将文件内容作为回调函数的参数返回，这样执行代码时就没有阻塞或者等待文件i/o操作，就大大提高了Node.js性能，可以大量处理并发请求</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1ce694d5-ea46-80e7-9dba-f7b2ee231034"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><p id="1ce694d5-ea46-80d6-84c3-eb9fb4a25409" class="">回调函数一般作为函数的最后一个参数出现</p><p id="1ce694d5-ea46-8064-bcc0-f9a39ca44ba3" class="">function fool1（name，age，callback）{}</p><p id="1ce694d5-ea46-80d6-b7d4-ef742be3a8a4" class="">function fool2（value，callback1，callback2）{}</p></div></figure><p id="1ce694d5-ea46-8051-9f19-d5b7f2a5d3da" class=""><strong>实例</strong></p><ul id="1ce694d5-ea46-8014-9362-eb2d0236adf3" class="bulleted-list"><li style="list-style-type:disc">阻塞代码示例，先666在结束<ul id="1ce694d5-ea46-803d-8e18-d63036f12e17" class="bulleted-list"><li style="list-style-type:circle">创建文件input.txt<ul id="1ce694d5-ea46-8093-95d2-cbf15789c5e9" class="bulleted-list"><li style="list-style-type:square">内容为：text content 666</li></ul></li></ul><ul id="1ce694d5-ea46-808e-a51a-dac110777caa" class="bulleted-list"><li style="list-style-type:circle">创建main.js文件<ul id="1ce694d5-ea46-80e3-8758-ff97e7aeacc8" class="bulleted-list"><li style="list-style-type:square">var fs = require（’fs‘）；</li></ul><ul id="1ce694d5-ea46-805f-b471-e9b6a75a6780" class="bulleted-list"><li style="list-style-type:square">var data = fs.readFileSync（’input.txt‘）；</li></ul><ul id="1ce694d5-ea46-8066-8fd8-f253d12b2e44" class="bulleted-list"><li style="list-style-type:square">console.log（data.toString（））；</li></ul><ul id="1ce694d5-ea46-8004-af6f-c8b134831559" class="bulleted-list"><li style="list-style-type:square">console.log（“程序执行结束！”）</li></ul></li></ul></li></ul><ul id="1ce694d5-ea46-80d9-a1b8-f969dd80022f" class="bulleted-list"><li style="list-style-type:disc">非阻塞代码示例，先结束在666<ul id="1ce694d5-ea46-802c-9be1-d16f3bfbe68f" class="bulleted-list"><li style="list-style-type:circle">创建文件input.txt<ul id="1ce694d5-ea46-8036-be25-d08e4e1e1fc9" class="bulleted-list"><li style="list-style-type:square">内容同上</li></ul></li></ul><ul id="1ce694d5-ea46-805f-8923-dbb69f985424" class="bulleted-list"><li style="list-style-type:circle">创建main1.js文件<ul id="1ce694d5-ea46-80bd-97b6-df96a394c08e" class="bulleted-list"><li style="list-style-type:square">var fs = require（“fs”）</li></ul><ul id="1ce694d5-ea46-80df-b397-cb06743350e0" class="bulleted-list"><li style="list-style-type:square">fs.readFile（’input.txt‘，function（err，data）{<ul id="1ce694d5-ea46-80ce-8b5e-ce00bd560ba9" class="bulleted-list"><li style="list-style-type:disc">if（err）return console.error（err）；</li></ul><ul id="1ce694d5-ea46-808a-8396-f544f21eb52a" class="bulleted-list"><li style="list-style-type:disc">console.log（data.toString（））；</li></ul><ul id="1ce694d5-ea46-801c-a49d-d7cbbf554e63" class="bulleted-list"><li style="list-style-type:disc">}）；</li></ul></li></ul><ul id="1ce694d5-ea46-8022-bf79-cfcdf3f2ec05" class="bulleted-list"><li style="list-style-type:square">console.log（“程序执行结束！”）；</li></ul><ul id="1ce694d5-ea46-80dd-b9cb-d21c780bf1fb" class="bulleted-list"><li style="list-style-type:square">err为错误对象，如果读取失败会有值</li></ul><ul id="1ce694d5-ea46-8053-9880-e43032eb1e40" class="bulleted-list"><li style="list-style-type:square">data是读取的文件内容</li></ul></li></ul></li></ul><ul id="1ce694d5-ea46-80b0-be33-f7af4748a96e" class="bulleted-list"><li style="list-style-type:disc">总结阻塞与非阻塞不同<ul id="1ce694d5-ea46-80d5-949b-e7487a4b9d3e" class="bulleted-list"><li style="list-style-type:circle">阻塞在文件读取完成后才执行程序</li></ul><ul id="1ce694d5-ea46-803a-94a3-ef4b401f7bad" class="bulleted-list"><li style="list-style-type:circle">第二个实例不需要等待文件读取完成，这样可以在读取文件时同时执行接下来的代码，大大提高程序性能</li></ul><ul id="1ce694d5-ea46-80d2-a9a8-c207e4d850aa" class="bulleted-list"><li style="list-style-type:circle"><strong>阻塞是按顺序执行的，而非阻塞是不按顺序的，如果需要处理回调函数的参数，我们就需要写在回调函数中</strong></li></ul></li></ul><p id="1ce694d5-ea46-8048-a96b-fe76dae1de85" class=""><strong>回调地狱：</strong></p><p id="1ce694d5-ea46-802d-a7f6-e86f5e41f785" class="">多个异步操作按顺序执行时，回调函数会导致代码嵌套，使得代码难以阅读和维护。</p><p id="1ce694d5-ea46-8024-aa08-d562c8779246" class="">使用以下方式来改善代码的可读性和可维护性</p><ul id="1ce694d5-ea46-80ec-977b-ceed08f053a6" class="bulleted-list"><li style="list-style-type:disc">promises：一种新的异步编程模式，允许以链式方式处理异步操作，避免了回调嵌套</li></ul><ul id="1ce694d5-ea46-801f-9aec-f327f5146c82" class="bulleted-list"><li style="list-style-type:disc">async/await：基于promises，async/await提供了一种更接近同步代码风格的异步编程方式，使得异步代码更易于理解和维护</li></ul><ul id="1ce694d5-ea46-80ec-a737-c1961d3ff165" class="bulleted-list"><li style="list-style-type:disc">事件驱动编程：Node.js也支持事件驱动编程，通过监听和触发事件来处理异步操作</li></ul><ul id="1ce694d5-ea46-80ae-a8b7-f8dd038258d3" class="bulleted-list"><li style="list-style-type:disc"><strong>promises：可以链式调用then方法，避免嵌套</strong></li></ul><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1ce694d5-ea46-80d4-864f-e092519c7d4d"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><p id="1ce694d5-ea46-805f-a02f-d6092e3989bb" class="">const fs = require(&#x27;fs&#x27;).promises;</p><p id="1ce694d5-ea46-8064-a391-efc4a9a618e5" class="">fs.readFile(&#x27;file1.txt&#x27;, &#x27;utf8&#x27;)<br/>.then(data1 =&gt; {<br/>console.log(&#x27;Data from file1:&#x27;, data1);<br/>return fs.readFile(&#x27;file2.txt&#x27;, &#x27;utf8&#x27;);<br/>})<br/>.then(data2 =&gt; {<br/>console.log(&#x27;Data from file2:&#x27;, data2);<br/>return fs.readFile(&#x27;file3.txt&#x27;, &#x27;utf8&#x27;);<br/>})<br/>.then(data3 =&gt; {<br/>console.log(&#x27;Data from file3:&#x27;, data3);<br/>})<br/>.catch(err =&gt; {<br/>console.error(&#x27;Error reading files:&#x27;, err);<br/>});<br/></p></div></figure><ul id="1ce694d5-ea46-808a-acec-e8be19e6f678" class="bulleted-list"><li style="list-style-type:disc"><strong>async/await</strong></li></ul><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1ce694d5-ea46-80b5-bec9-d6829547f543"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><p id="1ce694d5-ea46-80e0-8779-c65558b9d739" class="">const fs = require(&#x27;fs&#x27;).promises;</p><p id="1ce694d5-ea46-8099-9a24-cae297241168" class="">async function readFiles() {<br/>try {<br/>const data1 = await fs.readFile(&#x27;file1.txt&#x27;, &#x27;utf8&#x27;);<br/>const data2 = await fs.readFile(&#x27;file2.txt&#x27;, &#x27;utf8&#x27;);<br/>const data3 = await fs.readFile(&#x27;file3.txt&#x27;, &#x27;utf8&#x27;);<br/></p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1ce694d5-ea46-80ef-b3da-d633b861d157" class="code"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">    console.log(&#x27;Data from all files:&#x27;, data1, data2, data3);
+} catch (err) {
+    console.error(&#x27;Error reading files:&#x27;, err);
+}
+</code></pre><p id="1ce694d5-ea46-8087-9def-fadb3ccf8c37" class="">}</p><p id="1ce694d5-ea46-804e-925a-d6e050935c41" class="">readFiles();</p></div></figure><p id="1ce694d5-ea46-803d-9031-ed8dfeb9ef6d" class="">
+</p><p id="1ce694d5-ea46-806a-91ed-f887409c5b53" class=""><strong><span style="border-bottom:0.05em solid">5.Node.js事件循环：</span></strong></p><p id="1ce694d5-ea46-80b1-a93f-e01888ece0a4" class="">事件循环</p><p id="1ce694d5-ea46-8087-bb6b-d7d245ba870a" class="">时Node.js处理非阻塞i/o操作的核心机制，使得单线程能够高效的处理多个并发请求，</p><p id="1ce694d5-ea46-8038-89b0-dc30d6f1152b" class="">Node.js是基于单线程的js允许时，利用事件循环来处理异步操作，如文件读取、网络请求、数据库查询等</p><p id="1ce694d5-ea46-803c-950f-f0a4d0b965fd" class=""><strong>事件循环的阶段：</strong></p><ul id="1ce694d5-ea46-80b5-8c75-d62be4c92f13" class="bulleted-list"><li style="list-style-type:disc">Timers：执行setTimeout（）和setInterval（）的回调</li></ul><ul id="1ce694d5-ea46-8083-82db-dacac7e46134" class="bulleted-list"><li style="list-style-type:disc">I/O Callbacks：处理一些延迟的I/O回调</li></ul><ul id="1ce694d5-ea46-80e4-b9a2-f960ae6ec554" class="bulleted-list"><li style="list-style-type:disc">Idle，prepare：内部使用，不常见</li></ul><ul id="1ce694d5-ea46-8028-9beb-c32675359e5e" class="bulleted-list"><li style="list-style-type:disc">Poll：检索新的I/O事件，执行与I/O相关的回调</li></ul><ul id="1ce694d5-ea46-8041-92bd-d9895282be45" class="bulleted-list"><li style="list-style-type:disc">Check：执行setImmediate（）回调</li></ul><ul id="1ce694d5-ea46-8041-9319-f7d26d83e448" class="bulleted-list"><li style="list-style-type:disc">Close Callbacks：处理关闭的回调，如socket.on（’close‘，…）</li></ul><p id="1ce694d5-ea46-80be-b26d-e5a4a857b330" class=""><strong>事件循环的流程：</strong></p><ul id="1ce694d5-ea46-80c7-b456-f6814167b50a" class="bulleted-list"><li style="list-style-type:disc">任务进入事件循环队列</li></ul><ul id="1ce694d5-ea46-80d3-8eb2-ef1f55be3019" class="bulleted-list"><li style="list-style-type:disc">事件循环按照阶段顺序进行，每个阶段有自己的回调队列</li></ul><ul id="1ce694d5-ea46-80a6-8dfa-c248b4c328fc" class="bulleted-list"><li style="list-style-type:disc">事件循环会在poll阶段等待新的事件到达，如果没有事件，会检查其他阶段的回调</li></ul><ul id="1ce694d5-ea46-8071-99db-e44e460f079d" class="bulleted-list"><li style="list-style-type:disc">如果setImmediate（）和setTimeout（）都存在，setImmediate（）在check阶段先执行，而setTimeout（）在timers阶段执行</li></ul><ul id="1ce694d5-ea46-804a-a1e6-cf994b7773da" class="bulleted-list"><li style="list-style-type:disc">实例：</li></ul><blockquote id="1ce694d5-ea46-80ef-8e63-e9ff81d7227c" class="">输出顺序：main先打印，setImmediate（）和setTimeout（）执行顺序取决于当前事件循环的状态，一般setImmediate（）先执行<p id="1ce694d5-ea46-809a-a26b-ff23470ec703" class="">setTimeout(() =&gt; {<br/>console.log(&#x27;Timeout callback&#x27;);<br/>}, 0);<br/></p><p id="1ce694d5-ea46-8060-afad-eedaa7fbf5bd" class="">setImmediate(() =&gt; {<br/>console.log(&#x27;Immediate callback&#x27;);<br/>});<br/></p><p id="1ce694d5-ea46-80d0-97bf-c9f989f2c666" class="">console.log(&#x27;Main thread execution&#x27;);</p></blockquote><p id="1ce694d5-ea46-800f-b1c1-cde1059ecda0" class=""><strong>宏任务与微任务：</strong></p><ul id="1ce694d5-ea46-8021-941d-f08a7d86753b" class="bulleted-list"><li style="list-style-type:disc">宏任务：setTimeout、setInterval、setImmediate、I/O操作等</li></ul><ul id="1ce694d5-ea46-8014-975b-d0b2fb5b2ad5" class="bulleted-list"><li style="list-style-type:disc">微任务：process.nextTick、Promise.then</li></ul><ul id="1ce694d5-ea46-8064-87d1-fd7a9cb3ced2" class="bulleted-list"><li style="list-style-type:disc">执行顺序：微任务优先级高于宏任务，会在当前阶段的回调结束后立即执行</li></ul><ul id="1ce694d5-ea46-80d7-bcaa-c010aadf0e39" class="bulleted-list"><li style="list-style-type:disc">实例</li></ul><blockquote id="1ce694d5-ea46-80c8-a7b0-dcc1749b7367" class="">输出结果：main、promise、timeout<p id="1ce694d5-ea46-8008-94a3-df20994f2596" class="">setTimeout(() =&gt; {<br/>console.log(&#x27;Timeout callback&#x27;);<br/>}, 0);<br/></p><p id="1ce694d5-ea46-80dd-893b-f7e53b8b0fad" class="">Promise.resolve().then(() =&gt; {<br/>console.log(&#x27;Promise callback&#x27;);<br/>});<br/></p><p id="1ce694d5-ea46-805d-ad6d-c75f85212f76" class="">console.log(&#x27;Main thread execution&#x27;);</p></blockquote><p id="1ce694d5-ea46-8037-91ec-e91d384d0b25" class=""><strong>process.nextTick（）</strong></p><p id="1ce694d5-ea46-80a7-acd8-e91d33c5f1a6" class="">该方法会在当前操作结束后、下一个阶段开始前执行微任务，优先级高于Promise</p><blockquote id="1ce694d5-ea46-80c2-8a10-e67d346ba80b" class="">输出结果：main、next<p id="1ce694d5-ea46-8061-a185-fab65d210514" class="">process.nextTick(() =&gt; {<br/>console.log(&#x27;Next tick callback&#x27;);<br/>});<br/></p><p id="1ce694d5-ea46-8026-b2ba-fb47c9c71188" class="">console.log(&#x27;Main thread execution&#x27;);</p></blockquote><p id="1ce694d5-ea46-805d-9e35-f6b8fdca67fd" class=""><strong>事件驱动程序：</strong></p><p id="1ce694d5-ea46-8098-b3b6-f0b1ad00aabf" class="">在Node.js中事件驱动编程主要通过EventEmitter类实现</p><p id="1ce694d5-ea46-800d-a590-c95a9b380fba" class="">EventEmitter是一个内置类，位于events模块中，通过继承eventEmitter，你可以创建自己的事件触发器，并注册和触发事件</p><p id="1ce694d5-ea46-80fe-825d-e35a3bd3b224" class="">通过这种机制，Node.js可以高效的处理异步任务，即使在单线程环境下也能并发处理</p><figure id="1ce694d5-ea46-80d9-ae4e-db6222537f32" class="image"><a href="image%201.png"><img style="width:561.1875px" src="image%201.png"/></a></figure><ul id="1ce694d5-ea46-80a6-b409-fcb86c8397fe" class="bulleted-list"><li style="list-style-type:disc">基本概念：<ul id="1ce694d5-ea46-80fc-9b82-d765f4c54855" class="bulleted-list"><li style="list-style-type:circle">事件：在程序中发生的动作或状态改变，例如一个文件读取完成或者一个HTTP请求到达，</li></ul><ul id="1ce694d5-ea46-80e9-bebb-e4cf9ca688d9" class="bulleted-list"><li style="list-style-type:circle">事件触发器：EventEmitter时Node.js的内置模块，用来发出和监听事件</li></ul><ul id="1ce694d5-ea46-808d-b917-ce38748b17fa" class="bulleted-list"><li style="list-style-type:circle">事件处理器：与时间关联的回调函数，事件发生时被调用</li></ul></li></ul><ul id="1ce694d5-ea46-8017-b52b-e87d95956a63" class="bulleted-list"><li style="list-style-type:disc">事件驱动的流程：<ul id="1ce694d5-ea46-8022-918b-eb7999e5294b" class="bulleted-list"><li style="list-style-type:circle">注册事件：在程序中通过EventEmitter实例注册时间和对应的处理器</li></ul><ul id="1ce694d5-ea46-8023-a689-e547e4de7a84" class="bulleted-list"><li style="list-style-type:circle">触发事件：当指定的事件发生时，EventEmitter会触发该事件</li></ul><ul id="1ce694d5-ea46-801f-a64a-c85f2fd9aa67" class="bulleted-list"><li style="list-style-type:circle">处理事件：事件循环会调度响应的回调函数来执行任务</li></ul></li></ul><ul id="1ce694d5-ea46-80e8-a0a2-dc4cb6926403" class="bulleted-list"><li style="list-style-type:disc">Node.js有多个内置的事件，可以通过引入events模块，并通过实例化EventEmitter类来绑定和监听事件<ul id="1ce694d5-ea46-8071-be5f-d963b58cf7f4" class="bulleted-list"><li style="list-style-type:circle">实例</li></ul><blockquote id="1ce694d5-ea46-8028-9137-dae8f19ac38d" class=""><p id="1ce694d5-ea46-807a-8a80-ca2da7b4c441" class="">// 引入 events 模块<br/>var events = require(&#x27;events&#x27;);<br/>// 创建 eventEmitter 对象<br/>var eventEmitter = new events.EventEmitter();<br/></p><p id="1ce694d5-ea46-80d8-aa17-ee178faf6598" class=""><strong>以下程序绑定事件处理程序</strong></p><p id="1ce694d5-ea46-808c-9c81-d5d4f962f3fc" class="">// 绑定事件及事件的处理程序<br/>eventEmitter.on(&#x27;eventName&#x27;, eventHandler);<br/></p><p id="1ce694d5-ea46-80a2-ac20-ef3203e962f7" class=""><strong>可以通过程序触发事件</strong></p><p id="1ce694d5-ea46-80f4-8be1-e8443755b038" class="">// 触发事件<br/>eventEmitter.emit(&#x27;eventName&#x27;);<br/></p></blockquote></li></ul><ul id="1ce694d5-ea46-80f7-ac26-d13c92c155ea" class="bulleted-list"><li style="list-style-type:disc"><strong>实例</strong></li></ul><ul id="1ce694d5-ea46-80f7-ac74-ca80d93c7c2d" class="bulleted-list"><li style="list-style-type:disc">hello.js：输出hello，world！</li></ul><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1ce694d5-ea46-805b-95c9-f11a514e5991"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><p id="1ce694d5-ea46-80e2-a135-c3a65fea4f05" class="">const EventEmitter = require(&#x27;events&#x27;);<br/>const myEmitter = new EventEmitter();<br/></p><p id="1ce694d5-ea46-80f0-9000-f07bbeebfd20" class="">// 注册事件处理器<br/>myEmitter.on(&#x27;greet&#x27;, () =&gt; {<br/>console.log(&#x27;Hello, world!&#x27;);<br/>});<br/></p><p id="1ce694d5-ea46-809e-a60c-e11751a77bf4" class="">// 触发事件<br/>myEmitter.emit(&#x27;greet&#x27;);<br/></p></div></figure><ul id="1ce694d5-ea46-80df-be00-e0a41ad31e59" class="bulleted-list"><li style="list-style-type:disc">main.js：node运行，连接成功、数据接收成功、程序执行完毕</li></ul><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1ce694d5-ea46-8056-92a3-d6c2acc4149a"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><p id="1ce694d5-ea46-8036-aac4-c49183eaef36" class="">// 引入 events 模块<br/>var events = require(&#x27;events&#x27;);<br/>// 创建 eventEmitter 对象<br/>var eventEmitter = new events.EventEmitter();<br/></p><p id="1ce694d5-ea46-80e0-8819-f1fd6491b7b8" class="">// 创建事件处理程序<br/>var connectHandler = function connected() {<br/>console.log(&#x27;连接成功。&#x27;);<br/></p><p id="1ce694d5-ea46-8022-a363-ce3849f3137f" class="">// 触发 data_received 事件<br/>eventEmitter.emit(&#x27;data_received&#x27;);<br/>}<br/></p><p id="1ce694d5-ea46-804b-8a75-d822e73aa9dc" class="">// 绑定 connection 事件处理程序<br/>eventEmitter.on(&#x27;connection&#x27;, connectHandler);<br/></p><p id="1ce694d5-ea46-805f-9787-c6663e62687c" class="">// 使用匿名函数绑定 data_received 事件<br/>eventEmitter.on(&#x27;data_received&#x27;, function(){<br/>console.log(&#x27;数据接收成功。&#x27;);<br/>});<br/></p><p id="1ce694d5-ea46-8040-a906-d831680c2d2a" class="">// 触发 connection 事件<br/>eventEmitter.emit(&#x27;connection&#x27;);<br/></p><p id="1ce694d5-ea46-801a-9e43-fa3c57a5912e" class="">console.log(&quot;程序执行完毕。&quot;);</p></div></figure><p id="1ce694d5-ea46-80ad-b55b-ec8dbf1d29e4" class=""><strong>Node应用程序是如何工作的</strong></p><p id="1ce694d5-ea46-80b2-ba2c-f3157619be83" class="">node应用程序中，执行异步操作的函数将回调函数作为最后一个参数，回调函数接受错误对象作为第一个参数</p><ul id="1ce694d5-ea46-8072-bbdf-ed2cb9714a98" class="bulleted-list"><li style="list-style-type:disc">创建input.txt<ul id="1ce694d5-ea46-8094-8655-ef5e1d9fdde3" class="bulleted-list"><li style="list-style-type:circle">内容自定test666</li></ul></li></ul><ul id="1ce694d5-ea46-8094-8157-df8211c29bb5" class="bulleted-list"><li style="list-style-type:disc">创建main.js<p id="1ce694d5-ea46-8003-905c-cd3aee345850" class=""><code>var fs = require(&quot;fs&quot;);</code></p><p id="1ce694d5-ea46-8012-9f24-f004cdcab2aa" class=""><code>fs.readFile(&#x27;input.txt&#x27;, function (err, data) {<br/>if (err){<br/>console.log(err.stack);<br/>return;<br/>}<br/>console.log(data.toString());<br/>});<br/>console.log(&quot;程序执行完毕&quot;);<br/></code></p></li></ul><p id="1ce694d5-ea46-80d1-9c39-f46bc2670971" class="">程序中fs.readFile（）时异步函数用于读取文件，在读取文件中发成错误，错误对象err会输出错误信息，如果没错，readfile跳过err对象的输出，文件内容通过回调函数输出</p><ul id="1ce694d5-ea46-8081-8601-c42768198ebd" class="bulleted-list"><li style="list-style-type:disc">成功输出：程序执行完毕、test666</li></ul><ul id="1ce694d5-ea46-8094-8b71-d1569f9157e9" class="bulleted-list"><li style="list-style-type:disc">删除input.txt，失败输出：程序执行完毕、error：enoent，open’input.txt‘</li></ul><p id="1cf694d5-ea46-80a7-8926-ecf1c9aec193" class="">
+</p><p id="1cf694d5-ea46-8091-953f-cb797e711dbd" class=""><strong><span style="border-bottom:0.05em solid">6.Node.js EventEmitter：</span></strong></p><p id="1cf694d5-ea46-80ea-9c62-e345dae5e859" class="">Node.js所有的异步I/O操作在完成时候都会发送一个事件到事件队列</p><p id="1cf694d5-ea46-8012-b5fa-e2a829264c1c" class="">Node.js中的许多对象都会分发事件：net.Server对象会在每次有新连接时触发事件、fs.readStream对象会在文件被打开时触发事件，这些产生对象的事件，都是event.EventEmiter的实例</p><p id="1cf694d5-ea46-8036-9609-e7ff81ae1a90" class="">EventEmitter是Node.js中用于创建、注册、触发事件的核心模块</p><p id="1cf694d5-ea46-802e-aebd-e56aa57c91d3" class="">EventEmitter是事件驱动编程的基础，可以实现事件的发布与订阅机制</p><p id="1cf694d5-ea46-809c-a1d0-d592e464f203" class=""><strong>EventEmitter类</strong></p><p id="1cf694d5-ea46-8048-bf84-ffcd3a6b5679" class="">events模块的唯一对象，EventEmitter类的核心就是事件触发与事件监听功能的封装，使用require（‘events’）来访问该模块</p><ul id="1cf694d5-ea46-8031-866f-eea465eb0547" class="bulleted-list"><li style="list-style-type:disc">引入模块并创建对象</li></ul><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1cf694d5-ea46-80ba-942d-ef62165a7842"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><p id="1cf694d5-ea46-8025-8b78-dc5784dba2b9" class="">//引入events模块</p><p id="1cf694d5-ea46-8032-8c56-d55f51d707a4" class="">var events = require（‘events’）；</p><p id="1cf694d5-ea46-80bd-bc88-d436c223532c" class="">//创建eventEmitter对象</p><p id="1cf694d5-ea46-8077-9938-efc9a153e68c" class="">var eventEmitter = new events.EventEmitter（）；</p></div></figure><ul id="1cf694d5-ea46-8097-8069-d6120cb22863" class="bulleted-list"><li style="list-style-type:disc">实例化对象</li></ul><p id="1cf694d5-ea46-80ee-bc90-dcb2f5764e12" class="">对象实例化发生错误，会触发error事件，当添加新的监听器时，newListener事件会触发，监听器被移除时，removeListener事件被触发</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1cf694d5-ea46-80fc-8b18-e002e53c4166"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><p id="1cf694d5-ea46-80ed-898f-c07020c2bfda" class="">//event.js文件</p><p id="1cf694d5-ea46-80a1-9e66-caae107c4a53" class="">var EventEmitter = require（‘events’）.EventEmitter；</p><p id="1cf694d5-ea46-805b-85e5-ec4c0d4dbec9" class="">var event = new EventEmitter（）；</p><p id="1cf694d5-ea46-80df-9ef4-d6526353a807" class="">event.on（‘some_ event’,function(){ <strong> event对象注册监听器</strong><div class="indented"><p id="1cf694d5-ea46-8090-a833-fda58307bd2e" class="">console.log(’some_event事件触发’)；</p></div></p><p id="1cf694d5-ea46-80b5-9f35-ead36a4e3558" class="">}）；</p><p id="1cf694d5-ea46-8040-aacd-c76c0370173c" class="">setTimeout（function（）{<div class="indented"><p id="1cf694d5-ea46-806e-998e-f21a4fd7fb42" class="">event.emit（‘some_event’）；<strong>event对象按顺序执行监听器</strong></p></div></p><p id="1cf694d5-ea46-803c-8f4e-df944cae3ced" class="">}，1000）；</p><p id="1cf694d5-ea46-8000-ac76-c0b50a48413d" class="">运行代码，1秒后控制台输出‘some事件触发’，原理是event对象注册了some_event监听器，通过setTimeout在1秒后向event对象发送事件some_event，此时会调用some_event的监听器</p></div></figure><ul id="1cf694d5-ea46-80c4-ac48-f51be7948535" class="bulleted-list"><li style="list-style-type:disc">事件监听器：</li></ul><p id="1cf694d5-ea46-8044-83e8-f422a69cbb16" class="">事件由事件名与多个参数组成，对于每个事件，EventEmitter支持多个事件监听器</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1cf694d5-ea46-807c-b235-fb5431cd597b"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><p id="1cf694d5-ea46-80c8-aa2f-edf1f4ee315c" class="">//event.js文件</p><p id="1cf694d5-ea46-8022-8970-e2e3909c0a53" class=""><strong>var </strong>events = require(&#x27;events&#x27;);</p><p id="1cf694d5-ea46-807e-97c6-fe702b7bacd6" class=""><strong>var </strong>emitter = <strong>new </strong>events.EventEmitter();</p><p id="1cf694d5-ea46-80b7-bcfe-d8febaa6fc2e" class="">emitter.on(&#x27;someEvent&#x27;,<strong>function</strong>(arg1, arg2) {</p><p id="1cf694d5-ea46-803f-ad6b-d98d8973263c" class="">console.log(&#x27;listener1&#x27;, arg1, arg2);</p><p id="1cf694d5-ea46-805d-99fb-e3ee9828bf8e" class="">});</p><p id="1cf694d5-ea46-8047-bd04-dae8be4a1df1" class="">emitter.on(&#x27;someEvent&#x27;,<strong>function</strong>(arg1, arg2) {</p><p id="1cf694d5-ea46-80c8-a6fd-c23389bc1959" class="">console.log(&#x27;listener2&#x27;, arg1, arg2);</p><p id="1cf694d5-ea46-8010-84dd-d5516e34664e" class="">});</p><p id="1cf694d5-ea46-806d-9a26-d814600774b9" class="">emitter.emit(&#x27;someEvent&#x27;, &#x27;arg1 参数&#x27;, &#x27;arg2 参数&#x27;);</p><p id="1cf694d5-ea46-8063-b4f4-e99463e8d8ab" class="">例子中，注册了两个事件监听器，触发someEvent事件，</p><p id="1cf694d5-ea46-8037-baa5-d2cdf71c7737" class="">运行结果看到两个事件监听器回调函数被先后调用</p></div></figure><p id="1cf694d5-ea46-80e9-87ec-d4974908944d" class="">EventEmitter提供了多个属性，on、emit等，on函数用于绑定事件函数，emit属性用于触发一个事件，下面为具体属性介绍</p><p id="1cf694d5-ea46-80f8-b44a-dd6b837e7be5" class=""><strong>方法</strong></p><ul id="1cf694d5-ea46-80b7-886d-fc898558c3f9" class="bulleted-list"><li style="list-style-type:disc">addListener（event，listener）<ul id="1cf694d5-ea46-8066-aee1-df2cbdaf3965" class="bulleted-list"><li style="list-style-type:circle">为指定事件添加一个监听器到监听器数组的尾部</li></ul></li></ul><ul id="1cf694d5-ea46-8070-b3ba-c2f166699aca" class="bulleted-list"><li style="list-style-type:disc">on（event，listener）<ul id="1cf694d5-ea46-8023-80d4-e6235a2f3145" class="bulleted-list"><li style="list-style-type:circle">为指定事件注册一个监听器，接受一个字符串event和一个回调函数</li></ul><ul id="1cf694d5-ea46-8081-8640-e329a9292949" class="bulleted-list"><li style="list-style-type:circle">server.on（‘connection’，function（stream）{<ul id="1cf694d5-ea46-807f-b715-d29869f793e7" class="bulleted-list"><li style="list-style-type:square">console.log（‘someone connected！’）；</li></ul></li></ul><ul id="1cf694d5-ea46-80b9-8a75-f52465caaf6b" class="bulleted-list"><li style="list-style-type:circle">}）；</li></ul></li></ul><ul id="1cf694d5-ea46-8065-931b-e67e661930e5" class="bulleted-list"><li style="list-style-type:disc">once（event，listener）<ul id="1cf694d5-ea46-80b5-8711-fa513118ade5" class="bulleted-list"><li style="list-style-type:circle">为指定事件注册一个单次监听器，即监听器只会触发一次，触发后立即解除该监听器</li></ul><ul id="1cf694d5-ea46-8019-9bb0-c711334e4ecf" class="bulleted-list"><li style="list-style-type:circle">server.once（‘connection’，function{<ul id="1cf694d5-ea46-80ff-a75e-ed6cbb495c13" class="bulleted-list"><li style="list-style-type:square">console.log（‘就一次凹’）；</li></ul></li></ul><ul id="1cf694d5-ea46-80ea-8da1-e45487f7d9f6" class="bulleted-list"><li style="list-style-type:circle">}）；</li></ul></li></ul><ul id="1cf694d5-ea46-8011-90c6-ddfac94673cd" class="bulleted-list"><li style="list-style-type:disc">removeListener（event，listener）<ul id="1cf694d5-ea46-8097-bae8-ff0c6f4f4613" class="bulleted-list"><li style="list-style-type:circle">移除指定事件的某个监听器，监听器必须是该事件已经注册过的监听器，他接受两个参数，事件名称与回调函数名称</li></ul><ul id="1cf694d5-ea46-80c5-97e0-db8b962241e1" class="bulleted-list"><li style="list-style-type:circle">var callback = function（stream）{<ul id="1cf694d5-ea46-80d1-95db-c5abd89a11f8" class="bulleted-list"><li style="list-style-type:square">console.log（‘someone connected！’）；</li></ul></li></ul><ul id="1cf694d5-ea46-806a-ab74-d84f0ff6a23b" class="bulleted-list"><li style="list-style-type:circle">}；</li></ul><ul id="1cf694d5-ea46-80f7-af26-ce04eca70424" class="bulleted-list"><li style="list-style-type:circle">server.on（’connection‘，callback）；</li></ul><ul id="1cf694d5-ea46-803a-8b7e-d9dd88ac264c" class="bulleted-list"><li style="list-style-type:circle">server.removeListener（‘connection’，callback）</li></ul></li></ul><ul id="1cf694d5-ea46-805b-a8e1-ebd8e184dffd" class="bulleted-list"><li style="list-style-type:disc">removeAllListeners（【event】）<ul id="1cf694d5-ea46-806f-86ae-c82a31cbb1ba" class="bulleted-list"><li style="list-style-type:circle">移除所有事件的所有监听器，如果指定事件，则删除指定事件的所有监听器</li></ul></li></ul><ul id="1cf694d5-ea46-8093-9a8f-d6974d34cbc5" class="bulleted-list"><li style="list-style-type:disc">setMaxListeners（n）<ul id="1cf694d5-ea46-8093-a6b0-e9e2f7c90739" class="bulleted-list"><li style="list-style-type:circle">默认情况下，如果添加的监听器超过10个会输出警告信息，该函数用于改变监听器的默认限制数量</li></ul></li></ul><ul id="1cf694d5-ea46-80ac-a532-fdc3ded3301b" class="bulleted-list"><li style="list-style-type:disc">listeners（event）<ul id="1cf694d5-ea46-8068-aa3d-e0481b75df4f" class="bulleted-list"><li style="list-style-type:circle">返回指定事件的监听器数组</li></ul></li></ul><ul id="1cf694d5-ea46-80e4-baf2-c9dbdd14053f" class="bulleted-list"><li style="list-style-type:disc">emit（event，【arg1】，【arg2】….）<ul id="1cf694d5-ea46-8000-a819-d6b84bc601a7" class="bulleted-list"><li style="list-style-type:circle">按监听器的顺序执行每个监听器，如果事件由注册监听器则返回true，反之false</li></ul></li></ul><p id="1cf694d5-ea46-8056-9bf6-e18a9fd332de" class=""><strong>类方法</strong></p><ul id="1cf694d5-ea46-80f6-ae1c-cd9349e9aaa1" class="bulleted-list"><li style="list-style-type:disc">listenerCount（emitter，event）<ul id="1cf694d5-ea46-80c5-91ea-ff672e9d1c01" class="bulleted-list"><li style="list-style-type:circle">返回指定事件的监听器数量</li></ul><ul id="1cf694d5-ea46-80f1-a863-ff123a37d364" class="bulleted-list"><li style="list-style-type:circle"><strong>建议使用：events0emitter0listenerCount（eventName）</strong></li></ul><p id="1cf694d5-ea46-803f-abaa-f93f079ef473" class="">
+</p></li></ul><p id="1cf694d5-ea46-8031-bb3f-fd0286f644cb" class=""><strong>例子：触发的事件没有监听器，会抛出错误</strong></p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1cf694d5-ea46-807a-9311-df9ea18562a7"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><p id="1cf694d5-ea46-8097-9881-f57abcaf2a87" class="">myEmitter.on（‘error’，（err）⇒{</p><p id="1cf694d5-ea46-805a-9551-ece7d73c9965" class=""><strong>专门打印错误</strong><div class="indented"><p id="1cf694d5-ea46-8048-93f0-fcaedd533855" class="">console.error（‘error event triggered：’，err）；</p></div></p><p id="1cf694d5-ea46-803a-b1ba-cd5629fc5f53" class="">}）；</p><p id="1cf694d5-ea46-800e-b673-fa409290f821" class=""><strong>下面自定义一个错误，若不定义会自动抛出系统错误很长</strong></p><p id="1cf694d5-ea46-8066-a5f3-ce720bc5b4ac" class="">myEmitter.emit（‘error’，new Error（‘something wrong’））；</p><p id="1cf694d5-ea46-8036-a9f5-f38cd3b0a96d" class="">运行结果：<em>Error event triggered: Error: Something went wrong</em></p></div></figure><p id="1cf694d5-ea46-80b0-ba89-c5b54f1f476b" class="">
+</p><p id="1cf694d5-ea46-80d4-abd2-f2bbb5ee35d0" class=""><strong>事件：</strong></p><ul id="1cf694d5-ea46-80af-bdf4-e7267a7d04c2" class="bulleted-list"><li style="list-style-type:disc">newListener：该事件在添加新监听器时被触发。<ul id="1cf694d5-ea46-8088-8a59-cb7cc79d8d50" class="bulleted-list"><li style="list-style-type:circle">event-字符串，事件名称</li></ul><ul id="1cf694d5-ea46-806d-bb23-f05d029b2486" class="bulleted-list"><li style="list-style-type:circle">listener-处理事件函数</li></ul></li></ul><ul id="1cf694d5-ea46-8019-b23a-cd44ef757f65" class="bulleted-list"><li style="list-style-type:disc">removeListener：从指定监听器数组中删除一个监听器，需要注意的是，此操作将会改变处于被删监听器之后的哪些监听器的索引。<ul id="1cf694d5-ea46-8001-ac85-f4d00f00b81d" class="bulleted-list"><li style="list-style-type:circle">event-字符串，事件名称</li></ul><ul id="1cf694d5-ea46-8093-b8d5-f18d75ce9d9d" class="bulleted-list"><li style="list-style-type:circle">listener-处理事件函数</li></ul></li></ul><ul id="1cf694d5-ea46-80be-94bb-ca0881988fba" class="bulleted-list"><li style="list-style-type:disc">实例：通过connection事件，演示了EventEmitter类的应用，main.js文件如下</li></ul><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1cf694d5-ea46-801b-a744-dc5ba3937534"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><p id="1cf694d5-ea46-8036-925f-f5ae9690e85f" class="">var events = require(&#x27;events&#x27;);<br/>var eventEmitter = new events.EventEmitter();<br/></p><p id="1cf694d5-ea46-80ef-be1a-d788d80d88d7" class="">// 监听器 #1<br/>var listener1 = function listener1() {<br/>console.log(&#x27;监听器 listener1 执行。&#x27;);<br/>}<br/></p><p id="1cf694d5-ea46-80c6-8f7c-fe2bc088c5a9" class="">// 监听器 #2<br/>var listener2 = function listener2() {<br/>console.log(&#x27;监听器 listener2 执行。&#x27;);<br/>}<br/></p><p id="1cf694d5-ea46-804f-a1d1-e2be611e02a8" class="">// 绑定 connection 事件，处理函数为 listener1<br/>eventEmitter.addListener(&#x27;connection&#x27;, listener1);<br/></p><p id="1cf694d5-ea46-8055-b446-e3892dececec" class="">// 绑定 connection 事件，处理函数为 listener2<br/>eventEmitter.on(&#x27;connection&#x27;, listener2);<br/></p><p id="1cf694d5-ea46-8018-93a6-f69186b23b06" class="">var eventListeners = eventEmitter.listenerCount(&#x27;connection&#x27;);<br/>console.log(eventListeners + &quot; 个监听器监听连接事件。&quot;);<br/></p><p id="1cf694d5-ea46-80fb-9aff-f1262a94bdaf" class="">// 处理 connection 事件<br/>eventEmitter.emit(&#x27;connection&#x27;);<br/></p><p id="1cf694d5-ea46-8063-b7ad-d013cd26873e" class="">// 移除监绑定的 listener1 函数<br/>eventEmitter.removeListener(&#x27;connection&#x27;, listener1);<br/>console.log(&quot;listener1 不再受监听。&quot;);<br/></p><p id="1cf694d5-ea46-8015-85ae-fab1ba0cf11c" class="">// 触发连接事件<br/>eventEmitter.emit(&#x27;connection&#x27;);<br/></p><p id="1cf694d5-ea46-8080-8099-d571aae88f25" class="">eventListeners = eventEmitter.listenerCount(&#x27;connection&#x27;);<br/>console.log(eventListeners + &quot; 个监听器监听连接事件。&quot;);<br/></p><p id="1cf694d5-ea46-8010-a177-d615330865b2" class="">console.log(&quot;程序执行完毕。&quot;);<strong><br/>运行结果如下<br/></strong></p><p id="1cf694d5-ea46-80ef-903e-e571811da992" class="">$ node main.js<br/>2 个监听器监听连接事件。<br/>监听器 listener1 执行。<br/>监听器 listener2 执行。<br/>listener1 不再受监听。<br/>监听器 listener2 执行。<br/>1 个监听器监听连接事件。<br/>程序执行完毕。<br/></p></div></figure><p id="1cf694d5-ea46-807e-9877-dc3d8f2d8400" class=""><strong>error事件：</strong></p><p id="1cf694d5-ea46-80e5-b195-cd00791e0afc" class="">EventEmitter定义了一个特殊的事件error，它包含了错误的语义，我们再遇到异常时时候通常会触发error事件</p><p id="1cf694d5-ea46-80e8-ad95-dbbb3b68aa93" class="">当error被触发时，EventEmitter规定如果没有相应的监听器，Node.js会当作异常，退出程序并输出错误信息</p><p id="1cf694d5-ea46-80e5-8d57-f07170ad76de" class=""><strong>为error事件的对象设置监听器，避免遇到错误后整个程序崩溃</strong></p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1cf694d5-ea46-8090-bbef-fe11d4deef53"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><p id="1cf694d5-ea46-8089-8ef5-ce364125a902" class="">var events = require(&#x27;events&#x27;);<br/>var emitter = new events.EventEmitter();<br/>emitter.emit(&#x27;error&#x27;);<br/>会程序崩毁并报错如下<br/></p><p id="1cf694d5-ea46-80f7-909e-fbc998784ec7" class="">node.js:201<br/>throw e; // process.nextTick error, or &#x27;error&#x27; event on first tick<br/>^<br/>Error: Uncaught, unspecified &#x27;error&#x27; event.<br/>at EventEmitter.emit (events.js:50:15)<br/>at Object.&lt;anonymous&gt; (/home/byvoid/error.js:5:9)<br/>at Module._compile (module.js:441:26)<br/>at Object..js (module.js:459:10)<br/>at Module.load (module.js:348:31)<br/>at Function._load (module.js:308:12)<br/>at Array.0 (module.js:479:10)<br/>at EventEmitter._tickCallback (node.js:192:40)<br/></p></div></figure><p id="1cf694d5-ea46-806e-be6c-cddb1b27add2" class=""><strong>继承EventEmitter：</strong></p><p id="1cf694d5-ea46-808d-8092-c6755737b4c0" class="">大多时候不会直接使用EventEmitter，而是在对象中继承他，包括fs、net、http在内，只要是支持事件响应的核心模块都是EventEmitter的子类，原因如下</p><ul id="1cf694d5-ea46-8044-abad-f0b9201ce46d" class="bulleted-list"><li style="list-style-type:disc">首先，具有某个实体功能的的对象实现事件符合语义，事件的监听和发生应该是一个对象的方法。</li></ul><ul id="1cf694d5-ea46-8082-b8a3-c62916e7a91f" class="bulleted-list"><li style="list-style-type:disc">其次JS的对象机制是基于原型的，支持部分多重继承，继承EventEmitter不会打乱对象原有的继承关系</li></ul><ul id="1cf694d5-ea46-80ee-8682-d96cb91b19b6" class="bulleted-list"><li style="list-style-type:disc">大多数的Node.js核心模块（如HTTP、文件系统）都继承了EventEmitter，同时可以创建一个自己的类来继承EventEmitter</li></ul><ul id="1cf694d5-ea46-80eb-9b8f-ee7ce309de77" class="bulleted-list"><li style="list-style-type:disc"></li></ul><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1cf694d5-ea46-801a-8af5-cb6943d989d0"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><p id="1cf694d5-ea46-804c-adf9-da33a229e9b5" class="">class MyEmitter extends EventEmitter {}<br/>const customEmitter = new MyEmitter();<br/></p><p id="1cf694d5-ea46-80be-a749-d45db58b621f" class="">customEmitter.on(&#x27;customEvent&#x27;, () =&gt; {<br/>console.log(&#x27;Custom event fired&#x27;);<br/>});<br/></p><p id="1cf694d5-ea46-804e-91ba-f3bdb24390f4" class="">customEmitter.emit(&#x27;customEvent&#x27;);</p></div></figure><p id="1cf694d5-ea46-8065-a629-f402cf851f99" class="">
+</p><p id="1cf694d5-ea46-807f-83ac-f39bbca475c7" class=""><strong><span style="border-bottom:0.05em solid">7.Node.js Buffer（缓冲区）：</span></strong></p><p id="1cf694d5-ea46-809e-b6fa-ff0276c3ca0e" class="">JS语言中只有字符串数据库类型，没有二进制数据类型</p><p id="1cf694d5-ea46-80e0-86e2-f582f059ffa4" class="">Node.js中的Buffer类是用于处理二进制数据的核心工具，提供了对二进制数据的操作</p><p id="1cf694d5-ea46-804e-bad8-dff038b15dc1" class="">Buffer类在处理文件操作、网络通信、图像处理等场景中很有效</p><p id="1cf694d5-ea46-8046-a0ea-f584fd623602" class=""><strong>特性：</strong></p><ul id="1cf694d5-ea46-8062-b5a1-cea08f556574" class="bulleted-list"><li style="list-style-type:disc">二进制数据：Buffer对象是一个包含原始二进制数据的固定大小的数组，每个元素占用一个字节（8位），因此Buffer适合处理二进制数据，如文件内容、网络数据包</li></ul><ul id="1cf694d5-ea46-80b4-8a0b-cf10b41230f0" class="bulleted-list"><li style="list-style-type:disc">不可变性：Buffer对象的内容可以再创建后修改，但是其长度是固定不可变的</li></ul><p id="1cf694d5-ea46-8072-a082-d122b9d9dd74" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
