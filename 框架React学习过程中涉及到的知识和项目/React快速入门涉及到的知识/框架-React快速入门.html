@@ -1,0 +1,697 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>框架-React精简版</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-default_background {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.highlight-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.block-color-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: undefined; }
+.select-value-color-pink { background-color: rgba(225, 136, 179, 0.27); }
+.select-value-color-purple { background-color: rgba(168, 129, 197, 0.27); }
+.select-value-color-green { background-color: rgba(123, 183, 129, 0.27); }
+.select-value-color-gray { background-color: rgba(84, 72, 49, 0.15); }
+.select-value-color-transparentGray { background-color: undefined; }
+.select-value-color-translucentGray { background-color: undefined; }
+.select-value-color-orange { background-color: rgba(224, 124, 57, 0.27); }
+.select-value-color-brown { background-color: rgba(210, 162, 141, 0.35); }
+.select-value-color-red { background-color: rgba(244, 171, 159, 0.4); }
+.select-value-color-yellow { background-color: rgba(236, 191, 66, 0.39); }
+.select-value-color-blue { background-color: rgba(93, 165, 206, 0.27); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="1d0694d5-ea46-80a8-9ef5-c098cb883e14" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">🤔</span></div><h1 class="page-title">框架-React精简版</h1><p class="page-description"></p></header><div class="page-body"><p id="1d0694d5-ea46-80ca-bff7-df6c86513d69" class=""><mark class="highlight-red"><strong><span style="border-bottom:0.05em solid">快速入门：</span></strong></mark></p><p id="1d1694d5-ea46-80d3-a0e5-ea80ec95d9e3" class=""><strong>1.创建和嵌套组件</strong></p><p id="1d1694d5-ea46-80c0-974d-e5dba9a991fa" class=""><strong>2.添加标签和样式</strong></p><p id="1d1694d5-ea46-8049-8655-f55139eb8d07" class=""><strong>3.显示数据</strong></p><p id="1d1694d5-ea46-803c-ad70-faf3210e107e" class=""><strong>4.渲染条件和列表</strong></p><p id="1d1694d5-ea46-80df-80ce-e70549dadb63" class=""><strong>5.对事件做出响应并更新界面</strong></p><p id="1d1694d5-ea46-8034-8c5b-c1189a0176ba" class=""><strong>6.组件间共享数据</strong></p><p id="1d2694d5-ea46-8030-b18b-ec338ad34240" class="">
+</p><p id="1d1694d5-ea46-8032-bb1e-cfe12c7db68a" class=""><strong><span style="border-bottom:0.05em solid">创建和嵌套组件</span></strong></p><ul id="1d2694d5-ea46-805a-83f5-d0edef484b4f" class="bulleted-list"><li style="list-style-type:disc">React应用程序是由组件组成的，一个组件时UI（用户界面）的一部分，他有自己的逻辑和外观，可以小到一个按钮，大到一个页面</li></ul><ul id="1d2694d5-ea46-80b3-8aa2-d243df1b99af" class="bulleted-list"><li style="list-style-type:disc">React组件是带有返回标签的JS函数，</li></ul><ul id="1d2694d5-ea46-808a-a770-cb5a1b44b5d8" class="bulleted-list"><li style="list-style-type:disc">export default关键字指定列文件中的主要组件，默认导出<ul id="1d2694d5-ea46-80ce-936a-c03a3f4b513d" class="bulleted-list"><li style="list-style-type:circle">下例是声明并使用React组件</li></ul><ul id="1d2694d5-ea46-8027-a117-dfeafdd697f1" class="bulleted-list"><li style="list-style-type:circle">声明MyButton组件</li></ul><blockquote id="1d2694d5-ea46-808c-ad6a-d6dcce93fd6d" class=""><p id="1d2694d5-ea46-80f6-8ab0-c224998b8686" class="">function MyButton() {</p><p id="1d2694d5-ea46-80f9-88ca-e367b556cc9f" class="">return (</p><p id="1d2694d5-ea46-80a1-b20c-e330df34c5a0" class="">&lt;button&gt;我是一个按钮&lt;/button&gt;</p><p id="1d2694d5-ea46-80e0-9eaf-ce20a94b0b7d" class="">);</p><p id="1d2694d5-ea46-80a0-b95f-eb88e205e0be" class="">}</p></blockquote><ul id="1d2694d5-ea46-80da-acdf-de12a4889c8a" class="bulleted-list"><li style="list-style-type:circle">嵌套到另一个组件</li></ul><blockquote id="1d2694d5-ea46-8057-9e8b-ee6c0cc145b9" class=""><p id="1d2694d5-ea46-8055-b03e-eb644928ad76" class="">export default function MyApp() {</p><p id="1d2694d5-ea46-80de-a49b-d8eccb9eea25" class="">return (</p><p id="1d2694d5-ea46-8092-aa1a-d310d579a259" class="">&lt;div&gt;</p><p id="1d2694d5-ea46-8097-bb8f-eedbb43e1be8" class="">&lt;h1&gt;欢迎来到我的应用&lt;/h1&gt;</p><p id="1d2694d5-ea46-8061-a384-e92811a8a3a2" class="">&lt;MyButton /&gt;</p><p id="1d2694d5-ea46-8067-9cdb-e8881f2bf4c9" class="">&lt;/div&gt;</p><p id="1d2694d5-ea46-80bb-95c9-f5e71d31d1ed" class="">);</p><p id="1d2694d5-ea46-804e-baa4-e52eb1525c1b" class="">}</p></blockquote></li></ul><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1d2694d5-ea46-8081-93ad-e7a4ea1637f3"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><p id="1d2694d5-ea46-800c-a307-f29bba5ecae0" class="">&lt;MyButton /&gt;是以大写字母开头的，可以由此识别React组件</p><p id="1d2694d5-ea46-8049-957a-d682177fc818" class="">React组件必须以大写字母开头、HTML标签必须是小写字母。</p></div></figure><p id="1d2694d5-ea46-806b-bb6c-e4fcb5915da7" class="">
+</p><p id="1d2694d5-ea46-8041-a1d9-d0ad7c4bc5c0" class=""><strong><span style="border-bottom:0.05em solid">使用JSX编写标签</span></strong></p><ul id="1d2694d5-ea46-80fd-9f18-ff2f75873f3b" class="bulleted-list"><li style="list-style-type:disc">React项目使用的标签语法被称为JSX，这个语法是可选的，但是多用与JSX</li></ul><ul id="1d2694d5-ea46-80d6-b7e8-ef30cb441ae7" class="bulleted-list"><li style="list-style-type:disc">JSX比HTML更加严格，你必须闭合标签，如&lt;br /&gt;；同时组件也不能返回多个JSX标签，必须将多个标签包裹到一个共享的父级中，&lt;div&gt;或者空的&lt;&gt;包裹<blockquote id="1d2694d5-ea46-8014-91c9-f4770a6afb41" class="">大量的HTML标签移植到JSX，建议使用在线转换器工具<p id="1d2694d5-ea46-8019-87b1-ecddb04d0559" class="">function AboutPage() {</p><p id="1d2694d5-ea46-80d5-84c5-ca9a6c5ae493" class="">return (</p><p id="1d2694d5-ea46-8059-be5b-c6a9fadfad2c" class=""><strong>&lt;&gt;</strong></p><p id="1d2694d5-ea46-8074-a3a4-fe8a7b5e4f47" class="">&lt;h1&gt;关于&lt;/h1&gt;</p><p id="1d2694d5-ea46-80d2-8b03-f9eb8d6f1bb2" class="">&lt;p&gt;你好。&lt;br /&gt;最近怎么样？&lt;/p&gt;</p><p id="1d2694d5-ea46-80c5-aad9-ce6a856917ca" class=""><strong>&lt;/&gt;</strong></p><p id="1d2694d5-ea46-8015-8bb4-c7235dbe9ad4" class="">);</p><p id="1d2694d5-ea46-80e6-80ff-f65a739c219c" class="">}</p></blockquote></li></ul><p id="1d2694d5-ea46-80c4-be4d-efa3e62684c4" class="">
+</p><p id="1d2694d5-ea46-806c-86eb-d07078f0ca66" class=""><strong><span style="border-bottom:0.05em solid">添加样式</span></strong></p><ul id="1d2694d5-ea46-8099-b02f-fbb02432bd98" class="bulleted-list"><li style="list-style-type:disc">在React中可以使用className来指定一个CSS的class，他与HTML的clas属性的工作方式相同<blockquote id="1d2694d5-ea46-80ff-9282-ee3cb702489d" class="">&lt;img className = ‘photo’&gt;</blockquote></li></ul><ul id="1d2694d5-ea46-8062-90fb-c8c4b85cdb1c" class="bulleted-list"><li style="list-style-type:disc">也可以在一个单独的CSS文件中为他编写设置样式styles<blockquote id="1d2694d5-ea46-8053-a895-c8ec7f4b367e" class="">/* 在你的 CSS 文件中修改 */<p id="1d2694d5-ea46-8035-983c-e64c741691a8" class="">.avatar {</p><p id="1d2694d5-ea46-8009-aa31-e9aac4e028ed" class="">border-radius: 50%;</p><p id="1d2694d5-ea46-8072-92e2-e4e8ecc58fa8" class="">}</p></blockquote></li></ul><ul id="1d2694d5-ea46-80cd-bfe1-f62ee73287c8" class="bulleted-list"><li style="list-style-type:disc">React并没有规定你如何添加CSS文件，最简单的方式就是使用HTML的&lt;link&gt;标签，可以使用其他的弓箭工具或者框架</li></ul><p id="1d2694d5-ea46-80d1-a452-ca3a79e77fc9" class="">
+</p><p id="1d2694d5-ea46-805c-a511-eabd4de38d61" class=""><strong><span style="border-bottom:0.05em solid">显示数据（就是用大括号{}传递变量）</span></strong></p><ul id="1d2694d5-ea46-80ea-a9be-d7e4049b1339" class="bulleted-list"><li style="list-style-type:disc">JSX会让你把标签放到JS中，大括号可以在代码中嵌套一些变量展示给用户，下例会显示user.name<blockquote id="1d2694d5-ea46-8095-af4c-dc8129e5a716" class="">return (<p id="1d2694d5-ea46-80e7-b4c8-f6004128f767" class="">&lt;h1&gt;</p><p id="1d2694d5-ea46-805b-8d82-d247eed7472c" class="">{user.name}</p><p id="1d2694d5-ea46-806d-aecb-ee00cddd3e13" class="">&lt;/h1&gt;</p><p id="1d2694d5-ea46-80ad-b2cf-cc14dfc7c298" class="">);</p></blockquote></li></ul><ul id="1d2694d5-ea46-80f3-80ca-c93607a6eccd" class="bulleted-list"><li style="list-style-type:disc">也可以将JSX属性‘转义到JS中’，但是必须使用大括号而非引号，例如className=‘avatar’，将avatar字符串传递给className，作为CSS的class，但是src={yser.imageUrl}会读取JS的user.imageUrl变量，然后将该该值作为src属性传递<blockquote id="1d2694d5-ea46-80aa-b2ed-c081543ce2b9" class="">return (<p id="1d2694d5-ea46-8014-a46d-f380258a4d34" class="">&lt;img</p><p id="1d2694d5-ea46-807b-83aa-fe88eaf92703" class="">className=&quot;avatar&quot;</p><p id="1d2694d5-ea46-80cd-b77c-dbe2fbcb9a82" class="">src={user.imageUrl}</p><p id="1d2694d5-ea46-80ad-ab68-e5641b0094c9" class="">/&gt;</p><p id="1d2694d5-ea46-80f7-bae4-e7cc869f778d" class="">);</p></blockquote></li></ul><ul id="1d2694d5-ea46-80a0-b743-cbbdadb59ce9" class="bulleted-list"><li style="list-style-type:disc">也可以将更为复杂的表达式放入JSX的打括号内，例如字符串拼接<blockquote id="1d2694d5-ea46-804f-98f2-c2b0dfa56dd7" class="">const user = {<br/>name: &#x27;Hedy Lamarr&#x27;,<br/>imageUrl: &#x27;<br/><a href="https://i.imgur.com/yXOvdOSs.jpg">https://i.imgur.com/yXOvdOSs.jpg</a>&#x27;,<br/>imageSize: 90,<br/>};<br/><p id="1d2694d5-ea46-803b-826c-eebab0fe4a01" class="">export default function Profile() {<br/>return (<br/>&lt;&gt;<br/>&lt;h1&gt;{<br/><a href="http://user.name/">user.name</a>}&lt;/h1&gt;<br/>&lt;img<br/>className=&quot;avatar&quot;<br/>src={user.imageUrl}<br/>alt={&#x27;Photo of &#x27; + <br/><a href="http://user.name/">user.name</a>}<br/>style={{<br/>width: user.imageSize,<br/>height: user.imageSize<br/>}}<br/>/&gt;<br/>&lt;/&gt;<br/>);<br/>}<br/></p></blockquote><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1d2694d5-ea46-80b7-8c05-e11a3799f7b2"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><p id="1d2694d5-ea46-800a-8514-fbebaef90b18" class="">上例中，style={{}}不是特殊语法，而是style = {}JSX打括号内的一个{}对象，当样式styles依赖于JS变量，也可以使用style属性</p></div></figure></li></ul><p id="1d2694d5-ea46-80e9-805f-ed4b90d3cd4c" class="">
+</p><p id="1d2694d5-ea46-80ab-b535-e465b4d2a46f" class=""><strong><span style="border-bottom:0.05em solid">条件渲染</span></strong></p><ul id="1d2694d5-ea46-800c-ba31-dea9b0acb9db" class="bulleted-list"><li style="list-style-type:disc">React没有特殊的语法来编写条件语句，因此使用的就是普通的JS代码，例如使用if语句根据条件引入JSX<blockquote id="1d2694d5-ea46-80db-9064-ea0f4bc4afb9" class="">可以使用条件?运算符代替if、不需要else可以使用逻辑运算符&amp;&amp;<p id="1d2694d5-ea46-8007-a69b-c02b776eae87" class="">let content;</p><p id="1d2694d5-ea46-80b2-a290-e134707885a8" class="">if (isLoggedIn) {</p><p id="1d2694d5-ea46-8099-9514-dfd6df8d97c7" class="">content = &lt;AdminPanel /&gt;;</p><p id="1d2694d5-ea46-808e-91d5-f2e5c5223059" class="">} else {</p><p id="1d2694d5-ea46-80a6-8b59-f8b56c53f3cf" class="">content = &lt;LoginForm /&gt;;</p><p id="1d2694d5-ea46-8013-81ed-eeebf26f2a8b" class="">}</p><p id="1d2694d5-ea46-8005-bc2c-f0f5bede1959" class="">return (</p><p id="1d2694d5-ea46-8095-adad-fa92664cb3f4" class="">&lt;div&gt;</p><p id="1d2694d5-ea46-8046-b7d1-eab3be4e4809" class="">{content}</p><p id="1d2694d5-ea46-800e-893b-e456280af617" class="">&lt;/div&gt;</p><p id="1d2694d5-ea46-804d-b42b-e3ed85b1a19a" class="">);</p><p id="1d2694d5-ea46-8033-b962-c276095a9b8f" class="">
+</p><p id="1d2694d5-ea46-8044-889d-d46e24f1357f" class="">&lt;div&gt;</p><p id="1d2694d5-ea46-807e-8dae-d5384ac4143d" class="">{isLoggedIn ? (</p><p id="1d2694d5-ea46-808e-9752-e3d04d67d948" class="">&lt;AdminPanel /&gt;</p><p id="1d2694d5-ea46-805e-889c-fa1cf8142c98" class="">) : (</p><p id="1d2694d5-ea46-8046-8005-e848f72b2d6c" class="">&lt;LoginForm /&gt;</p><p id="1d2694d5-ea46-80f5-af4b-c3c80ad3b9ec" class="">)}</p><p id="1d2694d5-ea46-80d3-9204-d6e548f70ff7" class="">&lt;/div&gt;</p><p id="1d2694d5-ea46-80e3-9819-e8b8a2f25bef" class="">
+</p><p id="1d2694d5-ea46-80bc-90c5-e6edf6002255" class="">&lt;div&gt;</p><p id="1d2694d5-ea46-8081-b892-e81f97281884" class="">{isLoggedIn &amp;&amp; &lt;AdminPanel /&gt;}</p><p id="1d2694d5-ea46-806c-a513-f5190d52eeda" class="">&lt;/div&gt;</p></blockquote></li></ul><p id="1d2694d5-ea46-806b-a1b7-dfe0f405d047" class="">
+</p><p id="1d2694d5-ea46-809a-8010-ffe33fb49339" class=""><strong><span style="border-bottom:0.05em solid">渲染列表</span></strong></p><ul id="1d2694d5-ea46-80a7-a4d3-c0b43f58509c" class="bulleted-list"><li style="list-style-type:disc">依赖JS的特性，例如for循环和array的map（）函数来渲染组件列表<ul id="1d2694d5-ea46-80f2-b1bf-e0a857825989" class="bulleted-list"><li style="list-style-type:circle">如下是一个产品数组<blockquote id="1d2694d5-ea46-8024-a920-d0bc042e75f1" class="">const products = [<p id="1d2694d5-ea46-80c0-a0a9-cdf7e2e256dc" class="">{ title: &#x27;Cabbage&#x27;, id: 1 },</p><p id="1d2694d5-ea46-80e3-9505-c71e3438fc8e" class="">{ title: &#x27;Garlic&#x27;, id: 2 },</p><p id="1d2694d5-ea46-804d-912f-f84def588f64" class="">{ title: &#x27;Apple&#x27;, id: 3 },</p><p id="1d2694d5-ea46-8027-bece-d572e46d9ed2" class="">];</p></blockquote></li></ul><ul id="1d2694d5-ea46-80dd-85d0-fa8d24912dfe" class="bulleted-list"><li style="list-style-type:circle">在数组中使用map（）函数来将数组转换为&lt;li&gt;标签构成的列表<blockquote id="1d2694d5-ea46-80cd-96a5-c61c90136c6b" class="">const listItems = products.map(product =&gt;<p id="1d2694d5-ea46-801a-a908-e3b534f01b8b" class="">&lt;li key={product.id}&gt;</p><p id="1d2694d5-ea46-80c2-8193-d88e49b180ab" class="">{product.title}</p><p id="1d2694d5-ea46-80d7-ab05-e334bd59f138" class="">&lt;/li&gt;</p><p id="1d2694d5-ea46-80e8-ad2d-eb5484794b75" class="">);</p><p id="1d2694d5-ea46-807b-8ec2-c20a88c1ca20" class="">return (</p><p id="1d2694d5-ea46-806f-8ecc-c278b6d4d9a5" class="">&lt;ul&gt;{listItems}&lt;/ul&gt;</p><p id="1d2694d5-ea46-804a-9ad3-f35e8e91eea3" class="">);</p></blockquote></li></ul><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1d2694d5-ea46-805e-9d1b-c0ab700c35d7"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><p id="1d2694d5-ea46-806f-b3e4-f3573edd4206" class="">注意&lt;li&gt;标签有一个key属性，用于对应列表中的元素，用于在兄弟节点唯一标识该元素，key来自数据，在后续插入、删除、重新排序项目，React将依靠key来操作</p></div></figure></li></ul><p id="1d2694d5-ea46-8037-878e-e60e38e29d65" class="">
+</p><p id="1d2694d5-ea46-80bb-9217-ed526cb264e6" class=""><strong><span style="border-bottom:0.05em solid">响应事件</span></strong></p><ul id="1d2694d5-ea46-808f-a6c2-d1c66b130ada" class="bulleted-list"><li style="list-style-type:disc">可以通过在组件中声明事件处理函数来响应事件<blockquote id="1d2694d5-ea46-807b-9c78-cfacfed14283" class="">function MyButton() {<p id="1d2694d5-ea46-80c8-88d3-d943e7cd1aa5" class="">function handleClick() {</p><p id="1d2694d5-ea46-805c-872e-cb43a9e42f11" class="">alert(&#x27;You clicked me!&#x27;);</p><p id="1d2694d5-ea46-8016-90a2-f77626c1e98a" class="">}</p><p id="1d2694d5-ea46-804d-bbc8-e80fc43aaa4e" class="">return (</p><p id="1d2694d5-ea46-80fa-a1ea-d5f34e57a40a" class="">&lt;button onClick={handleClick}&gt;</p><p id="1d2694d5-ea46-80ee-b906-f901fbff1066" class="">点我</p><p id="1d2694d5-ea46-8008-8d1b-f152b1201e46" class="">&lt;/button&gt;</p><p id="1d2694d5-ea46-804b-acda-c191e00b43a3" class="">);</p><p id="1d2694d5-ea46-8087-a78a-c3c149a24ab6" class="">}</p></blockquote><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1d2694d5-ea46-80ba-a998-e2875009a306"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><p id="1d2694d5-ea46-8073-867e-f64d79f36647" class="">注意onClick = {handleClick}结尾没有小括号，就是将函数作为变量传递给事件即可，不要调用事件处理函数，否则会没有点击自动触发事件</p></div></figure></li></ul><p id="1d2694d5-ea46-80fd-8794-d25db58c332b" class="">
+</p><p id="1d2694d5-ea46-8005-87a6-db2e9bdd9dcb" class=""><strong><span style="border-bottom:0.05em solid">更新界面</span></strong></p><ul id="1d2694d5-ea46-8080-87ab-d0d2dd7a5416" class="bulleted-list"><li style="list-style-type:disc">希望组件记住一些信息并展示出来，比如一个按钮被点击的次数，需要在组件中添加state<ul id="1d2694d5-ea46-80b2-8a49-d3067b956bfc" class="bulleted-list"><li style="list-style-type:circle">首先在React引入useState<ul id="1d2694d5-ea46-8000-83f2-ef0769b2c9a3" class="bulleted-list"><li style="list-style-type:square">import {useState} from ‘react’；</li></ul></li></ul><ul id="1d2694d5-ea46-80bd-9846-c21831fb0b7e" class="bulleted-list"><li style="list-style-type:circle">在组件声明state变量<ul id="1d2694d5-ea46-8032-8a61-eeb8abae2bcb" class="bulleted-list"><li style="list-style-type:square">function MyButton（）{<ul id="1d2694d5-ea46-8050-aa8d-cc2234fef781" class="bulleted-list"><li style="list-style-type:disc">const 【count，setCount】 = useState（0）；</li></ul><ul id="1d2694d5-ea46-8062-acc6-f320cfdc76de" class="bulleted-list"><li style="list-style-type:disc">…..}</li></ul></li></ul><ul id="1d2694d5-ea46-80e5-98c7-e01761540dd3" class="bulleted-list"><li style="list-style-type:square">这样就可以在useState中获得当前的state（count）以及用于更新他的函数（setCount），可以更改变量函数名字</li></ul></li></ul><ul id="1d2694d5-ea46-80bf-bd18-d5c27363cb4f" class="bulleted-list"><li style="list-style-type:circle">第一次显示按钮，count为0，因为将0传递给了useState（），改变count也就是state时，调用setCount（）并传递新的值给他，例如店家按钮计数器将递增<blockquote id="1d2694d5-ea46-8020-ba81-ff7e82bd25d5" class="">function MyButton() {<p id="1d2694d5-ea46-80a1-80da-c5186ea9c3a8" class="">const [count, setCount] = useState(0);</p><p id="1d2694d5-ea46-8066-a512-ee76bd32fec1" class="">function handleClick() {</p><p id="1d2694d5-ea46-80cd-872f-f110d42251d2" class="">setCount(count + 1);</p><p id="1d2694d5-ea46-80ac-bf65-ec116ca6dcb9" class="">}</p><p id="1d2694d5-ea46-80a6-96a6-f8d6db522524" class="">return (</p><p id="1d2694d5-ea46-80cf-b358-fefed24bc044" class="">&lt;button onClick={handleClick}&gt;</p><p id="1d2694d5-ea46-80e4-9dd6-c3a484a4cf53" class="">Clicked {count} times</p><p id="1d2694d5-ea46-8088-a1a9-f0d773fb7295" class="">&lt;/button&gt;</p><p id="1d2694d5-ea46-806e-ab66-dd7ec24b6ac5" class="">);</p><p id="1d2694d5-ea46-8042-a471-e8c151f7db85" class="">}</p><p id="1d2694d5-ea46-801f-8946-e76e8f2fdd55" class="">React会多次调用你的组件函数，通过每次点击</p></blockquote></li></ul><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1d2694d5-ea46-80f1-81f7-cd0e2a451bc5"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><p id="1d2694d5-ea46-8096-835a-e4651ec32348" class="">如果多次渲染同一个组件，每个组件会拥有自己专属的state</p><p id="1d2694d5-ea46-8099-9d39-d7d9aa90a6a9" class="">import { useState } from &#x27;react&#x27;;</p><p id="1d2694d5-ea46-8084-80cb-dc0947963711" class="">export default function MyApp() {<br/>return (<br/>&lt;div&gt;<br/>&lt;h1&gt;独立更新的计数器&lt;/h1&gt;<br/>&lt;MyButton /&gt;<br/>&lt;MyButton /&gt;<br/>&lt;/div&gt;<br/>);<br/>}<br/></p><p id="1d2694d5-ea46-8026-a71f-dbbefced31a7" class="">function MyButton() {<br/>const [count, setCount] = useState(0);<br/></p><p id="1d2694d5-ea46-80b2-959d-e93d20cca74f" class="">function handleClick() {<br/>setCount(count + 1);<br/>}<br/></p><p id="1d2694d5-ea46-8050-b09b-e6941482bebd" class="">return (<br/>&lt;button onClick={handleClick}&gt;<br/>点了 {count} 次<br/>&lt;/button&gt;<br/>);<br/>}<br/></p></div></figure></li></ul><p id="1d2694d5-ea46-8071-84e7-dce9211d7ac0" class="">
+</p><p id="1d2694d5-ea46-80c4-a2bd-c66106997e71" class=""><strong><span style="border-bottom:0.05em solid">使用Hook</span></strong></p><ul id="1d2694d5-ea46-80d7-8e93-d760ea3b9bb9" class="bulleted-list"><li style="list-style-type:disc">以use开头的函数被称为Hook，useState时React提供的一个内置Hook，可以在API参考中找到其他内置的Hook，可以通过组合现有的Hook来编写属于自己的Hook</li></ul><ul id="1d2694d5-ea46-804e-bdfe-d75439a2ef32" class="bulleted-list"><li style="list-style-type:disc">Hook比普通函数更为严格，只能在组件或者其他Hook的顶层调用Hook，如果想在一个循环或者条件判断中使用sueState，需要提取一个新的组件并在内部使用它</li></ul><p id="1d2694d5-ea46-8094-81f8-dfdbfdc7b141" class="">
+</p><p id="1d2694d5-ea46-8074-894d-f46df9224e11" class=""><strong><span style="border-bottom:0.05em solid">组件间共享数据</span></strong></p><ul id="1d2694d5-ea46-8085-84ae-f291cac849f6" class="bulleted-list"><li style="list-style-type:disc">在前方示例中，每个MyButton都有自己独立的count，当每个按钮点击时，只有被点击的按钮count才会加一</li></ul><figure id="1d2694d5-ea46-807f-ab1c-f7326d2866db" class="image"><a href="image.png"><img style="width:561.1875px" src="image.png"/></a></figure><ul id="1d2694d5-ea46-8065-ae74-c6e50eb8f205" class="bulleted-list"><li style="list-style-type:disc">组件间共享数据并一起更新时必须掌握的，就按钮而言，点击任意一个都会count加一，需要将各个按钮的state向上一级到包含所有按钮的组件中，这里是MyApp</li></ul><figure id="1d2694d5-ea46-8056-ab1d-d924004f641b" class="image"><a href="image%201.png"><img style="width:561.1875px" src="image%201.png"/></a></figure><ul id="1d2694d5-ea46-802f-a8b6-cfd5d1c997ee" class="bulleted-list"><li style="list-style-type:disc">共享数据代码如下，以Button实例<blockquote id="1d2694d5-ea46-8060-ae8c-e2d88997bf81" class="">export default function MyApp() {<p id="1d2694d5-ea46-80ac-a571-c8bf3075ead1" class="">const [count, setCount] = useState(0);</p><p id="1d2694d5-ea46-804f-9ea6-cbf360e1f2b7" class="">function handleClick() {</p><p id="1d2694d5-ea46-8093-b4d9-d1ec1bf9892d" class="">setCount(count + 1);</p><p id="1d2694d5-ea46-80a5-a405-e6a8ef5e5f74" class="">}</p><p id="1d2694d5-ea46-80b7-a718-dfb40c9a1e48" class="">return (</p><p id="1d2694d5-ea46-8040-ac6e-ffbcf36272df" class="">&lt;div&gt;</p><p id="1d2694d5-ea46-8077-b2fd-e7be6ccaac40" class="">&lt;h1&gt;独立更新的计数器&lt;/h1&gt;</p><p id="1d2694d5-ea46-804f-87ec-ef072f2e7860" class="">&lt;MyButton /&gt;</p><p id="1d2694d5-ea46-80a9-8466-f6d1f8f1493a" class="">&lt;MyButton /&gt;</p><p id="1d2694d5-ea46-80e3-b3db-f238e9d0c6fe" class="">&lt;/div&gt;</p><p id="1d2694d5-ea46-807c-b28d-d71388e80900" class="">);</p><p id="1d2694d5-ea46-8070-85f8-e0b76736ebab" class="">}</p><p id="1d2694d5-ea46-808d-a944-e249cad04adf" class="">function MyButton() {</p><p id="1d2694d5-ea46-801f-a59b-ccf4d8c00d19" class="">// ... 我们将把代码移动到这里 ...</p><p id="1d2694d5-ea46-80d8-9578-d8eb95788a2d" class="">}</p></blockquote></li></ul><ul id="1d2694d5-ea46-80d9-9445-e5d5bab75542" class="bulleted-list"><li style="list-style-type:disc">将MyApp中的点击事件处理函数以及state向下传递到每个MyButton中，这里使用JSX大括号传递变量信息，<blockquote id="1d2694d5-ea46-80d3-871d-f90b9b173ffa" class="">export default function MyApp() {<p id="1d2694d5-ea46-80a9-a21e-d890be8653fe" class="">const [count, setCount] = useState(0);</p><p id="1d2694d5-ea46-801c-87ce-df72646935a8" class="">function handleClick() {</p><p id="1d2694d5-ea46-802e-8579-d6cf8196413e" class="">setCount(count + 1);</p><p id="1d2694d5-ea46-80d4-9ce1-fc508cb9fed0" class="">}</p><p id="1d2694d5-ea46-8035-b090-fdd473c7a1f4" class="">return (</p><p id="1d2694d5-ea46-8015-b9d6-dc5acb7ba756" class="">&lt;div&gt;</p><p id="1d2694d5-ea46-8060-ae4b-d06ca5ee8994" class="">&lt;h1&gt;共同更新的计数器&lt;/h1&gt;</p><p id="1d2694d5-ea46-80cc-bbe1-cc776863899a" class="">&lt;MyButton count={count} onClick={handleClick} /&gt;</p><p id="1d2694d5-ea46-806c-8a2a-e8518ffb6bdf" class="">&lt;MyButton count={count} onClick={handleClick} /&gt;</p><p id="1d2694d5-ea46-807d-8c6c-e544c9a96ce9" class="">&lt;/div&gt;</p><p id="1d2694d5-ea46-80ab-8531-c0a995c1a070" class="">);</p><p id="1d2694d5-ea46-8062-aa72-e10d91d1759c" class="">}</p><p id="1d2694d5-ea46-809c-8de2-f086a64cd9d5" class="">
+</p><p id="1d2694d5-ea46-8037-b54e-d14aa32e55c8" class="">function MyButton({ count, onClick }) {</p><p id="1d2694d5-ea46-80fd-a697-dab97e6514f0" class="">return (</p><p id="1d2694d5-ea46-8058-934f-cd49f7ca6a96" class="">&lt;button onClick={onClick}&gt;</p><p id="1d2694d5-ea46-80e4-b2de-e9b5f2e15e56" class="">点了 {count} 次</p><p id="1d2694d5-ea46-80dc-8659-cd65265d3ba8" class="">&lt;/button&gt;</p><p id="1d2694d5-ea46-80d4-8c1b-d74d0ecb3aaf" class="">);</p><p id="1d2694d5-ea46-8013-8e1b-da0cd4735020" class="">}</p></blockquote><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1d2694d5-ea46-80a7-a0c6-ef395c5692e4"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><p id="1d2694d5-ea46-80cd-9f47-c4ecb9e0df10" class="">将state的count作为统一的变量传递给每个需要的组件以这种方式传递的信息成为prop，此时MyApp组件包含了count的state以及handleClick事件处理函数，并将整体作为prop传递给每个按钮</p><p id="1d2694d5-ea46-8096-bebd-de5269db3cf4" class="">最后通过点击改变MyButton来读取父组件传递的prop</p></div></figure></li></ul><ul id="1d2694d5-ea46-80c4-a1ac-c5e88a6da1ea" class="bulleted-list"><li style="list-style-type:disc">整个流程为：<ul id="1d2694d5-ea46-8058-a533-f93c596424bd" class="bulleted-list"><li style="list-style-type:circle">当你点击按钮时，<code>onClick</code> 处理程序会启动。每个按钮的 <code>onClick</code> prop 会被设置为 <code>MyApp</code> 内的 <code>handleClick</code> 函数，所以函数内的代码会被执行。该代码会调用 <code>setCount(count + 1)</code>，使得 state 变量 <code>count</code> 递增。新的 <code>count</code> 值会被作为 prop 传递给每个按钮，因此它们每次展示的都是最新的值。这被称为“状态提升”。通过向上移动 state，我们实现了在组件间共享它。<br/><br/><br/></li></ul></li></ul></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

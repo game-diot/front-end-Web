@@ -1,0 +1,724 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>框架前置-AJAX</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-default_background {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.highlight-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.block-color-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: undefined; }
+.select-value-color-pink { background-color: rgba(225, 136, 179, 0.27); }
+.select-value-color-purple { background-color: rgba(168, 129, 197, 0.27); }
+.select-value-color-green { background-color: rgba(123, 183, 129, 0.27); }
+.select-value-color-gray { background-color: rgba(84, 72, 49, 0.15); }
+.select-value-color-transparentGray { background-color: undefined; }
+.select-value-color-translucentGray { background-color: undefined; }
+.select-value-color-orange { background-color: rgba(224, 124, 57, 0.27); }
+.select-value-color-brown { background-color: rgba(210, 162, 141, 0.35); }
+.select-value-color-red { background-color: rgba(244, 171, 159, 0.4); }
+.select-value-color-yellow { background-color: rgba(236, 191, 66, 0.39); }
+.select-value-color-blue { background-color: rgba(93, 165, 206, 0.27); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="1c2694d5-ea46-8061-a87e-d622933d2813" class="page sans"><header><h1 class="page-title">框架前置-AJAX</h1><p class="page-description"></p></header><div class="page-body"><p id="1c2694d5-ea46-80db-9f93-c364cfc42b6c" class=""><mark class="highlight-red"><strong>AJAX</strong></mark></p><p id="1c3694d5-ea46-806b-8c75-c0fb1b9cfcba" class="">在页面加载完成后，从Web服务器读取数据</p><p id="1c3694d5-ea46-8052-bb17-e378035c3774" class="">无需重新加载页面即可更新网页</p><p id="1c3694d5-ea46-805c-9ed3-c68b409a82f7" class="">在后台发送数据给Web服务器</p><p id="1c3694d5-ea46-80a1-8c6a-ced0ec1334b3" class=""><strong>001.AJAX工作原理：</strong></p><p id="1c3694d5-ea46-8088-ad42-f19265b8defa" class="">1.网页触发事件</p><p id="1c3694d5-ea46-8011-8974-c745ac030869" class="">2.JS创建XMLHttpRequest对象</p><p id="1c3694d5-ea46-801c-a846-f5c62d664de2" class="">3.XMLHttpRequest对象向Web服务器发送请求</p><p id="1c3694d5-ea46-80a9-8d0b-fcb18d8947b7" class="">4.服务器处理请求</p><p id="1c3694d5-ea46-805b-94f1-c91beeda9488" class="">5.服务器向网页发送响应</p><p id="1c3694d5-ea46-8019-90fb-cf4fe0dae944" class="">6.JS读取响应</p><p id="1c3694d5-ea46-8093-bfaa-c94941772c6c" class="">7.JS执行适当的操作，更新页面等</p><p id="1c3694d5-ea46-8095-84d4-ebb4ddd6f5da" class=""><strong>现代浏览器可以使用FetchAPI来代替XMLHttpRequest对象，同样使用原对</strong></p><p id="1c3694d5-ea46-8059-96ad-dfc8f8d055aa" class=""><strong>象，也可以使用Fetch一更简单的方式对其执行相同操作</strong></p><p id="1c3694d5-ea46-8095-85f3-c1a659e2270e" class="">
+</p><p id="1c3694d5-ea46-80b3-bd42-ebf85db8c86b" class=""><strong>002.XMLHttpRequest对象：可用于后台与Web服务器交换数据，可以更新网页的部分，而不重新加载整个网页</strong></p><p id="1c3694d5-ea46-803f-9f8f-cc2f5144dd8b" class="">1.创建XMLHttpRequest对象：现代浏览器都有内置的对象</p><p id="1c3694d5-ea46-8005-90a4-f7f77fdbc543" class=""><em>variable </em>= new XMLHttpRequest();</p><p id="1c3694d5-ea46-8000-87e6-d4e280de0617" class="">2.定义回调函数：函数作为参数传递给另一个函数</p><p id="1c3694d5-ea46-806e-ae4a-c8bb56d906ea" class="">xhttp.onload = function() {</p><p id="1c3694d5-ea46-80d0-9f64-ffaced08bcb3" class="">// What to do when the response is ready</p><p id="1c3694d5-ea46-8067-aae8-c9232f9fed7d" class="">}</p><p id="1c3694d5-ea46-80d7-9c50-cfecb510db53" class="">3.打开XMLHttpRequest对象</p><p id="1c3694d5-ea46-806a-8cbf-ea25fca37084" class="">4.向服务器发送请求，使用对象的open（）和send（）方法</p><p id="1c3694d5-ea46-80cf-9b51-f8667073dd20" class="">xhttp.open(&quot;GET&quot;, &quot;ajax_info.txt&quot;);</p><p id="1c3694d5-ea46-80e4-b573-fa766ffdeaa5" class="">xhttp.send();</p><p id="1c3694d5-ea46-8022-9f33-ca265bcaeca9" class="">下例为最简单的XMLHttpRequest对象执行流程</p><p id="1c3694d5-ea46-8089-b389-dad56baa790e" class="">// Create an XMLHttpRequest object创建对象</p><p id="1c3694d5-ea46-8046-bf16-d50265c7789f" class="">const xhttp = new XMLHttpRequest();</p><p id="1c3694d5-ea46-80f1-a1de-ead518b53960" class="">// Define a callback function回调函数</p><p id="1c3694d5-ea46-805f-a57f-d1d9d5af9955" class="">xhttp.onload = function() {</p><p id="1c3694d5-ea46-804c-8bcb-ea2fc2c3c39e" class="">// Here you can use the Data使用数据</p><p id="1c3694d5-ea46-8019-996c-e8fda43a02fe" class="">}</p><p id="1c3694d5-ea46-8064-8046-c9e5b716032b" class="">// Send a request发送请求</p><p id="1c3694d5-ea46-808e-901b-f0102487e79a" class="">xhttp.open(&quot;GET&quot;, &quot;ajax_info.txt&quot;);</p><p id="1c3694d5-ea46-80af-a736-e0e7cc253284" class="">xhttp.send();</p><p id="1c3694d5-ea46-8074-b9ca-d590a3892f82" class="">
+</p><p id="1c3694d5-ea46-8050-89b9-c23feeb6c97e" class=""><strong>003.跨域访问：</strong></p><p id="1c3694d5-ea46-8060-b0be-e5737efe5dac" class="">出于安全原因，现代浏览器不允许跨域访问。</p><p id="1c3694d5-ea46-805f-b908-e0e689945476" class="">这意味着网页和它尝试加载的 XML 文件必须位于同一台服务器上。</p><p id="1c3694d5-ea46-806d-8d74-c44827788ccd" class="">W3Schools 上的示例全部打开位于 W3Schools 域上的 XML 文件。</p><p id="1c3694d5-ea46-80de-893a-e48d2bd2554d" class="">如果您想在自己的网页上使用上述示例，则您加载的 XML 文件必须位于您自己的服务器上。</p><p id="1c3694d5-ea46-80dd-aa76-e7fa00e20d21" class="">
+</p><p id="1c3694d5-ea46-8011-abda-f7940a5bcd93" class=""><strong>004.XMLHttpRequest对象属性及方法：</strong></p><p id="1c3694d5-ea46-80f3-8d16-fb76b36d707b" class=""><strong>属性：</strong></p><p id="1c3694d5-ea46-80b6-9677-cec49aea9df9" class="">onload：定义接收到请求时要调用的函数</p><p id="1c3694d5-ea46-8078-b595-db97a117a2c3" class="">onreadystatechange：定义当readyState属性发生变化时调用的函数</p><p id="1c3694d5-ea46-8048-89b2-db3b776308ae" class="">readyState：保存XMLHttpRequest的状态</p><p id="1c3694d5-ea46-80e7-a0fe-c6a6ec006f70" class="">0未初始化请求、1服务器连接已建立、2请求已收到、3正在处理请求、4请求已完成且相应已就绪</p><p id="1c3694d5-ea46-805f-8e2b-cc40f506b1bb" class="">responseText：以字符串形式返回响应数据</p><p id="1c3694d5-ea46-8014-9582-f46a47771aa3" class="">responseXML：以XML数据返回响应数据</p><p id="1c3694d5-ea46-80a0-a4a9-f472fb68519a" class="">status：返回请求的状态号：200、403、404</p><p id="1c3694d5-ea46-80fb-b70e-dbd6a124d84f" class="">statusText：返回状态文本，ok等</p><p id="1c3694d5-ea46-8001-afc2-df8631c85ecb" class=""><strong>方法：</strong></p><p id="1c3694d5-ea46-80ae-982e-f78dfd268375" class="">new XMLHttpRequest（）：创建新的XMLHttpRequest对象</p><p id="1c3694d5-ea46-80b1-9cfd-e1dd8f996dcf" class="">abort（）：取消当前请求</p><p id="1c3694d5-ea46-8001-abc7-f70f0b994138" class="">getAllResponseHeader（）：返回头部信息</p><p id="1c3694d5-ea46-802f-99e2-d67aacc51761" class="">getResponseHeader（）：返回特定的头部信息</p><p id="1c3694d5-ea46-807d-8155-e6d4871e232a" class="">open（method，url，async，user，psw）规定请求</p><p id="1c3694d5-ea46-8045-9123-c3923c2b5410" class="">method请求类型Get或Post、url文件位置、async异步true或同步false、user可选用户名、psw可选密码</p><p id="1c3694d5-ea46-8033-a833-c8ca496eebcc" class="">send（）向服务器发送请求，用于GET请求</p><p id="1c3694d5-ea46-80f4-8398-d4aa480626c1" class="">send（string）向服务器发送请求，用于POST请求</p><p id="1c3694d5-ea46-80e2-a4c0-c35e8013e1c8" class="">setRequestHeader（）：将标签/值对添加到要发送的标头</p><p id="1c3694d5-ea46-80dd-bf9c-d272d053c047" class="">
+</p><p id="1c3694d5-ea46-8069-ac8c-f99065755ba5" class=""><strong>onload属性：使用对象时，在onload属性中定义回调函数</strong></p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1c3694d5-ea46-80f6-b2d1-d888edbd19c5" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">xhttp.onload = function() {
+  document.getElementById(&quot;demo&quot;).innerHTML = this.responseText;
+}
+xhttp.open(&quot;GET&quot;, &quot;ajax_info.txt&quot;);
+xhttp.send();</code></pre><p id="1c3694d5-ea46-800c-ade6-f0771ffb3192" class=""><strong>多个回调函数：网站存在多个AJAX任务，应该创建一个执行XMLHttpRequest对象的函数，为多个AJAX任务创建一个回调函数，函数调用包含URL以及响应准备就绪时要调用的函数</strong></p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1c3694d5-ea46-80c3-8649-d0920b8dbf48" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">loadDoc(&quot;url-1&quot;, myFunction1);
+
+loadDoc(&quot;url-2&quot;, myFunction2);
+
+function loadDoc(url, cFunction) {
+  const xhttp = new XMLHttpRequest();
+  xhttp.onload = function() {cFunction(this);}
+  xhttp.open(&quot;GET&quot;, url);
+  xhttp.send();
+}
+
+function myFunction1(xhttp) {
+  // 这里是动作
+}
+function myFunction2(xhttp) {
+  // 这里是动作
+}</code></pre><p id="1c3694d5-ea46-806f-acd3-e427e9be407b" class=""><strong>onreadystatechange属性：保存了XMLHttpRequest的状态，当readyState状态发生改变时，会调用一次该属性</strong></p><p id="1c3694d5-ea46-80d5-a448-e594d51e93dc" class="">例子：当readyState为4且status为200时响应</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1c3694d5-ea46-806f-adb0-c3ffe98dd484" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">function loadDoc() {
+  const xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 &amp;&amp; this.status == 200) {
+      document.getElementById(&quot;demo&quot;).innerHTML =
+      this.responseText;
+    }
+  };
+  xhttp.open(&quot;GET&quot;, &quot;ajax_info.txt&quot;);
+  xhttp.send();
+}
+onreadystatechange 事件被触发了四次（1-4），每次 readyState 变化一次</code></pre><p id="1c3694d5-ea46-805f-9e21-c3faad15d884" class=""><strong>005.XMLHttpRequest：请求</strong></p><p id="1c6694d5-ea46-804d-84a4-ceb26b178efd" class="">XMLHttpRequest对象用于从服务器请求数据</p><p id="1c6694d5-ea46-8009-9ae5-c5f8c291e5fb" class=""><strong>向服务器发送请求：使用XMLHttpRequest对象的open和send方法</strong></p><p id="1c6694d5-ea46-804c-86e5-fe92c5eb95e3" class="">例子：</p><p id="1c6694d5-ea46-806b-a2ac-fcdaf9f6d738" class="">xhttp.open(&quot;GET&quot;, &quot;ajax_info.txt&quot;, true);</p><p id="1c6694d5-ea46-802d-91b4-d06404f10378" class="">xhttp.send();</p><ul id="1c6694d5-ea46-804f-bbf1-e76cb2cd56c7" class="bulleted-list"><li style="list-style-type:disc">open（method，url，async，user，psw）规定请求<p id="1c6694d5-ea46-80c7-b0bd-d9b1e9cdbcd0" class="">method请求类型Get或Post、url文件位置、async异步true或同步false、user可选用户名、psw可选密码</p></li></ul><ul id="1c6694d5-ea46-8006-a78c-eb528a071d53" class="bulleted-list"><li style="list-style-type:disc">send（）向服务器发送请求，用于GET请求</li></ul><ul id="1c6694d5-ea46-8007-87e7-d105f0500141" class="bulleted-list"><li style="list-style-type:disc">send（string）向服务器发送请求，用于POST请求</li></ul><p id="1c6694d5-ea46-801c-9d26-efaa6ebf3257" class=""><strong>URL-服务器上的文件地址，可以是任意类型文件或服务器脚本文件</strong></p><p id="1c6694d5-ea46-8004-a56c-dee0d738c490" class=""><strong>异步：服务器请求应该异步发送</strong></p><p id="1c6694d5-ea46-80ff-bbe9-f3b2d4763572" class="">open（）方法的async参数应该设置为true，这样JS不必等待服务器响应，可以同时执行其他脚本并在响应准备好后处理响应</p><p id="1c6694d5-ea46-80a8-9604-c1a0ad9d4368" class="">如：xhttp.open（“GET”，“example.asp”，true）</p><p id="1c6694d5-ea46-80b9-b914-c52417296627" class=""><strong>GET和POST：</strong></p><p id="1c6694d5-ea46-8093-8863-e091a9b3ff87" class="">GET比POST要更简单、更快，多数情况使用GET</p><p id="1c6694d5-ea46-8003-a893-dd804899c7e8" class="">下面特殊情况使用POST</p><ul id="1c6694d5-ea46-80c6-b985-ecbe2ab7751a" class="bulleted-list"><li style="list-style-type:disc">缓存文件不是一个选项，（更新服务器上的文件或数据库</li></ul><ul id="1c6694d5-ea46-80c2-825c-d88fc431b0b6" class="bulleted-list"><li style="list-style-type:disc">向服务器发送大量数据，（POST没有大小限制</li></ul><ul id="1c6694d5-ea46-80b9-afe2-e319d6359d0a" class="bulleted-list"><li style="list-style-type:disc">发送用户输入，可能包含未知字符，POST比GET安全</li></ul><p id="1c6694d5-ea46-80c0-995e-cb5854a1f0ef" class="">
+</p><p id="1c6694d5-ea46-80ab-ae28-facd2f7141ab" class=""><strong>GET请求：</strong></p><p id="1c6694d5-ea46-8097-89e5-deea19643d6a" class="">例子：简单的GET请求，可能会得到缓存</p><p id="1c6694d5-ea46-8071-8aaf-ebf3f0b1738f" class="">xhttp.open(&quot;GET&quot;, &quot;demo_get.asp&quot;);</p><p id="1c6694d5-ea46-809f-822a-f7ec9bb2dfaf" class="">xhttp.send();</p><p id="1c6694d5-ea46-80e2-b23c-fb77dd3d61c1" class="">例子：通过向URL中添加ID</p><p id="1c6694d5-ea46-805e-8443-dcada2ff5f0a" class="">xhttp.open(&quot;GET&quot;, &quot;demo_get.asp?t=&quot; + Math.random());</p><p id="1c6694d5-ea46-8057-8568-f19c98ec6144" class="">xhttp.send();</p><p id="1c6694d5-ea46-800e-bd86-ebeacf6deb43" class="">例子：使用GET发送信息，将信息添加到URL中</p><p id="1c6694d5-ea46-80fd-90f0-e985efabd6fe" class="">xhttp.open(&quot;GET&quot;, &quot;demo_get2.asp?fname=Henry&amp;lname=Ford&quot;);</p><p id="1c6694d5-ea46-80ac-92d2-e6a5b99018d9" class="">xhttp.send();</p><p id="1c6694d5-ea46-8083-b1e8-fb5e9add1824" class=""><strong>POST请求：</strong></p><p id="1c6694d5-ea46-806e-978b-c2c7981e3e37" class="">例子：简单的POST请求</p><p id="1c6694d5-ea46-8024-8155-ff1486e0cb25" class="">xhttp.open（“POST“，”demo_post.asp“）；</p><p id="1c6694d5-ea46-80d8-bcec-f803d0bdd485" class="">xhttp.send（）；</p><p id="1c6694d5-ea46-80ea-abdc-dc1abcd89936" class="">例子：向HTML表单一样POST数据，需要添加HTTP标头setRequestHeader（），并在send（）方法中指定要发送的数据</p><p id="1c6694d5-ea46-8056-bc36-d0d5fda8bd42" class="">xhttp.open（”POST“，”ajax_test.asp“）；</p><p id="1c6694d5-ea46-805b-a16c-ff54b535b5bf" class="">xhttp.setRequestHeader（”Content-type“，”application/x-www-form-urlencoded“）；</p><p id="1c6694d5-ea46-803a-8920-d670bfd4d2ec" class="">xhttp.send（”fname=Henry&amp;lname=Ford“）；</p><p id="1c6694d5-ea46-8068-b0ea-df71a6f77223" class=""><strong>setRequestHeader（header，value）：要添加的请求头的名称，请求头的值，均为字符串</strong></p><p id="1c6694d5-ea46-807f-bee8-d0b86dfdc078" class="">
+</p><p id="1c6694d5-ea46-8036-b09e-cb3d5caacd09" class=""><strong>同步请求：不建议使用</strong></p><p id="1c6694d5-ea46-80ab-8507-e42230566273" class="">若进行同步请求，请将open（）方法中的第三个参数async更改为false</p><p id="1c6694d5-ea46-80f1-b2b7-e0e9831b78ec" class="">xhttp.open（”GET“，”ajax_test.txt“,false）</p><p id="1c6694d5-ea46-80e7-ba7b-f124d5ddcbdf" class="">
+</p><p id="1c6694d5-ea46-804c-bd6c-c093cef072df" class=""><strong>006.AJAX-服务器响应：</strong></p><p id="1c6694d5-ea46-8074-bffa-fab9dd8cfb65" class="">服务器响应属性：</p><ul id="1c6694d5-ea46-807a-8233-ca1c8c959423" class="bulleted-list"><li style="list-style-type:disc">responseText：以字符串形式返回服务器响应</li></ul><p id="1c6694d5-ea46-80b2-aec0-d017c0a026c5" class="">document.getElementById(&quot;demo&quot;).innerHTML = xhttp.responseText;</p><ul id="1c6694d5-ea46-80c2-bb54-f5e8f4bd21f4" class="bulleted-list"><li style="list-style-type:disc">reponseXML：以XML DOM对象的形式返回服务器响应</li></ul><p id="1c6694d5-ea46-80fb-bb07-c2bc8164a624" class="">例子：</p><p id="1c6694d5-ea46-8070-ad83-def6887595a5" class="">const xmlDoc = xhttp.responseXML;</p><p id="1c6694d5-ea46-80b8-9b62-e858bbb22fc6" class="">const x = xmlDoc.getElementsByTagName(&quot;ARTIST&quot;);</p><p id="1c6694d5-ea46-80ea-8de2-f204c4813a8d" class="">let txt = &quot;&quot;;</p><p id="1c6694d5-ea46-80a8-a7f9-ea329be98e2e" class="">for (let i = 0; i &lt; x.length; i++) {</p><p id="1c6694d5-ea46-8065-b48d-d99081876275" class="">txt += x[i].childNodes[0].nodeValue + &quot;&lt;br&gt;&quot;;</p><p id="1c6694d5-ea46-8085-a7fd-c65341fcf923" class="">}</p><p id="1c6694d5-ea46-804a-ba78-edd4c01e372e" class="">document.getElementById(&quot;demo&quot;).innerHTML = txt;</p><p id="1c6694d5-ea46-8075-9df1-f1c722a50e71" class="">xhttp.open(&quot;GET&quot;, &quot;cd_catalog.xml&quot;);</p><p id="1c6694d5-ea46-8032-9424-c4ac3ca34867" class="">xhttp.send();</p><p id="1c6694d5-ea46-80fd-8b38-ffe1641deb21" class=""><strong>其他服务器响应方法：</strong></p><ul id="1c6694d5-ea46-8006-b04b-db48c7dae450" class="bulleted-list"><li style="list-style-type:disc">getResponseHeader（）：返回服务器响应的所有标头信息</li></ul><p id="1c6694d5-ea46-80b7-a760-d764ec8e5836" class="">const xhttp = new XMLHttpRequest();</p><p id="1c6694d5-ea46-804a-9d38-c50c65fd645a" class="">xhttp.onload = function() {</p><p id="1c6694d5-ea46-80d5-9e49-c969d1764cc2" class="">document.getElementById(&quot;demo&quot;).innerHTML =</p><p id="1c6694d5-ea46-801a-ae40-cf7c388c6fd3" class="">this.getAllResponseHeaders();</p><p id="1c6694d5-ea46-8070-ae66-f54235671413" class="">}</p><p id="1c6694d5-ea46-80ee-bf88-fe5de0e52d14" class="">xhttp.open(&quot;GET&quot;, &quot;ajax_info.txt&quot;);</p><p id="1c6694d5-ea46-80c7-84d0-f9e95e3fbe9a" class="">xhttp.send();</p><ul id="1c6694d5-ea46-804b-aa21-d5a6ed5c2468" class="bulleted-list"><li style="list-style-type:disc">getAllResponseHeaders（）：返回服务器响应的特定的标头信息</li></ul><p id="1c6694d5-ea46-8065-a66a-e2921fdb417b" class="">const xhttp = new XMLHttpRequest();</p><p id="1c6694d5-ea46-80a8-b761-cf1cc57c24fb" class="">xhttp.onload = function() {</p><p id="1c6694d5-ea46-809e-9ce5-c79026bafc48" class="">document.getElementById(&quot;demo&quot;).innerHTML =</p><p id="1c6694d5-ea46-800e-b096-ddd78c1c91ae" class="">this.getResponseHeader(&quot;Last-Modified&quot;);</p><p id="1c6694d5-ea46-807e-bc54-f71ad40d2f72" class="">}</p><p id="1c6694d5-ea46-8038-a0cf-ce6bca45add2" class="">xhttp.open(&quot;GET&quot;, &quot;ajax_info.txt&quot;);</p><p id="1c6694d5-ea46-800a-b2b5-f7c9433f8ca8" class="">xhttp.send();</p><p id="1c6694d5-ea46-80ed-9b85-fccbbc50703c" class="">
+</p><p id="1c6694d5-ea46-8044-a3d1-c71c3ea6e2e3" class=""><strong>007.AJAX与XML文件进行交互式通信</strong></p><p id="1c6694d5-ea46-809c-ae2a-c4adfd65a608" class="">用户点击”获取CD信息“按钮时，loadDoc（）功能执行</p><p id="1c6694d5-ea46-80c7-9a58-c418e28413e0" class="">创建一个新的对象，添加在服务器响应准备就绪时要执行的函数，并将请求发送到服务器</p><p id="1c6694d5-ea46-80b1-8ccd-da58ec3b0be3" class="">服务器响应准备就绪时，构建一个HTML表，从XML文件中提取元素，最后使用填充由XML数据的HTML表来更新元素”demo“</p><p id="1c6694d5-ea46-80c1-be85-c4b0a0191c6e" class=""><code>function loadDoc() {</code></p><p id="1c6694d5-ea46-80bb-8650-f19f00b01a7e" class=""><code>const xhttp = new XMLHttpRequest();</code></p><p id="1c6694d5-ea46-809f-bc83-f596c21a0785" class=""><code>xhttp.onload = function() {myFunction(this);}</code></p><p id="1c6694d5-ea46-80da-a119-cb00ed2a7235" class=""><code>xhttp.open(&quot;GET&quot;, &quot;cd_catalog.xml&quot;);</code></p><p id="1c6694d5-ea46-808a-9530-c1be1a6adc49" class=""><code>xhttp.send();</code></p><p id="1c6694d5-ea46-8083-b4a5-df5379be8cae" class=""><code>}</code></p><p id="1c6694d5-ea46-8034-96fb-dfb963b1bd89" class=""><code>function myFunction(xml) {</code></p><p id="1c6694d5-ea46-8089-b0e5-ddcd7fea3e37" class=""><code>const xmlDoc = xml.responseXML;</code></p><p id="1c6694d5-ea46-8025-9fdb-eb85dccb298e" class=""><code>const x = xmlDoc.getElementsByTagName(&quot;CD&quot;);</code></p><p id="1c6694d5-ea46-802f-8caa-c7af32094fe1" class=""><code>let table=&quot;&lt;tr&gt;&lt;th&gt;Artist&lt;/th&gt;&lt;th&gt;Title&lt;/th&gt;&lt;/tr&gt;&quot;;</code></p><p id="1c6694d5-ea46-80a3-b44e-fe587a662af5" class=""><code>for (let i = 0; i &lt;x.length; i++) {</code></p><p id="1c6694d5-ea46-80b5-a6a8-f517345d0c25" class=""><code>table += &quot;&lt;tr&gt;&lt;td&gt;&quot; +</code></p><p id="1c6694d5-ea46-8002-b74d-f4dee5b91323" class=""><code>x[i].getElementsByTagName(&quot;ARTIST&quot;)[0].childNodes[0].nodeValue +</code></p><p id="1c6694d5-ea46-80f8-aa37-f55f780da693" class=""><code>&quot;&lt;/td&gt;&lt;td&gt;&quot; +</code></p><p id="1c6694d5-ea46-80bf-92ff-ffd8a1333cbc" class=""><code>x[i].getElementsByTagName(&quot;TITLE&quot;)[0].childNodes[0].nodeValue +</code></p><p id="1c6694d5-ea46-802e-8b30-f608e68fc7ad" class=""><code>&quot;&lt;/td&gt;&lt;/tr&gt;&quot;;</code></p><p id="1c6694d5-ea46-8041-b0b9-e4baf3168a02" class=""><code>}</code></p><p id="1c6694d5-ea46-8036-b114-e40ad30527be" class=""><code>document.getElementById(&quot;demo&quot;).innerHTML = table;</code></p><p id="1c6694d5-ea46-8055-bcec-e7aa3d2f00eb" class=""><code>}</code></p><p id="1c6694d5-ea46-8083-9769-f8b1a5b82a73" class=""><strong>008.AJAX创建更具有交互性的应用程序</strong></p><p id="1c6694d5-ea46-8028-a229-e221b83c2a2e" class=""><mark class="highlight-red"><strong>ASP和PHP极其相似</strong></mark></p><p id="1c6694d5-ea46-80c1-986c-ed912ba46164" class="">可以实现用户在输入字段，键入字符时候，网页与服务器通信，实时变换</p><p id="1c6694d5-ea46-8081-96b9-e0826f64f219" class="">用户输入字符时，showHint（）调用函数，由onkeyup事件触发</p><p id="1c6694d5-ea46-8009-b27f-f1c0040f1fa9" class=""><code>&lt;p&gt;Start typing a name in the input field below:&lt;/p&gt;</code></p><p id="1c6694d5-ea46-80ea-8558-d5e6beb1cb15" class=""><code>&lt;p&gt;Suggestions: &lt;span id=&quot;txtHint&quot;&gt;&lt;/span&gt;&lt;/p&gt;</code></p><p id="1c6694d5-ea46-8082-a87d-e2716d6c85c2" class=""><code>&lt;form&gt;</code></p><p id="1c6694d5-ea46-8072-84f4-d70b55671eca" class=""><code>First name: &lt;input type=&quot;text&quot; onkeyup=&quot;showHint(this.value)&quot;&gt;</code></p><p id="1c6694d5-ea46-8016-839d-fee297c693e7" class=""><code>&lt;/form&gt;</code></p><p id="1c6694d5-ea46-8037-aaf2-dbfc033b2761" class="">首先检测输入字段</p><p id="1c6694d5-ea46-80ad-bdac-efe664fbe3f6" class="">为空（str.length==0），是则清除txtHint占位符内容，并退出函数</p><p id="1c6694d5-ea46-8043-a027-d4556f929a45" class="">不为空则执行操作</p><ol type="1" id="1c6694d5-ea46-80b3-b8cc-c1a3027ae6f3" class="numbered-list" start="1"><li>创建对象</li></ol><ol type="1" id="1c6694d5-ea46-8097-8cb0-fc0031cd30bd" class="numbered-list" start="2"><li>创建服务器响应完成时执行的函数</li></ol><ol type="1" id="1c6694d5-ea46-80b1-a1b8-cadf931fa8fa" class="numbered-list" start="3"><li>将请求发送到服务器的PHP文件</li></ol><ol type="1" id="1c6694d5-ea46-80b7-a4c7-f3841543b78d" class="numbered-list" start="4"><li>注意添加q参数</li></ol><ol type="1" id="1c6694d5-ea46-8095-a052-f139f91524e9" class="numbered-list" start="5"><li>str变量保存输入字段的内容</li></ol><p id="1c6694d5-ea46-80c0-9816-d2e5870faca3" class=""><code>&lt;script&gt;</code></p><p id="1c6694d5-ea46-80ea-964f-fc6598d9e527" class=""><code>function showHint(str) {</code></p><p id="1c6694d5-ea46-8000-be5b-cc758425a071" class=""><code>if (str.length == 0) {</code></p><p id="1c6694d5-ea46-80a2-98ff-edca9d6d57dd" class=""><code>document.getElementById(&quot;txtHint&quot;).innerHTML = &quot;&quot;;</code></p><p id="1c6694d5-ea46-8007-978d-f27770db7ed0" class=""><code>return;</code></p><p id="1c6694d5-ea46-80b4-8ea3-f08b4db360a4" class=""><code>} else {</code></p><p id="1c6694d5-ea46-80f3-a88a-e32fa425a325" class=""><code>const xmlhttp = new XMLHttpRequest();</code></p><p id="1c6694d5-ea46-8015-a226-c3e64411e412" class=""><code>xmlhttp.onload = function() {</code></p><p id="1c6694d5-ea46-805f-85f4-dd021a3522d5" class=""><code>document.getElementById(&quot;txtHint&quot;).innerHTML = this.responseText;</code></p><p id="1c6694d5-ea46-80ca-bece-ffb7d1694d73" class=""><code>}</code></p><p id="1c6694d5-ea46-8067-a573-e8c8535eaa09" class=""><code>xmlhttp.open(&quot;GET&quot;, &quot;gethint.php?q=&quot; + str);</code></p><p id="1c6694d5-ea46-806e-baf1-e08f22c5a30e" class=""><code>xmlhttp.send();</code></p><p id="1c6694d5-ea46-80aa-82a5-d9bd868b3f2d" class=""><code>}</code></p><p id="1c6694d5-ea46-80c4-8dde-cbe45a8a1996" class=""><code>}</code></p><p id="1c6694d5-ea46-8055-9f60-e09fa4038d3f" class=""><code>&lt;/script&gt;</code></p><p id="1c6694d5-ea46-80dc-b8a8-f00b275e67b0" class="">以下是PHP文件内容</p><blockquote id="1c6694d5-ea46-805c-8ca8-f9b894ff09c7" class=""><p id="1c6694d5-ea46-808a-b357-fda75402f967" class="">&lt;?php</p><p id="1c6694d5-ea46-8029-8dd0-dc4fe451bcb3" class="">// Array with names</p><p id="1c6694d5-ea46-80f9-994d-f1a4a0cf1ec2" class="">$a[] = &quot;Anna&quot;;</p><p id="1c6694d5-ea46-8006-800d-d3f40b0180f6" class="">$a[] = &quot;Brittany&quot;;</p><p id="1c6694d5-ea46-803b-8430-e2d689cc7ec8" class="">$a[] = &quot;Cinderella&quot;;</p><p id="1c6694d5-ea46-8037-9e60-ed79583fbc3c" class="">$a[] = &quot;Diana&quot;;</p><p id="1c6694d5-ea46-8080-beed-d3cc46a1c1fb" class="">$a[] = &quot;Eva&quot;;</p><p id="1c6694d5-ea46-80a4-9f67-df979f257510" class="">$a[] = &quot;Fiona&quot;;</p><p id="1c6694d5-ea46-80d8-a9f5-ea992f1d33f7" class="">$a[] = &quot;Gunda&quot;;</p><p id="1c6694d5-ea46-801d-995b-cfb7566e756e" class="">$a[] = &quot;Hege&quot;;</p><p id="1c6694d5-ea46-804e-967c-d951edb8c9ac" class="">$a[] = &quot;Inga&quot;;</p><p id="1c6694d5-ea46-80a7-a709-cd4d6866e1b6" class="">$a[] = &quot;Johanna&quot;;</p><p id="1c6694d5-ea46-80f9-85bc-d8f8eb97e48c" class="">$a[] = &quot;Kitty&quot;;</p><p id="1c6694d5-ea46-80da-a573-fc763be476e9" class="">$a[] = &quot;Linda&quot;;</p><p id="1c6694d5-ea46-804a-821a-f25e17b78d37" class="">$a[] = &quot;Nina&quot;;</p><p id="1c6694d5-ea46-809e-a531-c4989fd9b8a9" class="">$a[] = &quot;Ophelia&quot;;</p><p id="1c6694d5-ea46-80a7-8bb9-f9838c2c9bf6" class="">$a[] = &quot;Petunia&quot;;</p><p id="1c6694d5-ea46-808b-acab-d45c3027aabf" class="">$a[] = &quot;Amanda&quot;;</p><p id="1c6694d5-ea46-806b-981c-e8d9c8bb3506" class="">$a[] = &quot;Raquel&quot;;</p><p id="1c6694d5-ea46-80d9-adee-e45ee11adb67" class="">$a[] = &quot;Cindy&quot;;</p><p id="1c6694d5-ea46-8064-9fd5-da28798c9ffb" class="">$a[] = &quot;Doris&quot;;</p><p id="1c6694d5-ea46-8041-9d7f-e9d3feac9536" class="">$a[] = &quot;Eve&quot;;</p><p id="1c6694d5-ea46-8036-a7bc-d44e95e7d83c" class="">$a[] = &quot;Evita&quot;;</p><p id="1c6694d5-ea46-80cc-807a-d9bc3ef049ea" class="">$a[] = &quot;Sunniva&quot;;</p><p id="1c6694d5-ea46-804e-af45-f615ec86b1e4" class="">$a[] = &quot;Tove&quot;;</p><p id="1c6694d5-ea46-807f-97c2-d4e1cfb7ae2b" class="">$a[] = &quot;Unni&quot;;</p><p id="1c6694d5-ea46-8048-8bd5-da7c50259322" class="">$a[] = &quot;Violet&quot;;</p><p id="1c6694d5-ea46-80b9-a90a-dc991831a771" class="">$a[] = &quot;Liza&quot;;</p><p id="1c6694d5-ea46-8020-a2b2-d3aae1690ee0" class="">$a[] = &quot;Elizabeth&quot;;</p><p id="1c6694d5-ea46-8036-9b89-c6369530a058" class="">$a[] = &quot;Ellen&quot;;</p><p id="1c6694d5-ea46-80bd-9aee-f5ecd7c326a7" class="">$a[] = &quot;Wenche&quot;;</p><p id="1c6694d5-ea46-80e5-a787-eef3032283d0" class="">$a[] = &quot;Vicky&quot;;</p><p id="1c6694d5-ea46-8056-8a7c-e4c475a554f8" class="">// get the q parameter from URL</p><p id="1c6694d5-ea46-802c-a12b-e8a2bc5b9d18" class="">$q = $_REQUEST[&quot;q&quot;];</p><p id="1c6694d5-ea46-8040-b49f-fb05ace674cd" class="">$hint = &quot;&quot;;</p><p id="1c6694d5-ea46-8000-8620-db03fefeed2b" class="">// lookup all hints from array if $q is different from &quot;&quot;</p><p id="1c6694d5-ea46-800c-8e00-f3f85e18eb42" class="">if ($q !== &quot;&quot;) {</p><p id="1c6694d5-ea46-8032-9dc2-f264c8613a1e" class="">$q = strtolower($q);</p><p id="1c6694d5-ea46-8041-8d31-c44d0a14b9b5" class="">$len=strlen($q);</p><p id="1c6694d5-ea46-8039-bcc5-ea794642c613" class="">foreach($a as $name) {</p><p id="1c6694d5-ea46-806e-a863-c011c897970a" class="">if (stristr($q, substr($name, 0, $len))) {</p><p id="1c6694d5-ea46-807c-a0a5-cc42e6dd57cb" class="">if ($hint === &quot;&quot;) {</p><p id="1c6694d5-ea46-8046-a9c0-d11e849cd9b9" class="">$hint = $name;</p><p id="1c6694d5-ea46-807d-9bb3-fe2753174f0c" class="">} else {</p><p id="1c6694d5-ea46-80ac-b713-e2fb68140504" class="">$hint .= &quot;, $name&quot;;</p><p id="1c6694d5-ea46-80dd-8d03-c7bbb24a4106" class="">}</p><p id="1c6694d5-ea46-8096-80d2-d12c91e062e0" class="">}</p><p id="1c6694d5-ea46-80a3-917c-dd437857abf7" class="">}</p><p id="1c6694d5-ea46-800e-93da-e7b00a0a40f2" class="">}</p><p id="1c6694d5-ea46-80f1-b05c-dff53a943d61" class="">// Output &quot;no suggestion&quot; if no hint was found or output correct values</p><p id="1c6694d5-ea46-808e-9506-cf675cb4efc0" class="">echo $hint === &quot;&quot; ? &quot;no suggestion&quot; : $hint;</p><p id="1c6694d5-ea46-8031-81e2-e895e73f6098" class="">?&gt;</p></blockquote><p id="1c6694d5-ea46-8038-a841-c1209f50cab3" class=""><strong>009.AJAX与数据库进行交互式通信：</strong></p><p id="1c6694d5-ea46-8033-b9ca-d9d4b227fb3f" class="">示例：用户在下拉列表中选择一个客户时，执行函数showCustomer（），事件onchange触发</p><p id="1c6694d5-ea46-804d-9bd4-d7d06de15325" class="">showCustomer（）函数执行以下操作</p><ul id="1c6694d5-ea46-8055-89d8-db7af4912c8c" class="bulleted-list"><li style="list-style-type:disc">检查是否选择了客户</li></ul><ul id="1c6694d5-ea46-808b-a6f1-f855361dd70f" class="bulleted-list"><li style="list-style-type:disc">创建对象</li></ul><ul id="1c6694d5-ea46-8074-b9b7-c4c50dd96c92" class="bulleted-list"><li style="list-style-type:disc">创建服务器响应完成时执行的函数</li></ul><ul id="1c6694d5-ea46-8056-9d2d-c893984f8bc5" class="bulleted-list"><li style="list-style-type:disc">将请求发送到服务器上的文件</li></ul><ul id="1c6694d5-ea46-8076-92f8-c870460cf520" class="bulleted-list"><li style="list-style-type:disc">注意URL中添加了一个参数q，（包含下拉列表的内容）</li></ul><p id="1c6694d5-ea46-8061-b787-c3cdc8abe35d" class=""><code>function showCustomer(str) {</code></p><p id="1c6694d5-ea46-8012-9754-f3bf017038cc" class=""><code>if (str == &quot;&quot;) {</code></p><p id="1c6694d5-ea46-807d-90b7-ebbcdd195be7" class=""><code>document.getElementById(&quot;txtHint&quot;).innerHTML = &quot;&quot;;</code></p><p id="1c6694d5-ea46-806b-a5a8-cfde192625de" class=""><code>return;</code></p><p id="1c6694d5-ea46-80ba-9215-d1a8d62ad850" class=""><code>}</code></p><p id="1c6694d5-ea46-8064-ae43-c55330004998" class=""><code>const xhttp = new XMLHttpRequest();</code></p><p id="1c6694d5-ea46-800f-9a3b-fe0a815f3c1c" class=""><code>xhttp.onload = function() {</code></p><p id="1c6694d5-ea46-8055-9f0a-f9aa66960c59" class=""><code>document.getElementById(&quot;txtHint&quot;).innerHTML = this.responseText;</code></p><p id="1c6694d5-ea46-80c1-9934-e27f19ec590f" class=""><code>}</code></p><p id="1c6694d5-ea46-80c5-8bba-cf3b4f664e43" class=""><code>xhttp.open(&quot;GET&quot;, &quot;getcustomer.php?q=&quot;+str);</code></p><p id="1c6694d5-ea46-8089-a07b-f73adae5d1cc" class=""><code>xhttp.send();</code></p><p id="1c6694d5-ea46-803e-b8c5-e0280fe2be2c" class=""><code>}</code></p><p id="1c6694d5-ea46-8040-9a04-d74132299e48" class="">调用的PHP文件内容如下，其中的源代码对数据库运行查询，并在HTML表中返回结果</p><blockquote id="1c6694d5-ea46-801f-878b-f026b6c3edbd" class="">&lt;?php<p id="1c6694d5-ea46-80c3-bd50-c64b56868b06" class="">$mysqli = new mysqli(&quot;</p><p id="1c6694d5-ea46-80ed-b000-e8bdc494d0a6" class=""><em>servername</em></p><p id="1c6694d5-ea46-80b1-851d-fc12dba8ffa2" class="">&quot;, &quot;</p><p id="1c6694d5-ea46-8090-a91c-dcf752592f51" class=""><em>username</em></p><p id="1c6694d5-ea46-80cc-a856-c7129c295964" class="">&quot;, &quot;</p><p id="1c6694d5-ea46-8088-9457-fbec3c33b26a" class=""><em>password</em></p><p id="1c6694d5-ea46-80f2-9959-e016abaf0138" class="">&quot;, &quot;</p><p id="1c6694d5-ea46-807b-8ed1-c38a862e9297" class=""><em>dbname</em></p><p id="1c6694d5-ea46-8008-8f1d-c7d05ae6e97f" class="">&quot;);</p><p id="1c6694d5-ea46-80b6-94bb-f030736fd0a3" class="">if($mysqli-&gt;connect_error) {</p><p id="1c6694d5-ea46-8070-a2ea-c4291bfc8fff" class="">exit(&#x27;Could not connect&#x27;);</p><p id="1c6694d5-ea46-8055-ae80-f388e30b69e7" class="">}</p><p id="1c6694d5-ea46-8039-99e6-cdc836ea8788" class="">$sql = &quot;SELECT customerid, companyname, contactname, address, city, postalcode, country</p><p id="1c6694d5-ea46-80bb-b27a-e42a25bc32ec" class="">FROM customers WHERE customerid = ?&quot;;</p><p id="1c6694d5-ea46-804b-bfea-e8201ff75b67" class="">$stmt = $mysqli-&gt;prepare($sql);</p><p id="1c6694d5-ea46-8062-9d58-cef0664d18c4" class="">$stmt-&gt;bind_param(&quot;s&quot;, $_GET[&#x27;q&#x27;]);</p><p id="1c6694d5-ea46-8094-a870-fe04cbc65110" class="">$stmt-&gt;execute();</p><p id="1c6694d5-ea46-804a-b95c-f2ea8e191c4d" class="">$stmt-&gt;store_result();</p><p id="1c6694d5-ea46-804f-9e17-cc9a70262ddd" class="">$stmt-&gt;bind_result($cid, $cname, $name, $adr, $city, $pcode, $country);</p><p id="1c6694d5-ea46-80a0-8838-d00b9b9a16c2" class="">$stmt-&gt;fetch();</p><p id="1c6694d5-ea46-80f9-b807-ec27448b48c8" class="">$stmt-&gt;close();</p><p id="1c6694d5-ea46-803f-8c1b-cc5e51468000" class="">echo &quot;&lt;table&gt;&quot;;</p><p id="1c6694d5-ea46-8045-8432-dd5952cb1203" class="">echo &quot;&lt;tr&gt;&quot;;</p><p id="1c6694d5-ea46-80ad-8fab-fb531849457d" class="">echo &quot;&lt;th&gt;CustomerID&lt;/th&gt;&quot;;</p><p id="1c6694d5-ea46-804b-aa9d-c03a178d2d97" class="">echo &quot;&lt;td&gt;&quot; . $cid . &quot;&lt;/td&gt;&quot;;</p><p id="1c6694d5-ea46-8085-ae26-d85402d73be0" class="">echo &quot;&lt;th&gt;CompanyName&lt;/th&gt;&quot;;</p><p id="1c6694d5-ea46-808a-bf8f-f59ee826e4b3" class="">echo &quot;&lt;td&gt;&quot; . $cname . &quot;&lt;/td&gt;&quot;;</p><p id="1c6694d5-ea46-8000-a89d-ea7d800e21ab" class="">echo &quot;&lt;th&gt;ContactName&lt;/th&gt;&quot;;</p><p id="1c6694d5-ea46-80c7-a44b-f27e759c25d0" class="">echo &quot;&lt;td&gt;&quot; . $name . &quot;&lt;/td&gt;&quot;;</p><p id="1c6694d5-ea46-8061-8493-d45a5e4e6800" class="">echo &quot;&lt;th&gt;Address&lt;/th&gt;&quot;;</p><p id="1c6694d5-ea46-80e2-9c01-f93b51784f4a" class="">echo &quot;&lt;td&gt;&quot; . $adr . &quot;&lt;/td&gt;&quot;;</p><p id="1c6694d5-ea46-80a5-b79c-e8b1ec49ddaf" class="">echo &quot;&lt;th&gt;City&lt;/th&gt;&quot;;</p><p id="1c6694d5-ea46-80c5-bf2d-c0c2f2b5a783" class="">echo &quot;&lt;td&gt;&quot; . $city . &quot;&lt;/td&gt;&quot;;</p><p id="1c6694d5-ea46-8004-9a52-efb744eb704a" class="">echo &quot;&lt;th&gt;PostalCode&lt;/th&gt;&quot;;</p><p id="1c6694d5-ea46-802a-a9dd-d670b9fae44b" class="">echo &quot;&lt;td&gt;&quot; . $pcode . &quot;&lt;/td&gt;&quot;;</p><p id="1c6694d5-ea46-8008-95bd-f7e96e3205de" class="">echo &quot;&lt;th&gt;Country&lt;/th&gt;&quot;;</p><p id="1c6694d5-ea46-80e3-9e42-d96b8c01fa6e" class="">echo &quot;&lt;td&gt;&quot; . $country . &quot;&lt;/td&gt;&quot;;</p><p id="1c6694d5-ea46-80f7-8361-c9c41be2d473" class="">echo &quot;&lt;/tr&gt;&quot;;</p><p id="1c6694d5-ea46-80c1-949c-e08e9a8167b3" class="">echo &quot;&lt;/table&gt;&quot;;</p><p id="1c6694d5-ea46-8023-bdc2-cc5940c94d44" class="">?&gt;</p></blockquote><p id="1c6694d5-ea46-8092-bea7-e4227a42a75c" class=""><strong>010.AJAX的XML应用程序示例</strong></p><p id="1c6694d5-ea46-8017-b793-c08769ca1103" class=""><strong>在HTML表中显示XML数据：</strong></p><p id="1c6694d5-ea46-8068-af3e-cc16c74e7e6f" class="">示例中循环遍历每个CD&gt;元素，并在表中显示ARTIST&gt;和TITLE&gt;元素的值</p><blockquote id="1c6694d5-ea46-8006-abc7-de7d867934e7" class=""><code>&lt;table id=&quot;demo&quot;&gt;&lt;/table&gt;</code><p id="1c6694d5-ea46-800b-96fd-fb50e33fa1fe" class=""><code>&lt;script&gt;</code></p><p id="1c6694d5-ea46-8032-b60b-c4d577e35c1a" class=""><code>function loadXMLDoc() {</code></p><p id="1c6694d5-ea46-800e-be95-e152d20de75a" class=""><code>const xhttp = new XMLHttpRequest();</code></p><p id="1c6694d5-ea46-8092-9107-cd4c5fe8b995" class=""><code>xhttp.onload = function() {</code></p><p id="1c6694d5-ea46-80c7-85c0-f769e5359e59" class=""><code>const xmlDoc = xhttp.responseXML;</code></p><p id="1c6694d5-ea46-80e9-81a7-f685098cd2a9" class=""><code>const cd = xmlDoc.getElementsByTagName(&quot;CD&quot;);</code></p><p id="1c6694d5-ea46-806b-aa61-e57ac6a83c3d" class=""><code>myFunction(cd);</code></p><p id="1c6694d5-ea46-805e-ad3e-d959fb179bcb" class=""><code>}</code></p><p id="1c6694d5-ea46-80f3-b154-db2aab35fe8e" class=""><code>xhttp.open(&quot;GET&quot;, &quot;cd_catalog.xml&quot;);</code></p><p id="1c6694d5-ea46-80bc-aa66-c6c45055198f" class=""><code>xhttp.send();</code></p><p id="1c6694d5-ea46-808c-bc0c-ee452340b164" class=""><code>}</code></p><p id="1c6694d5-ea46-8088-92ad-c03eb612d5d5" class=""><code>function myFunction(cd) {</code></p><p id="1c6694d5-ea46-80c6-b893-e597cd6b02f9" class=""><code>let table=&quot;&lt;tr&gt;&lt;th&gt;Artist&lt;/th&gt;&lt;th&gt;Title&lt;/th&gt;&lt;/tr&gt;&quot;;</code></p><p id="1c6694d5-ea46-8010-b59a-df2c3e450a4b" class=""><code>for (let i = 0; i &lt; cd.length; i++) {</code></p><p id="1c6694d5-ea46-80f3-91ec-d43bc84358bf" class=""><code>table += &quot;&lt;tr&gt;&lt;td&gt;&quot; +</code></p><p id="1c6694d5-ea46-80f4-93c6-e962ab9f7c7b" class=""><code>cd[i].getElementsByTagName(&quot;ARTIST&quot;)[0].childNodes[0].nodeValue +</code></p><p id="1c6694d5-ea46-80e3-bd32-f977e4211d14" class=""><code>&quot;&lt;/td&gt;&lt;td&gt;&quot; +</code></p><p id="1c6694d5-ea46-8083-add3-d7ede720a94f" class=""><code>cd[i].getElementsByTagName(&quot;TITLE&quot;)[0].childNodes[0].nodeValue +</code></p><p id="1c6694d5-ea46-80c6-90f6-ccf0a026a409" class=""><code>&quot;&lt;/td&gt;&lt;/tr&gt;&quot;;</code></p><p id="1c6694d5-ea46-8083-8cf4-e87b93123c98" class=""><code>}</code></p><p id="1c6694d5-ea46-8058-9c50-f90b7f0b1f47" class=""><code>document.getElementById(&quot;demo&quot;).innerHTML = table;</code></p><p id="1c6694d5-ea46-808f-8bd2-eb8ff73c4762" class=""><code>}</code></p><p id="1c6694d5-ea46-80f4-9bac-f5852a4ac243" class=""><code>&lt;/script&gt;</code></p><p id="1c6694d5-ea46-800f-84a0-def069f580c7" class=""><code>&lt;/body&gt;</code></p><p id="1c6694d5-ea46-80e3-9bfb-f6280aedece3" class=""><code>&lt;/html&gt;</code></p></blockquote><p id="1c6694d5-ea46-8035-8da4-d53b6665b61b" class=""><strong>在HTML的div&gt;元素中显示第一张CD信息</strong></p><blockquote id="1c6694d5-ea46-8081-963e-fec8140c6ed2" class=""><code>const xhttp = new XMLHttpRequest();</code><p id="1c6694d5-ea46-80ce-8426-f6b3777dfb4c" class=""><code>xhttp.onload = function() {</code></p><p id="1c6694d5-ea46-80b6-992b-cca8ae8c8ffd" class=""><code>const xmlDoc = xhttp.responseXML;</code></p><p id="1c6694d5-ea46-80d5-b73c-f8461fa0a5e8" class=""><code>const cd = xmlDoc.getElementsByTagName(&quot;CD&quot;);</code></p><p id="1c6694d5-ea46-80f9-ae4f-c42afff6a00f" class=""><code>myFunction(cd, 0);</code></p><p id="1c6694d5-ea46-80d8-a003-f66203fa1c63" class=""><code>}</code></p><p id="1c6694d5-ea46-8020-83e3-c9af5c985120" class=""><code>xhttp.open(&quot;GET&quot;, &quot;cd_catalog.xml&quot;);</code></p><p id="1c6694d5-ea46-809b-917a-ef8bcf958f9e" class=""><code>xhttp.send();</code></p><p id="1c6694d5-ea46-80f2-97c6-e8d3aac9bd0f" class=""><code>function myFunction(cd, i) {</code></p><p id="1c6694d5-ea46-8071-b4fa-fb46998ed7b8" class=""><code>document.getElementById(&quot;showCD&quot;).innerHTML =</code></p><p id="1c6694d5-ea46-80ca-8a6f-ede54d5a400c" class=""><code>&quot;Artist: &quot; +</code></p><p id="1c6694d5-ea46-802f-a03e-f32e58c52786" class=""><code>cd[i].getElementsByTagName(&quot;ARTIST&quot;)[0].childNodes[0].nodeValue +</code></p><p id="1c6694d5-ea46-80b6-b8cf-f842390727b0" class=""><code>&quot;&lt;br&gt;Title: &quot; +</code></p><p id="1c6694d5-ea46-8042-a76b-d72c56d345df" class=""><code>cd[i].getElementsByTagName(&quot;TITLE&quot;)[0].childNodes[0].nodeValue +</code></p><p id="1c6694d5-ea46-806b-ae06-f6f509383a0e" class=""><code>&quot;&lt;br&gt;Year: &quot; +</code></p><p id="1c6694d5-ea46-80b4-b721-e88f481981bb" class=""><code>cd[i].getElementsByTagName(&quot;YEAR&quot;)[0].childNodes[0].nodeValue;</code></p><p id="1c6694d5-ea46-803f-be59-de4326d1a6ca" class=""><code>}</code></p></blockquote><p id="1c6694d5-ea46-8001-8ecd-cf046b7ad160" class=""><strong>在CD之间导航，可以查看上下信息</strong></p><blockquote id="1c6694d5-ea46-807b-96b9-fa7a47474708" class=""><code>function next() {</code><p id="1c6694d5-ea46-80fc-973d-f222aa4b8c45" class=""><code>// display the next CD, unless you are on the last CD</code></p><p id="1c6694d5-ea46-8019-86b2-d700ae085bb0" class=""><code>if (i &lt; len-1) {</code></p><p id="1c6694d5-ea46-80f4-b1d8-d614efd7c2d0" class=""><code>i++;</code></p><p id="1c6694d5-ea46-8003-a452-de56d5e99cfc" class=""><code>displayCD(i);</code></p><p id="1c6694d5-ea46-8099-b9fc-edc313e0dad7" class=""><code>}</code></p><p id="1c6694d5-ea46-8091-8578-cd0d61abe49e" class=""><code>}</code></p><p id="1c6694d5-ea46-80b1-9756-c6788b8ef2ef" class=""><code>function previous() {</code></p><p id="1c6694d5-ea46-80ee-b8e6-e7c5a3b85abe" class=""><code>// display the previous CD, unless you are on the first CD</code></p><p id="1c6694d5-ea46-80b9-a349-e9a175c9b511" class=""><code>if (i &gt; 0) {</code></p><p id="1c6694d5-ea46-8088-b320-ed552b75ca4c" class=""><code>i--;</code></p><p id="1c6694d5-ea46-8081-8d09-e7ab6f331613" class=""><code>displayCD(i);</code></p><p id="1c6694d5-ea46-8036-a02c-cd7de890da54" class=""><code>}</code></p><p id="1c6694d5-ea46-80a0-80db-ddf11766f950" class=""><code>}</code></p></blockquote><p id="1c6694d5-ea46-8029-b6f7-c2ca5f1cb547" class="">单击CD时显示专辑的信息</p><blockquote id="1c6694d5-ea46-800b-a022-e0fce3f26865" class=""><code>function displayCD(i) {</code><p id="1c6694d5-ea46-8075-9d75-c96895fc6f33" class=""><code>document.getElementById(&quot;showCD&quot;).innerHTML =</code></p><p id="1c6694d5-ea46-805c-8e3e-e5c868a1cfcc" class=""><code>&quot;Artist: &quot; +</code></p><p id="1c6694d5-ea46-8022-9135-f4d64ef9b813" class=""><code>cd[i].getElementsByTagName(&quot;ARTIST&quot;)[0].childNodes[0].nodeValue +</code></p><p id="1c6694d5-ea46-80e6-9835-e20f9f021dea" class=""><code>&quot;&lt;br&gt;Title: &quot; +</code></p><p id="1c6694d5-ea46-8031-8044-c1890b13b433" class=""><code>cd[i].getElementsByTagName(&quot;TITLE&quot;)[0].childNodes[0].nodeValue +</code></p><p id="1c6694d5-ea46-80e8-b485-eace78b890e8" class=""><code>&quot;&lt;br&gt;Year: &quot; +</code></p><p id="1c6694d5-ea46-8035-a887-eac7cc4b1ce5" class=""><code>cd[i].getElementsByTagName(&quot;YEAR&quot;)[0].childNodes[0].nodeValue;</code></p><p id="1c6694d5-ea46-8098-a106-e099efa65247" class=""><code>}</code></p></blockquote><p id="1c6694d5-ea46-807f-bcfb-c6f3895fbc40" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

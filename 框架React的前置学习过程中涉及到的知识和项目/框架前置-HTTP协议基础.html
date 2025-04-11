@@ -1,0 +1,687 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>框架前置-HTTP协议基础</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-default_background {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.highlight-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.block-color-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: undefined; }
+.select-value-color-pink { background-color: rgba(225, 136, 179, 0.27); }
+.select-value-color-purple { background-color: rgba(168, 129, 197, 0.27); }
+.select-value-color-green { background-color: rgba(123, 183, 129, 0.27); }
+.select-value-color-gray { background-color: rgba(84, 72, 49, 0.15); }
+.select-value-color-transparentGray { background-color: undefined; }
+.select-value-color-translucentGray { background-color: undefined; }
+.select-value-color-orange { background-color: rgba(224, 124, 57, 0.27); }
+.select-value-color-brown { background-color: rgba(210, 162, 141, 0.35); }
+.select-value-color-red { background-color: rgba(244, 171, 159, 0.4); }
+.select-value-color-yellow { background-color: rgba(236, 191, 66, 0.39); }
+.select-value-color-blue { background-color: rgba(93, 165, 206, 0.27); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="1c3694d5-ea46-8051-a39b-efab76d0c793" class="page sans"><header><h1 class="page-title">框架前置-HTTP协议基础</h1><p class="page-description"></p></header><div class="page-body"><p id="1c3694d5-ea46-800b-a199-e1b56867063d" class=""><mark class="highlight-red"><strong>HTTP概况：</strong></mark></p><p id="1c3694d5-ea46-8047-9ce2-d39b02b6f1be" class=""><strong>1.http：</strong></p><p id="1c3694d5-ea46-80da-9078-f0311e011ac6" class="">超文本传输协议，用于分布式、协作式、超媒体信息系统的协议，</p><p id="1c3694d5-ea46-805f-ab24-d8106292c8b8" class="">设计目的是确保客户端与服务端之间的通信，</p><p id="1c3694d5-ea46-80ae-94db-fa7a3b40b70f" class="">基于TCP/IP通信协议来传递数据，图片、文件、查询结果等，</p><p id="1c3694d5-ea46-808b-aa48-e1c36501be65" class="">
+</p><p id="1c3694d5-ea46-80fb-8e84-d41f63ef594b" class=""><strong>2.http的请求与响应：</strong></p><p id="1c3694d5-ea46-80cc-b6ed-e454a73a25b6" class="">http的基本工作原理是“客户端”向“服务器”发送请求，服务器接收并返回相应的资源，包含网页、图形、音频等</p><p id="1c3694d5-ea46-8005-a9af-fd4345410aff" class="">HTTP使用了客户端-服务器模型，其中客户端发送请求、服务器返回响应</p><p id="1c3694d5-ea46-80fb-bcb5-f1d3fa6c08b4" class="">HTTP的请求-响应模型有以下几个步骤组成</p><ul id="1c3694d5-ea46-8032-9116-f3dbfc3a9886" class="bulleted-list"><li style="list-style-type:disc">建立连接：客户端与服务器之间建立连接，基于不同协议</li></ul><ul id="1c3694d5-ea46-8081-a295-fe8a48be4845" class="bulleted-list"><li style="list-style-type:disc">发送请求：客户端向服务器发送请求，请求中包含要访问的资源的URL、请求方法（GET、POST、PUT、DELETE等）、请求头（例如，Accept、User-Agent）以及可选的请求体（对于POST或PUT请求）</li></ul><ul id="1c3694d5-ea46-8001-b267-f76e6b9c5bab" class="bulleted-list"><li style="list-style-type:disc">处理请求：服务器接收请求之后，根据请求的信息找到相应的资源，执行相应的处理操作，其中涉及从数据库中检索数据、生成动态内容、简单的返回静态文件等，</li></ul><ul id="1c3694d5-ea46-8008-b1f6-c9c16f45a5c6" class="bulleted-list"><li style="list-style-type:disc">发送响应：服务器处理后的结果封装在响应中，并将其发送回给客户端，响应包含状态码（用于指示请求的成功或失败）、响应头（Content-TYPE、Content-Length等）以及可选的响应体（HTML页面、图形数据等）</li></ul><ul id="1c3694d5-ea46-8002-8fad-ec1d81aab3dd" class="bulleted-list"><li style="list-style-type:disc">关闭连接：在完成请求-响应周期后，客户端与服务器之间的链接可以被关闭，除非是用了持久连接（HTTP/1.1中的keep-alive）</li></ul><p id="1c3694d5-ea46-803c-b2e2-e2e2fd4ae34b" class=""><strong>3.http方法：</strong></p><p id="1c3694d5-ea46-80a5-b300-f62600ab6766" class="">HTTP方法制定了哭护短可以对服务器上的资源执行哪些操作</p><p id="1c3694d5-ea46-8033-a8be-ce66fc45c48e" class="">主要的HTTP方法有</p><ul id="1c3694d5-ea46-80a5-b957-fe45d8fcb833" class="bulleted-list"><li style="list-style-type:disc">GET：请求从服务器获取指定资源</li></ul><ul id="1c3694d5-ea46-80b1-b9ca-f3479ac7117a" class="bulleted-list"><li style="list-style-type:disc">POST：请求服务器接收并处理请求体中的数据，通常用于表单提交</li></ul><ul id="1c3694d5-ea46-80d4-bb64-c35ff5c93e87" class="bulleted-list"><li style="list-style-type:disc">PUT：请求服务器存储的一个资源，并用请求体中的内容替换目标资源的所有内容</li></ul><ul id="1c3694d5-ea46-80cd-85d6-c2032dbe1a85" class="bulleted-list"><li style="list-style-type:disc">DELETE：请求服务器删除指定资源</li></ul><ul id="1c3694d5-ea46-80f0-a85c-fbd89e227d1d" class="bulleted-list"><li style="list-style-type:disc">HEAD：与GET类似，但不获取资源的内容，只获取响应头的信息</li></ul><p id="1c3694d5-ea46-8082-92b1-d298f01b4441" class=""><strong>4.http状态码：</strong></p><p id="1c3694d5-ea46-8045-ac9b-e6cbcf7665d9" class="">HTTP状态码是服务器对客户端请求的响应。</p><p id="1c3694d5-ea46-80f0-81d6-f0d66ac5d0ff" class="">状态码分为五类：</p><ul id="1c3694d5-ea46-80da-914d-cfc2f31a62d8" class="bulleted-list"><li style="list-style-type:disc">1xx（信息型状态码）：表示接受的请求正在处理</li></ul><ul id="1c3694d5-ea46-800d-8699-e460f1018c45" class="bulleted-list"><li style="list-style-type:disc">2xx（成功状态码）：表示请求正常处理完毕</li></ul><ul id="1c3694d5-ea46-8054-8435-cd8cf53ca1e9" class="bulleted-list"><li style="list-style-type:disc">3xx（重定向状态码）：表示需要后续操作才能完成这一请求</li></ul><ul id="1c3694d5-ea46-8048-adcf-d0815eaafb9e" class="bulleted-list"><li style="list-style-type:disc">4xx（客户端错误状态码）：表示请求包含语法错误或者无法完成</li></ul><ul id="1c3694d5-ea46-80fc-ae6b-de1938035fcb" class="bulleted-list"><li style="list-style-type:disc">5xx（服务器错误状态码）：服务器在处理请求的过程中发生了错误</li></ul><p id="1c3694d5-ea46-805f-b529-e9fc53d12c99" class=""><strong>5.http版本：</strong></p><p id="1c3694d5-ea46-807f-966a-e11797bac843" class="">广泛使用的是HTTP/1.1和HTTP/2，以及正在推广的HTTP/3</p><ul id="1c3694d5-ea46-80e5-9453-f188ca6bf173" class="bulleted-list"><li style="list-style-type:disc">HTTO/1.1：支持持久链接，允许多个请求、响应通过同一个TCP链接传输，减少了建立和关闭连接的消耗。</li></ul><ul id="1c3694d5-ea46-803a-8b0b-fef819d69502" class="bulleted-list"><li style="list-style-type:disc">HTTP/2：基于二进制分帧，支持多路复用，允许同时通过单一的HTTP/2连接发起多重的、独立的、双向的交流</li></ul><ul id="1c3694d5-ea46-80cd-9d39-e0a30558450c" class="bulleted-list"><li style="list-style-type:disc">HTTP/3：基于QUIC协议，意在减少网络延迟，提高传输速度和安全性</li></ul><p id="1c3694d5-ea46-8072-bb1d-fd12d9bc6185" class=""><strong>6.安全性：</strong></p><p id="1c3694d5-ea46-80ed-8fcc-ef9617c745ae" class="">HTTP本身并不安全，传输的数据未经加密，会被窃听或篡改</p><p id="1c3694d5-ea46-8088-bb78-dd8ef9cf3f31" class="">HTTPS，在HTTP上加入SSL/TLS协议，为数据传输替拱了加密和身份验证</p><p id="1c3694d5-ea46-80b0-9136-ca51b61ef33d" class=""><mark class="highlight-red"><strong>HTTP与HTTPS</strong></mark></p><p id="1c3694d5-ea46-80ce-bd07-de4426a2d30e" class=""><strong>1.HTTP/HTTPS简介</strong></p><p id="1c3694d5-ea46-8077-ad38-e5cc4f780149" class=""><strong>http（超文本传输协议）：</strong></p><p id="1c3694d5-ea46-8052-a399-f1e0c9088684" class="">是一种用于从网络传输超文本到本地浏览器的传输协议。它定义了客户端与服务器之间请求和响应的格式。HTTP 工作在 TCP/IP 模型之上，通常使用http：//作为URL,端口使用80</p><p id="1c3694d5-ea46-8090-b842-e1b69deee341" class=""><strong>https（超文本传输安全协议）：</strong></p><p id="1c3694d5-ea46-80d1-94c0-f6ce5f7b97c8" class="">时http的安全版本，增加了SSL/TLS协议，提供了数据加密、完整性校验和身份验证。HTTPS通常使用https：//作为URL，端口使用443</p><p id="1c3694d5-ea46-802f-adec-fe5827dd5f05" class=""><strong>2.HTTP工作原理</strong></p><p id="1c3694d5-ea46-8090-91da-cb3ce2d8a290" class="">http协议工作与客户端-服务端架构上，工作过程通常如下</p><ul id="1c3694d5-ea46-8011-90b3-d10637f61569" class="bulleted-list"><li style="list-style-type:disc">客户端发起请求：用户使用客户端，输入URL，客户端向服务器发起一个HTTP请求</li></ul><ul id="1c3694d5-ea46-8012-a777-ce5174ef0fe3" class="bulleted-list"><li style="list-style-type:disc">服务器处理请求：服务器接收请求后，根据请求的类型（GET、POST等）和请求的资源，进行相应的处理。</li></ul><ul id="1c3694d5-ea46-80b3-a717-ff58ffaa1a8e" class="bulleted-list"><li style="list-style-type:disc">服务器返回响应：服务器将处理结果包装成HTTP响应，发送回客户端</li></ul><ul id="1c3694d5-ea46-8019-995a-f06781aae1dd" class="bulleted-list"><li style="list-style-type:disc">客户端渲染页面：客户端接收到响应后，根据相应内容（html、图片等）渲染页面、展示给用户</li></ul><p id="1c3694d5-ea46-80db-b635-ff801b8746d3" class="">http默认端口号为80，也可以改为8080或其他端口</p><p id="1c3694d5-ea46-80d3-a83b-eab5fa4bb0ce" class=""><strong>http注意事项：</strong></p><ul id="1c3694d5-ea46-80cb-af88-c171c955e647" class="bulleted-list"><li style="list-style-type:disc">HTTP是无连接：无连接含义指限制每次链接只处理一个请求，服务器处理完客户的请求，并接收到客户的应答后，断开连接，采用这种方式可以节省传输时间</li></ul><ul id="1c3694d5-ea46-8076-b107-c553a13e45ed" class="bulleted-list"><li style="list-style-type:disc">HTTP是媒体独立的：只要客户端和客户端知道如何处理数据内容，任何类型的数据都可以通过HTTP发送，客户端以及服务器指定使用合适的MME-type内容类型</li></ul><ul id="1c3694d5-ea46-80a1-ac2d-d8e8d9b394ee" class="bulleted-list"><li style="list-style-type:disc">HTTP是无状态：HTTP是无状态协议，无状态是指协议对于事务处理没有记忆能力，缺少状态意味着如果后续处理前面的信息，他必须重传，这样可能导致每次连接传送的数据量增大，另一方面，在服务器不需要先前信息时，他的应答就比较快。</li></ul><p id="1c3694d5-ea46-803a-a54f-e88d102d079b" class=""><strong>3.HTTPS作用</strong></p><p id="1c3694d5-ea46-80c2-bf37-d79f03afd7e2" class="">HTTPS主要作用是在不安全的网络上创建一个安全信道，可使用前挡的加密宝和服务器整数，可以被验证且信任时，对窃听和中间人攻击提供合理的防护。</p><p id="1c3694d5-ea46-801c-bbaa-f20e11f11a98" class="">HTTPS的新认识基于预先安装在操作系统中的证书颁发机构CA</p><p id="1c3694d5-ea46-802c-8d17-cbbb18e3150a" class="">一个网站被信任需要以下条件</p><ul id="1c3694d5-ea46-80d4-987e-c7d92088544f" class="bulleted-list"><li style="list-style-type:disc">浏览器正确的实现了HTTPS，且操作系统中安装了CA</li></ul><ul id="1c3694d5-ea46-809c-9596-c8b9f54ea717" class="bulleted-list"><li style="list-style-type:disc">证书颁发机构仅信任合法的网站</li></ul><ul id="1c3694d5-ea46-800d-95b6-db6375719eb1" class="bulleted-list"><li style="list-style-type:disc">被访问的网站提供有效的证书，若无效证书浏览器会发出警告</li></ul><ul id="1c3694d5-ea46-80e8-bc2e-cf7ef7c1eabe" class="bulleted-list"><li style="list-style-type:disc">该证书正确的验证了被访问的网站</li></ul><ul id="1c3694d5-ea46-8066-8cf5-cf02b0ac7ad3" class="bulleted-list"><li style="list-style-type:disc">此协议的加密层能够有效的提供认证和高强度的加密</li></ul><p id="1c3694d5-ea46-808d-a013-d4d174116942" class=""><strong>4.HTTP与HTTPS区别</strong></p><p id="1c3694d5-ea46-8050-9a54-e1ca2689cf9b" class="">二者在安全性上有着本质的区别，建议使用HTTPS来提高安全性</p><p id="1c3694d5-ea46-808e-945a-c351da2c04ac" class="">主要区别如下</p><ul id="1c3694d5-ea46-80c8-985d-e296129e5394" class="bulleted-list"><li style="list-style-type:disc">加密：</li></ul><p id="1c3694d5-ea46-8043-873a-f62207bf6f81" class="">http：传输数据过程不加密，容易被截获和篡改</p><p id="1c3694d5-ea46-80d0-823e-d6a6b908ff57" class="">https：使用SSL/TLS协议对传输的数据进行加密，保护数据传输过程中的安全性</p><ul id="1c3694d5-ea46-80c5-85c9-f1cf79cfe35c" class="bulleted-list"><li style="list-style-type:disc">端口：</li></ul><p id="1c3694d5-ea46-8091-b207-fea15cb56783" class="">http：默认端口80</p><p id="1c3694d5-ea46-8052-b7ba-f9b1225532ee" class="">https：默认端口443</p><ul id="1c3694d5-ea46-8047-ab35-ec94380200da" class="bulleted-list"><li style="list-style-type:disc">安全性：</li></ul><p id="1c3694d5-ea46-80a2-a61e-dfc2b27bf660" class="">http：不提供数据加密，安全性较低</p><p id="1c3694d5-ea46-806e-9a82-ff10f92ae9c3" class="">https：提供数据加密和完整性检验，安全性高</p><ul id="1c3694d5-ea46-800a-b4a4-ca8a617901a6" class="bulleted-list"><li style="list-style-type:disc">证书：</li></ul><p id="1c3694d5-ea46-80bf-b1da-f617fd118846" class="">http：不需要证书</p><p id="1c3694d5-ea46-80a5-828f-cb98e98a3907" class="">https：需要SSL整数来启用加密，并验证服务器身份</p><ul id="1c3694d5-ea46-80ae-924f-d4fe705ef8f7" class="bulleted-list"><li style="list-style-type:disc">性能：</li></ul><p id="1c3694d5-ea46-802d-9bd7-f1ad88cb2bfd" class="">http：不用加密数据，性能略高</p><p id="1c3694d5-ea46-802b-ab68-eb46c3beb51e" class="">https：需要进行加密和解密，可能会有一定性能减弱</p><ul id="1c3694d5-ea46-8075-a5fe-f6fa027ddc5c" class="bulleted-list"><li style="list-style-type:disc">搜索引擎优化：</li></ul><p id="1c3694d5-ea46-80bb-9084-c9f5f37ab879" class="">http：搜索引擎可能会对没有HTTPS网站进行降权</p><p id="1c3694d5-ea46-807c-978b-e070ff2cbb85" class="">https：搜索引擎倾向于优先索引和展示使用HTTPS的网站</p><ul id="1c3694d5-ea46-8040-aa0b-eccdca14039d" class="bulleted-list"><li style="list-style-type:disc">浏览器显示：</li></ul><p id="1c3694d5-ea46-80ff-a65b-c4ba1a1d54d8" class="">http：在大多数浏览器中，HTTP网站显示为不安全</p><p id="1c3694d5-ea46-80fc-8f19-d38aa10bbb94" class="">https：浏览器会显示一个锁形图表，表示网站是安全的</p><ul id="1c3694d5-ea46-80ce-8b54-da99ed977f0f" class="bulleted-list"><li style="list-style-type:disc">成本：</li></ul><p id="1c3694d5-ea46-80ff-8077-d8463d734356" class="">http：通常免费</p><p id="1c3694d5-ea46-800d-bd1f-c7dcc269ddc0" class="">https：需要购买SSL证书，有一定成本</p><ul id="1c3694d5-ea46-80b8-9772-c8b478e00d2e" class="bulleted-list"><li style="list-style-type:disc">应用场景</li></ul><p id="1c3694d5-ea46-8072-baa5-ea8252bfd207" class="">http：适用于不需要传输敏感信息的网站，新闻、博客等</p><p id="1c3694d5-ea46-8041-b5a7-fba1b02769e8" class="">https：适用于需要传输敏感信息的网站，如网上银行、在线购物、电子邮件等</p><p id="1c3694d5-ea46-80d2-bfd6-db7f39744f58" class="">
+</p><p id="1c3694d5-ea46-80ee-9669-eba8ba1eec11" class=""><mark class="highlight-red"><strong>HTTP消息结构</strong></mark></p><p id="1c3694d5-ea46-807a-bb8b-d69ab16ac918" class=""><strong>1.HTTP消息结构：</strong></p><p id="1c3694d5-ea46-80ea-ae18-ccc1bd68bc45" class="">http是基于客户端/服务端（C/S）的架构模型，通过一个可靠的链接来交换信息，是一个无状态的请求/响应协议</p><p id="1c3694d5-ea46-8098-a62e-fc419324af4c" class="">http消息是客户端和服务器之间通信的基础，他们由一系列文本行组成，遵循特定的格式和结构</p><p id="1c3694d5-ea46-805f-8394-d7514914a140" class=""><strong>http消息分为两种类型：请求消息和响应消息</strong></p><p id="1c3694d5-ea46-804d-aa6c-fa080dee4393" class="">http客户端是一个应用程序，通过连接到服务器，达到向服务器发送一个或多个HTTP请求的目的</p><p id="1c3694d5-ea46-80b5-925d-c0b612e63e09" class="">http服务器同样也是一个应用程序（通常是一个web服务，如Nginx、Apache服务器或IIS服务器等），通过接收客户端的请求并向客户端发送HTTP响应数据。</p><p id="1c3694d5-ea46-80c7-b62b-dd62bcf9c569" class=""><strong>2.客户端请求消息：</strong></p><p id="1c3694d5-ea46-8049-bbc1-dabd71d2aa31" class="">客户端发送一个HTTP请求到服务器的请求消息包括以下格式：请求行（request line）、请求头（header）、空行和请求数据四个部分组成。</p><p id="1c3694d5-ea46-80aa-9abe-d8273e27e826" class=""><strong>请求的一般格式：</strong></p><p id="1c3694d5-ea46-802e-aa3a-feb961f8e1bc" class="">请求方法  空格  URL   空格   协议版本  回车符  换行符  （请求行）</p><p id="1c3694d5-ea46-80c1-a4ea-dee7255e852c" class="">头部字段名  ：  值    回车符  换行符</p><p id="1c3694d5-ea46-80d6-9833-f9b423c8e712" class="">                     ………                                   （三行为请求头部）</p><p id="1c3694d5-ea46-8068-9c45-cc845a23faa4" class="">头部字段名   ：  值   回车符  换行符 </p><p id="1c3694d5-ea46-804f-9807-d6e000f41e4b" class="">回车符  换行符  </p><p id="1c3694d5-ea46-80fe-8c32-cf309f0175f9" class="">                    …….                                              （请求数据）</p><p id="1c3694d5-ea46-8070-9d5f-dd0fe1279f24" class=""><strong>解释格式：</strong></p><ul id="1c3694d5-ea46-8043-a2a2-c3e97970f1c4" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-default"><strong>请求行（Request Line）：</strong></mark></li></ul><p id="1c3694d5-ea46-8073-8f77-cbd106ef5ff7" class="">方法：GET、POST、PUT、DELETE等，指定要执行的操作</p><p id="1c3694d5-ea46-80c8-aeb5-db104c52e1d2" class="">请求URL（统一资源标识符）：请求的资源路径，包括主机名、端口号、路径和查询字符串</p><p id="1c3694d5-ea46-8084-8472-ffc1426d2593" class="">HTTP版本：如HTTP/1.1或HTTP/2</p><p id="1c3694d5-ea46-802e-9b2d-c25380e0833e" class=""><strong>请求行格式示例（GET /index.html HTTP/1.1）</strong></p><ul id="1c3694d5-ea46-80c7-98e6-e125c5c1c900" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-default"><strong>请求头（Request Headers）</strong></mark></li></ul><p id="1c3694d5-ea46-809a-88b0-d85faa1c30cb" class="">包含了客户端环境信息、请求体的大小（如果有）、客户端支持的压缩类型等</p><p id="1c3694d5-ea46-80f0-82a0-f9a96fb2b782" class="">常见的请求头包括:Host、User-Agent、Accept、Accept-Encoding、Content-Length等</p><ul id="1c3694d5-ea46-80c8-ab87-cb19e08af17f" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-default"><strong>空行</strong></mark></li></ul><p id="1c3694d5-ea46-80c6-8a47-f3fc6e045f5f" class="">请求头和请求体之间的分隔符，表示请求头的结束。</p><ul id="1c3694d5-ea46-80fd-822d-dc28eab3bd49" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-default"><strong>请求体（可选）</strong></mark></li></ul><p id="1c3694d5-ea46-80de-9f6c-ca43a24794d8" class="">在某些类型的HTTP请求（POST和PUT）中，请求体包含要发送给服务器的数据</p><p id="1c3694d5-ea46-805e-986b-d77ef37d5727" class=""><strong>3.服务器响应消息：</strong></p><p id="1c3694d5-ea46-801e-9037-c4f7f793712e" class="">HTTP响应由四个部分组成，分别是状态行、消息报头、空行和相应正文。</p><p id="1c3694d5-ea46-8054-a009-e34d31dd66f4" class=""><strong>响应的一般格式：</strong></p><p id="1c3694d5-ea46-808a-bcf6-db4267300acf" class="">HTTP/1.1 200 ok                                                      <strong>状态行</strong></p><p id="1c3694d5-ea46-8028-bad5-dcb658145bcb" class="">date：Sat，31 Dec 2005 23：59：59 GMT</p><p id="1c3694d5-ea46-8095-8d9c-df6a45e45e65" class="">Content-Type：text/html；charset=ISO-8859-1        <strong>三行为消息报头</strong></p><p id="1c3694d5-ea46-8018-ba72-fc02aa1640fa" class="">Content-Length： 122</p><p id="1c3694d5-ea46-802b-a35f-ce293832075b" class="">                                                                                     <strong>空行</strong></p><p id="1c3694d5-ea46-8044-b260-dc533c6f5abe" class="">html&gt;</p><p id="1c3694d5-ea46-8046-961f-f466503f9978" class="">head&gt;</p><p id="1c3694d5-ea46-80b5-920f-c8c0478e4e40" class="">&lt;/head&gt;                       <strong>相应正文</strong></p><p id="1c3694d5-ea46-805d-b6ef-c610573c480f" class="">body&gt;</p><p id="1c3694d5-ea46-808c-be29-dbdb88038a78" class="">&lt;/body&gt;</p><p id="1c3694d5-ea46-80f0-bd13-cb96dba896f7" class="">&lt;/html&gt;</p><ul id="1c3694d5-ea46-8010-b256-c530bdc38df1" class="bulleted-list"><li style="list-style-type:disc">状态行</li></ul><p id="1c3694d5-ea46-8065-a5b0-e0de0fd5613a" class="">HTTP版本：与请求消息中的版本相匹配</p><p id="1c3694d5-ea46-8045-ba9d-c81c0141ebe6" class="">状态码：三位数，表示请求的处理结果</p><p id="1c3694d5-ea46-80e3-b9e4-c3d37cf3d0a2" class="">状态信息：状态码的简短描述</p><p id="1c3694d5-ea46-808b-abe9-c29bdc244e21" class="">状态行的格式示例：<code>HTTP/1.1 200 OK</code></p><ul id="1c3694d5-ea46-809d-83d9-c22082c07f03" class="bulleted-list"><li style="list-style-type:disc">响应头</li></ul><p id="1c3694d5-ea46-80b3-a51b-eb8d034f4e1a" class="">包含了服务器环境信息、响应体的大小、服务器支持的压缩类型等。</p><p id="1c3694d5-ea46-804d-9d6c-fa8ee073cd8f" class="">常见的响应头包括<code>Content-Type</code>、<code>Content-Length</code>、<code>Server</code>、<code>Set-Cookie</code>等。</p><ul id="1c3694d5-ea46-803e-9102-ce55254d4a14" class="bulleted-list"><li style="list-style-type:disc">空行</li></ul><p id="1c3694d5-ea46-8070-9dae-e14ed7c63d75" class="">响应头和响应体之间的分隔符，表示响应头的结束。</p><ul id="1c3694d5-ea46-800d-93d8-c1f5954e126f" class="bulleted-list"><li style="list-style-type:disc">响应体</li></ul><p id="1c3694d5-ea46-809a-9efd-f28f4deea8f8" class="">包含服务器返回的数据，如请求的网页内容、图片、JSON数据等</p><p id="1c3694d5-ea46-80c3-8c12-d649fc246842" class=""><strong>示例：使用GET来传递数据</strong></p><p id="1c3694d5-ea46-8004-870d-ea992a131cae" class="">客户端请求：</p><p id="1c3694d5-ea46-8080-b6d8-c7ffaa859158" class="">GET /index.html HTTP/1.1<br/>Host: <br/><a href="http://www.example.com/">www.example.com</a><br/>User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101 Firefox/91.0<br/>Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,<br/><em>/</em>;q=0.8<br/>Accept-Encoding: gzip, deflate<br/>Connection: keep-alive<br/></p><p id="1c3694d5-ea46-808d-93b5-cd2827a5e2f9" class="">服务端响应：</p><p id="1c3694d5-ea46-80ae-910d-cb29352bc40e" class="">HTTP/1.1 200 OK<br/>Date: Wed, 18 Apr 2024 12:00:00 GMT<br/>Server: Apache/2.4.1 (Unix)<br/>Last-Modified: Wed, 18 Apr 2024 11:00:00 GMT<br/>Content-Length: 12345<br/>Content-Type: text/html; charset=UTF-8<br/></p><p id="1c3694d5-ea46-80db-9cc5-c83b4fa424ae" class="">&lt;!DOCTYPE html&gt;<br/>&lt;html&gt;<br/>&lt;head&gt;<br/>&lt;title&gt;Example Page&lt;/title&gt;<br/>&lt;/head&gt;<br/>&lt;body&gt;<br/>&lt;h1&gt;Hello, World!&lt;/h1&gt;<br/>&lt;!-- The rest of the HTML content --&gt;<br/>&lt;/body&gt;<br/>&lt;/html&gt;<br/></p><p id="1c3694d5-ea46-8093-8372-ddec2ec0a88e" class=""><strong>在实际应用中，HTTP 消息可以包含更多的头字段，并且请求体和响应体的大小会根据传输的数据而变化</strong></p><p id="1c4694d5-ea46-80e4-9ea5-c104dcff67ee" class="">
+</p><p id="1c3694d5-ea46-809b-9ed5-cd21728afd4c" class=""><strong>4.请求方法：</strong></p><p id="1c4694d5-ea46-8087-bd4e-f832368348ae" class="">常见请求方法如下：</p><ul id="1c4694d5-ea46-80a3-8a61-df3472005d9d" class="bulleted-list"><li style="list-style-type:disc"><strong>GET:</strong></li></ul><p id="1c4694d5-ea46-8002-bfc7-d5561c4a9784" class="">从服务器获取资源，用于请求数据而不对数据进行修改，如从服务器获取网页图片等</p><ul id="1c4694d5-ea46-80ea-99d2-decb035c83ad" class="bulleted-list"><li style="list-style-type:disc"><strong>POST:</strong></li></ul><p id="1c4694d5-ea46-8098-a7d3-e10751ef789f" class="">向服务器发送数据以创建新资源，常用于提交表单数据或上传文件，发送的数据包含在请求体中</p><ul id="1c4694d5-ea46-80d4-8714-e02678a0b9a9" class="bulleted-list"><li style="list-style-type:disc"><strong>PUT:</strong></li></ul><p id="1c4694d5-ea46-8034-ba6d-ff70633d6247" class="">向服务器发送数据来更新现有数据，若资源不存在，则创建新的资源，与POST不同，PUT通常是幂等的，即多次执行相同的PUT请求不会产生不同的结果</p><ul id="1c4694d5-ea46-8062-aaf2-dd2e1771f6f3" class="bulleted-list"><li style="list-style-type:disc"><strong>DELETE:</strong></li></ul><p id="1c4694d5-ea46-80a0-a1ea-f3d79ef35ac6" class="">从服务器删除指定的资源，请求中包含要删除的资源标识符</p><ul id="1c4694d5-ea46-80fb-b922-e6eadb530a2d" class="bulleted-list"><li style="list-style-type:disc"><strong>PATCH:</strong></li></ul><p id="1c4694d5-ea46-8026-8f15-ca3db4cd4757" class="">对资源进行部分修改，与PUT类似，但PATCH之更改部分数据而不是替换整个资源</p><ul id="1c4694d5-ea46-8070-b6fe-cc9ee50b56cd" class="bulleted-list"><li style="list-style-type:disc"><strong>HEAD:</strong></li></ul><p id="1c4694d5-ea46-804e-a440-cbd9116cfea7" class="">类似于GET，但服务器值返回响应的头部，不返回实际数据，用于检查资源的元数据，例如检查资源是否存在，查看响应的头部信息</p><ul id="1c4694d5-ea46-80e8-94a3-c7fb6c5040d2" class="bulleted-list"><li style="list-style-type:disc"><strong>OPTIONS:</strong></li></ul><p id="1c4694d5-ea46-80e0-bea8-ed636841226d" class="">返回服务器支持的HTTP方法，用于检查服务器支持哪些请求方法，通常用于跨域资源共享CORS的预检请求</p><ul id="1c4694d5-ea46-802c-83e0-fc0959181661" class="bulleted-list"><li style="list-style-type:disc"><strong>TRACE:</strong></li></ul><p id="1c4694d5-ea46-806d-8eb7-c86e867100b5" class="">返回服务器收到的请求，主要用于诊断，客户端可以查看请求在服务器中的处理路径</p><ul id="1c4694d5-ea46-80a7-b78e-e5361e518200" class="bulleted-list"><li style="list-style-type:disc"><strong>CONNECT:</strong></li></ul><p id="1c4694d5-ea46-80dc-b83c-e221d45f695e" class="">建立一个到服务器的通道，通常用于HTTPS链接，客户端可以通过该通道发送加密的数据</p><p id="1c4694d5-ea46-809c-bc93-fe71795c6592" class=""><strong>5.响应头信息：</strong></p><p id="1c4694d5-ea46-803f-ac2a-e5f5560ac72b" class="">HTTP响应头信息是服务器在响应客户端的HTTP请求时发送的一系列头字段，提供了关于响应的附加信息和服务器的指令。以下是常见的响应头信息</p><table id="1c4694d5-ea46-8038-a437-d1f34c7e1f89" class="simple-table"><tbody><tr id="1c4694d5-ea46-800c-a8b9-c00daa7c66b8"><td id="gzqb" class="">Date</td><td id="[]qn" class="">日期</td><td id="H\pz" class="">响应生成的日期和时间，如：Wed，18 Apr 2024 12：00：00 GMT</td></tr><tr id="1c4694d5-ea46-80ce-9125-ca8d5d77163a"><td id="gzqb" class="">Server</td><td id="[]qn" class="">服务器</td><td id="H\pz" class="">服务器软件的名称和版本，如：Apache/2.4.1（Unix）</td></tr><tr id="1c4694d5-ea46-803f-bceb-d5762eb3b2bd"><td id="gzqb" class="">Content-Type</td><td id="[]qn" class="">内容类型</td><td id="H\pz" class="">响应体的媒体类型（MIME类型），如：text/html；charset=UTF-8；application/json等</td></tr><tr id="1c4694d5-ea46-8033-85b6-f36c9c9f80d4"><td id="gzqb" class="">Content-Length</td><td id="[]qn" class="">内容长度</td><td id="H\pz" class="">响应体的大小，单位是字节，如：3145</td></tr><tr id="1c4694d5-ea46-8038-90cb-fd2b58e50859"><td id="gzqb" class="">Content-Encoding</td><td id="[]qn" class="">内容编码</td><td id="H\pz" class="">响应体的压缩编码，如gzip，deflate等</td></tr><tr id="1c4694d5-ea46-80ef-aded-e9ebc481f098"><td id="gzqb" class="">Content-Language</td><td id="[]qn" class="">内容语言</td><td id="H\pz" class="">响应体的语言，如zh-CN</td></tr><tr id="1c4694d5-ea46-809b-9d97-dd65733fd8ee"><td id="gzqb" class="">Content-Location</td><td id="[]qn" class="">内容位置</td><td id="H\pz" class="">响应体的URL，如/index.html</td></tr><tr id="1c4694d5-ea46-8046-98d9-c90864e11f58"><td id="gzqb" class="">Content-Range</td><td id="[]qn" class="">内容范围</td><td id="H\pz" class="">响应体的字节范围，用于分块传输，如：bytes 0-999/8000</td></tr><tr id="1c4694d5-ea46-8012-861c-c3f678e341d0"><td id="gzqb" class="">Cache-Control</td><td id="[]qn" class="">缓存控制</td><td id="H\pz" class="">控制响应的缓存行为，如no-cache表示必须重新请求</td></tr><tr id="1c4694d5-ea46-8079-ac89-f402e0f53082"><td id="gzqb" class="">Connection</td><td id="[]qn" class="">链接</td><td id="H\pz" class="">管理链接的选项，如keep-alive或close，keep-alive表示链接不会在传输后关闭</td></tr><tr id="1c4694d5-ea46-80a4-9538-f3d3eb3db5f8"><td id="gzqb" class="">Set-Cookie</td><td id="[]qn" class="">设置Cookie</td><td id="H\pz" class="">s何止客户端的cookie例如sessionld=abc123；path=/；secure</td></tr><tr id="1c4694d5-ea46-800c-a4b6-d74ac953c47e"><td id="gzqb" class="">Expires</td><td id="[]qn" class="">过期时间</td><td id="H\pz" class="">响应体的过期日期和时间，如Thu，18 Apr 2024 11：00：00GMT</td></tr><tr id="1c4694d5-ea46-80d2-8555-ee9f534398a0"><td id="gzqb" class="">Last-Modified</td><td id="[]qn" class="">最后修改时间</td><td id="H\pz" class="">资源最后被修改的日期，如：Wed, 18 Apr 2024 11:00:00 GMT</td></tr><tr id="1c4694d5-ea46-8003-b4a9-c8cb54c05f6c"><td id="gzqb" class="">ETag</td><td id="[]qn" class="">实体标签</td><td id="H\pz" class="">资源特定版本的标识符，如&quot;33a64df551425fcc55e6”</td></tr><tr id="1c4694d5-ea46-80b3-b59d-d9f0ece6f87b"><td id="gzqb" class="">Location</td><td id="[]qn" class="">位置</td><td id="H\pz" class="">用于重定向的URL，如/newresource</td></tr><tr id="1c4694d5-ea46-80d0-bc9e-faef10f2d8fa"><td id="gzqb" class="">Pragma</td><td id="[]qn" class="">实现特定的指令</td><td id="H\pz" class="">包含实现特定的指令，如no-cache</td></tr><tr id="1c4694d5-ea46-808b-8e46-c5e02c38c003"><td id="gzqb" class="">WWW-Authenticate</td><td id="[]qn" class="">认证信息</td><td id="H\pz" class="">认证信息通常用于HTTP认证</td></tr><tr id="1c4694d5-ea46-8096-99e9-dc4187235341"><td id="gzqb" class="">Accept-Ranges</td><td id="[]qn" class="">接受范围</td><td id="H\pz" class="">指定可接受的请求范围类型，如bytes</td></tr><tr id="1c4694d5-ea46-8061-b7dd-e560269160f5"><td id="gzqb" class="">Age</td><td id="[]qn" class="">经过时间</td><td id="H\pz" class="">响应生成后经过的描述，从原始服务器生成到代理服务器</td></tr><tr id="1c4694d5-ea46-8096-af09-ef03cba61369"><td id="gzqb" class="">Allow</td><td id="[]qn" class="">允许方法</td><td id="H\pz" class="">列出资源允许的HTTP方法</td></tr><tr id="1c4694d5-ea46-80b5-9743-cb48d7d7588d"><td id="gzqb" class="">Vary</td><td id="[]qn" class="">变化</td><td id="H\pz" class="">告诉下游代理如何使用响应头信息来确定响应是否可以从缓存中获取如Accept</td></tr><tr id="1c4694d5-ea46-8022-98b8-f7baf4fa79ec"><td id="gzqb" class="">Strict-Transport-Security</td><td id="[]qn" class="">严格传输安全</td><td id="H\pz" class="">指示浏览器仅通过HTTPS与服务器通信</td></tr><tr id="1c4694d5-ea46-8092-b7da-dd5d52525b96"><td id="gzqb" class="">X-Frame-Options</td><td id="[]qn" class="">框架选项</td><td id="H\pz" class="">控制页面是否允许在框架中显示，防止点击劫持攻击，如SAMEORIGON</td></tr><tr id="1c4694d5-ea46-808d-944c-c915af31da8c"><td id="gzqb" class="">X-Content-Type-Options</td><td id="[]qn" class="">内容类型选项</td><td id="H\pz" class="">只是浏览器不要尝试猜测资源的MIME类型，如nosniff</td></tr><tr id="1c4694d5-ea46-805a-b042-d5d837ca46fa"><td id="gzqb" class="">X-XSS-Protection</td><td id="[]qn" class="">XSS保护</td><td id="H\pz" class="">控制浏览器的XSS过滤和阻断，如1；mode=block</td></tr><tr id="1c4694d5-ea46-8006-a9c5-ca0c3eddd637"><td id="gzqb" class="">Public-Key-Pins</td><td id="[]qn" class="">公钥固定</td><td id="H\pz" class="">HTTP头信息，用于HTTP公共密钥固定（HPKP），一种安全机制，用于防止中间人攻击</td></tr></tbody></table><p id="1c4694d5-ea46-80b9-bc7e-cde57dd629b6" class=""><strong>6.HTTP状态码：</strong></p><p id="1c4694d5-ea46-80a4-a0ab-d517d5708c3a" class="">详细状态码去网络上查找</p><table id="1c4694d5-ea46-80a2-b4d8-c269360d0d74" class="simple-table"><tbody><tr id="1c4694d5-ea46-8084-b3d0-e78e443a6317"><td id="zlja" class="">1**</td><td id="XXTX" class="">信息，服务器收到请求，需要请求者继续执行操作</td></tr><tr id="1c4694d5-ea46-8037-a12b-f284b0fe3491"><td id="zlja" class="">2**</td><td id="XXTX" class="">成功，操作被成功接收并处理</td></tr><tr id="1c4694d5-ea46-80b3-ba12-cf28af072b30"><td id="zlja" class="">3**</td><td id="XXTX" class="">重定向，需要进一步的操作以完成请求</td></tr><tr id="1c4694d5-ea46-80aa-a022-d32fea43bf44"><td id="zlja" class="">4**</td><td id="XXTX" class="">客户端错误，请求包含语法错误或无法完成请求</td></tr><tr id="1c4694d5-ea46-8084-aaa1-ede8e912bc36"><td id="zlja" class="">5**</td><td id="XXTX" class="">服务器错误，服务器在处理请求的过程中发生了错误</td></tr></tbody></table><p id="1c4694d5-ea46-80cf-a3de-d356c60f2d05" class=""><strong>7.内容类型：</strong></p><p id="1c4694d5-ea46-80de-941d-d204a47ed4a8" class="">一般指网页中存在的Content-Type，用于定义网络文件的类型和网页的编码，决定浏览器以什么形式、什么编码读取这个文件，这就是经常看到一些PHP网页点击结果确实下载一个文件或一张图片</p><p id="1c4694d5-ea46-80c2-82eb-fa51791008d3" class=""><strong>Content-Type表头告诉客户端实际返回的内容的内容类型，语法如下：</strong></p><p id="1c4694d5-ea46-806d-9edc-f1f2a081b38d" class="">Content-Type: text/html; charset=utf-8<br/>Content-Type: multipart/form-data; boundary=something<br/></p><p id="1c4694d5-ea46-80a9-951b-cf3e9a847330" class=""><strong>常见的媒体格式类型：</strong></p><ul id="1c4694d5-ea46-80e4-bdea-fab1fd50febc" class="bulleted-list"><li style="list-style-type:disc">text/html：HTML格式</li></ul><ul id="1c4694d5-ea46-80b7-89d7-d92cd7ae7af4" class="bulleted-list"><li style="list-style-type:disc">text/plain：纯文本格式</li></ul><ul id="1c4694d5-ea46-80e5-9924-df94e1a43139" class="bulleted-list"><li style="list-style-type:disc">text/xml：XML格式</li></ul><ul id="1c4694d5-ea46-800b-b6b3-ca9c08dd48d9" class="bulleted-list"><li style="list-style-type:disc">image/gif：gif图片格式</li></ul><ul id="1c4694d5-ea46-80aa-9110-c299cfd70f07" class="bulleted-list"><li style="list-style-type:disc">image/jpeg：jpg图片格式</li></ul><ul id="1c4694d5-ea46-8023-9cf6-d8d6bdae24f0" class="bulleted-list"><li style="list-style-type:disc">image/png：png图片格式</li></ul><p id="1c4694d5-ea46-8008-ae0b-f388afc4e057" class=""><strong>以application开头的媒体格式：</strong></p><ul id="1c4694d5-ea46-802a-a1b4-cb151ddb5642" class="bulleted-list"><li style="list-style-type:disc">application/xhtml+xml：XHTML格式</li></ul><ul id="1c4694d5-ea46-80c4-bf26-dde457426d07" class="bulleted-list"><li style="list-style-type:disc">application/xml：XML数据格式</li></ul><ul id="1c4694d5-ea46-8094-be8d-f1252e9662bf" class="bulleted-list"><li style="list-style-type:disc">application/atom+xml：Atom XML聚合格式</li></ul><ul id="1c4694d5-ea46-80df-b458-d25c905800c4" class="bulleted-list"><li style="list-style-type:disc">application/json：JSON数据格式</li></ul><ul id="1c4694d5-ea46-80da-a028-f96fa5d265a2" class="bulleted-list"><li style="list-style-type:disc">application/pdf：pdf格式</li></ul><ul id="1c4694d5-ea46-808e-bcdb-dd274bd3a02d" class="bulleted-list"><li style="list-style-type:disc">application/msword：word文档格式i</li></ul><ul id="1c4694d5-ea46-8002-a34b-f76572ca4aac" class="bulleted-list"><li style="list-style-type:disc">application/octet-stream：二进制流数据，常见的文件下载</li></ul><ul id="1c4694d5-ea46-80cc-8f62-c878fbaacdf4" class="bulleted-list"><li style="list-style-type:disc">application/x-www-form-urlencoded：&lt;form encType=“”&gt;中默认的encType，form表单数据被编码为key/value格式发送给服务器（表单提交默认数据格式）</li></ul><p id="1c4694d5-ea46-8017-bd22-cf6cf611482c" class=""><strong>上传文件使用：</strong></p><ul id="1c4694d5-ea46-801f-938f-db8737034d7a" class="bulleted-list"><li style="list-style-type:disc">multipart/form-data：需要在表单中进行文件上传时，需要使用该格式</li></ul><p id="1c4694d5-ea46-80e6-a287-d161d02e6fc0" class=""><strong>8.MIME类型：</strong></p><p id="1c4694d5-ea46-8065-bf14-c9313393f9a1" class="">MIME是描述消息内容类型的标准，用来表示文档、文件、字节流的性质和格式</p><p id="1c4694d5-ea46-8030-ba22-c0f5a6f78ab8" class="">MIME消息能包含文本、图形、音频、视频以及其他应用程序专用的数据</p><p id="1c4694d5-ea46-80b1-9c0a-e66a19a48e5e" class="">浏览器通常使用MIME类型（而不是文件扩展名），来确定如何处理URL，因此Web响应头中添加正确的MIME类型非常重要，配置不正确，浏览器无法解析文件内容，网站无法工作，下载的文件也当作错误处理</p><p id="1c4694d5-ea46-8005-88a1-e1c6f4d35924" class=""><strong>语法：type/subtype</strong></p><p id="1c4694d5-ea46-8042-8c29-f8e025ee21d4" class="">由类型与子类型两个字符串间使用/分隔，不允许有空格，type表示可以被分为多个子类的独立类别，subtype表示细分后的每个类型</p><p id="1c4694d5-ea46-80c6-b929-fe463d150cb8" class="">MIME类型对大小写不敏感，</p><p id="1c4694d5-ea46-8086-9153-c668e3dc0919" class="">两种主要的MIME类型在默认类型中扮演了重要角色</p><ul id="1c4694d5-ea46-8021-849f-fc2404a70147" class="bulleted-list"><li style="list-style-type:disc">text/plain表示文本文件的默认值</li></ul><ul id="1c4694d5-ea46-80db-b50f-e9fae1fee484" class="bulleted-list"><li style="list-style-type:disc">application/octet-stream表示所有其他情况的默认值</li></ul><p id="1c4694d5-ea46-8027-9384-dbb02a710437" class=""><strong>常见的MME类型：</strong></p><ul id="1c4694d5-ea46-8067-bac0-ef561c090245" class="bulleted-list"><li style="list-style-type:disc">超文本标记语言文本.html：.html：text/html</li></ul><ul id="1c4694d5-ea46-80ff-9828-f99711aac53f" class="bulleted-list"><li style="list-style-type:disc">普通文本.txt：text/plain</li></ul><ul id="1c4694d5-ea46-80a8-bcca-f5743396595d" class="bulleted-list"><li style="list-style-type:disc">RTF文本.rtf：application/rtf</li></ul><ul id="1c4694d5-ea46-803a-94f0-dfbcf83ba70b" class="bulleted-list"><li style="list-style-type:disc">GIF图形.gif：image/gif</li></ul><ul id="1c4694d5-ea46-80c4-b8fd-fc1f3dc2a7a5" class="bulleted-list"><li style="list-style-type:disc">JPEG图形.jpeg、.jpg：image/jpeg</li></ul><ul id="1c4694d5-ea46-80fa-8af6-dab5862bc429" class="bulleted-list"><li style="list-style-type:disc">au声音文件.au：audio/basic</li></ul><ul id="1c4694d5-ea46-80f0-b821-e46023fb7e9e" class="bulleted-list"><li style="list-style-type:disc">MIDI音乐文件.mid、.midi：audio/midi、audio/x-midi</li></ul><ul id="1c4694d5-ea46-80d7-990a-c0e6257959ea" class="bulleted-list"><li style="list-style-type:disc">RealAudio音乐文件.ra、.ram：audio/x-pn-realaudio</li></ul><ul id="1c4694d5-ea46-8002-a654-cf7417a5a429" class="bulleted-list"><li style="list-style-type:disc">MPEG文件.mgp、.mpeg：video/mpeg</li></ul><ul id="1c4694d5-ea46-8096-94d3-e0fb796e7b89" class="bulleted-list"><li style="list-style-type:disc">AVI文件.avi：video/x-msvideo</li></ul><ul id="1c4694d5-ea46-8062-be21-d51641592a33" class="bulleted-list"><li style="list-style-type:disc">GZIP文件.gz：application/x-gzip</li></ul><ul id="1c4694d5-ea46-8097-8795-c284d07b3c35" class="bulleted-list"><li style="list-style-type:disc">TAR文件.tar：application/x-tar</li></ul></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
