@@ -1,0 +1,694 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>框架-React基础-描述UI（概述）</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-default_background {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.highlight-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.block-color-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: undefined; }
+.select-value-color-pink { background-color: rgba(225, 136, 179, 0.27); }
+.select-value-color-purple { background-color: rgba(168, 129, 197, 0.27); }
+.select-value-color-green { background-color: rgba(123, 183, 129, 0.27); }
+.select-value-color-gray { background-color: rgba(84, 72, 49, 0.15); }
+.select-value-color-transparentGray { background-color: undefined; }
+.select-value-color-translucentGray { background-color: undefined; }
+.select-value-color-orange { background-color: rgba(224, 124, 57, 0.27); }
+.select-value-color-brown { background-color: rgba(210, 162, 141, 0.35); }
+.select-value-color-red { background-color: rgba(244, 171, 159, 0.4); }
+.select-value-color-yellow { background-color: rgba(236, 191, 66, 0.39); }
+.select-value-color-blue { background-color: rgba(93, 165, 206, 0.27); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="1d2694d5-ea46-806a-b9bc-c1f2119ca081" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">🤪</span></div><h1 class="page-title">框架-React基础-描述UI（概述）</h1><p class="page-description"></p></header><div class="page-body"><p id="1d4694d5-ea46-80ed-a4c3-f9305192f41d" class="">React是一个用于构建用户界面UI的的JS库，用户界面由按钮、文本、图形等小单元内容构建。React可以把他们组合成可以重复利用、可以嵌套的组件，从web端网站到移动端应用，屏幕上内容都可以被分解为组件。</p><p id="1d4694d5-ea46-808b-9512-cac604c31367" class="">
+</p><p id="1d4694d5-ea46-80a1-ac9b-d141c251de82" class=""><strong><span style="border-bottom:0.05em solid">第一个组件：</span></strong></p><ul id="1d4694d5-ea46-80d0-a7df-d6132bb39f6b" class="bulleted-list"><li style="list-style-type:disc">React应用是由独立UI片段组件构成，React组件的本质是可以任意添加标签的JS函数，组件可以是一个按钮，也可以是一整个页面，下例是一个Gallery组件，用于渲染三个Profile组件：<blockquote id="1d4694d5-ea46-8035-8b90-e2ced3413f4c" class="">function Profile() {<br/>    return (     <br/><strong>设置Profile组件为一个图片</strong><br/>        &lt;img  src=&quot;<br/><a href="https://i.imgur.com/MK3eW3As.jpg">https://i.imgur.com/MK3eW3As.jpg</a>&quot;  alt=&quot;Katherine  Johnson&quot;/&gt;<br/>    );<br/>}<br/><br/>默认输出组件Gallery为一个标题，三个图片的部分<br/><p id="1d4694d5-ea46-8092-b233-c7ea5dc1a506" class="">export default function Gallery() {<br/>    return (<br/>        &lt;section&gt;<br/>            &lt;h1&gt;Amazing scientists&lt;/h1&gt;<br/>            &lt;Profile /&gt;<br/>            &lt;Profile /&gt;<br/>            &lt;Profile /&gt;<br/>        &lt;/section&gt;<br/>    );<br/>}<br/></p></blockquote><p id="1d4694d5-ea46-8086-92bd-fb87b53c9a9f" class="">
+</p></li></ul><p id="1d4694d5-ea46-80a9-8dba-e4b5db77539f" class=""><strong><span style="border-bottom:0.05em solid">组件的导入与导出：</span></strong></p><ul id="1d4694d5-ea46-805e-963c-ee969361969f" class="bulleted-list"><li style="list-style-type:disc">可以在同一个文件中声明多个组件，但是文件的体积过大会出现加载缓慢等问题，可以使用多个文件分别导出，再从一个文件导入<ul id="1d4694d5-ea46-80f4-9aba-f08332c95e7b" class="bulleted-list"><li style="list-style-type:circle">下例为两个文件，Gallery.js导入profile组件渲染UI，Profile.js用于导出profile组件<blockquote id="1d4694d5-ea46-8049-8acd-d8b4688cd5b0" class=""><strong>Profile.js，默认导出profile组件，既展示一个图片</strong><p id="1d4694d5-ea46-804e-9c32-e66d0552008b" class="">export default function Profile() {<br/>    return (<br/>        &lt;img  src=&quot;<br/><a href="https://i.imgur.com/QIrZWGIs.jpg">https://i.imgur.com/QIrZWGIs.jpg</a>&quot;  alt=&quot;Alan L. Hart&quot;  /&gt;<br/>    );<br/>}<br/></p><p id="1d4694d5-ea46-80c2-b476-d7df15ed0645" class="">
+</p><p id="1d4694d5-ea46-800a-9c01-d6055777f559" class=""><strong>Gallery.js，导入Profile.js的组件，用于构建Gallery完整UI组件</strong></p><p id="1d4694d5-ea46-80a0-b706-dce78872799e" class="">import Profile from &#x27;./Profile.js&#x27;;</p><p id="1d4694d5-ea46-8008-99af-fbaaa78cd854" class="">export default function Gallery() {<br/>    return (<br/>        &lt;section&gt;<br/>            &lt;h1&gt;Amazing scientists&lt;/h1&gt;<br/>            &lt;Profile /&gt;<br/>            &lt;Profile /&gt;<br/>            &lt;Profile /&gt;<br/>        &lt;/section&gt;<br/>    );<br/>}<br/></p></blockquote></li></ul><p id="1d4694d5-ea46-8078-93d1-e26e435d6f72" class="">
+</p></li></ul><p id="1d4694d5-ea46-803c-b756-e0ed49526ea8" class=""><strong><span style="border-bottom:0.05em solid">使用JSX书写标签语言：React的JSX语法仅返回一个元素，需要使用父元素包含子元素</span></strong></p><ul id="1d4694d5-ea46-8012-9593-f14a37f20b91" class="bulleted-list"><li style="list-style-type:disc">每个React组件都是一个JS函数，包含一些元素标签，React会渲染到浏览器中，React组件会使用JSX的扩展语法来标识标签，JSX比HTML语法更为严格，可以显示动态信息<blockquote id="1d4694d5-ea46-8001-a51b-e7640e677c62" class=""><strong>原始HTML代码，放在React组件中会运行失败</strong><p id="1d4694d5-ea46-80d6-b0f7-f870f4b2d09b" class="">export default function TodoList() {<br/>    return (<br/><br/><strong>在React中代码会运行失败</strong><br/>        &lt;h1&gt;Hedy Lamarr&#x27;s Todos&lt;/h1&gt;<br/>        &lt;img  src=&quot;<br/><a href="https://i.imgur.com/yXOvdOSs.jpg">https://i.imgur.com/yXOvdOSs.jpg</a>&quot;  alt=&quot;Hedy Lamarr&quot;  class=&quot;photo&quot;<br/>        &gt;<br/>        &lt;ul&gt;<br/>            &lt;li&gt;Invent new traffic lights<br/>            &lt;li&gt;Rehearse a movie scene<br/>            &lt;li&gt;Improve spectrum technology<br/>        &lt;/ul&gt;<br/>    );<br/>}<br/></p></blockquote><blockquote id="1d4694d5-ea46-80f0-b9a2-dacd688e8ac4" class=""><strong>语法转换HTML为JSX代码，可以使用代码转换工具</strong><p id="1d4694d5-ea46-8054-b71f-f566363dc707" class="">export default function TodoList() {<br/>    return (<br/>        &lt;&gt;<br/>            &lt;h1&gt;Hedy Lamarr&#x27;s Todos&lt;/h1&gt;<br/>            &lt;img  src=&quot;<br/><a href="https://i.imgur.com/yXOvdOSs.jpg">https://i.imgur.com/yXOvdOSs.jpg</a>&quot;  alt=&quot;Hedy Lamarr&quot;  className=&quot;photo&quot;<br/>            /&gt;<br/>            &lt;ul&gt;<br/>                &lt;li&gt;Invent new traffic lights&lt;/li&gt;<br/>                &lt;li&gt;Rehearse a movie scene&lt;/li&gt;<br/>                &lt;li&gt;Improve spectrum technology&lt;/li&gt;<br/>            &lt;/ul&gt;<br/>        &lt;/&gt;<br/>    );<br/>}<br/></p></blockquote></li></ul><p id="1d4694d5-ea46-8076-903a-e943bba2fc55" class="">
+</p><p id="1d4694d5-ea46-8031-a2c8-ef54b7aa2495" class=""><strong><span style="border-bottom:0.05em solid">在JSX中通过大括号使用JS：</span></strong></p><ul id="1d4694d5-ea46-80ea-81bc-cd95c7e233af" class="bulleted-list"><li style="list-style-type:disc">JSX可以在JS文件中编写类似HTML的语法，使渲染逻辑和内容展示未获在同一个地方，可以在标签中添加一点JS逻辑或者引用一个动态属性，在JSX中使用大括号{}来存放JS<blockquote id="1d4694d5-ea46-8070-8736-db15f9c4559c" class=""><strong>使用大括号来引用JS的变量</strong><p id="1d4694d5-ea46-8080-a656-d4fa17b53300" class="">const person = {<br/>    name: &#x27;Gregorio Y. Zara&#x27;,<br/>    theme: {<br/>        backgroundColor: &#x27;black&#x27;,<br/>        color: &#x27;pink&#x27;<br/>    }<br/>};<br/></p><p id="1d4694d5-ea46-80d4-a7df-fee5fe790eb5" class="">export default function TodoList() {<br/>    return (<br/>    &lt;div style={person.theme}&gt;<br/>        &lt;h1&gt;{<br/><a href="http://person.name/">person.name</a>}&#x27;s Todos&lt;/h1&gt;<br/>        &lt;img  className=&quot;avatar&quot;  src=&quot;<br/><a href="https://i.imgur.com/7vQD0fPs.jpg">https://i.imgur.com/7vQD0fPs.jpg</a>&quot;  alt=&quot;Gregorio Y. Zara&quot;<br/>        /&gt;<br/>        &lt;ul&gt;<br/>            &lt;li&gt;Improve the videophone&lt;/li&gt;<br/>            &lt;li&gt;Prepare aeronautics lectures&lt;/li&gt;<br/>            &lt;li&gt;Work on the alcohol-fuelled engine&lt;/li&gt;<br/>        &lt;/ul&gt;<br/>    &lt;/div&gt;<br/>    );<br/>}<br/></p></blockquote></li></ul><p id="1d4694d5-ea46-803c-a4d9-d1b584d9ab8f" class="">
+</p><p id="1d4694d5-ea46-803d-b886-f22137946b49" class=""><strong><span style="border-bottom:0.05em solid">将Props传递给组件：</span></strong></p><ul id="1d4694d5-ea46-8097-bdaf-de3dffa547d6" class="bulleted-list"><li style="list-style-type:disc">React组件使用props来进行组件之间的联系，每个父组件可以通过为子组件提供props的方式来传递信息，props类似HTML的属性，可以通过props来传递任何类型的JS，包括对象、数组、函数、JSX等<blockquote id="1d4694d5-ea46-80fb-91e6-ea75c1a17576" class=""><strong>utils.js默认导出一个getImageUrl的函数用于展示一个图片链接的html代码</strong><p id="1d4694d5-ea46-8087-8422-d6b3a391d4fa" class="">export function getImageUrl(person, size = &#x27;s&#x27;) {<br/>    return (&#x27;<br/><a href="https://i.imgur.com/">https://i.imgur.com/</a>&#x27; +person.imageId +size +&#x27;.jpg);<br/>}<br/></p></blockquote><blockquote id="1d4694d5-ea46-80b3-a295-d017fdc0ef07" class=""><strong>App.js默认导出一个Profile函数用于返回渲染一个card展示图片</strong><p id="1d4694d5-ea46-8087-a56e-ef129a372af3" class="">import { getImageUrl } from &#x27;./utils.js&#x27;</p><p id="1d4694d5-ea46-8085-ab8b-dfdaeaf4541e" class="">export default function Profile() {<br/>    return (<br/>        &lt;Card&gt;   <br/><strong>Card组件</strong><br/>            &lt;Avatar   <br/><strong> Avatar组件</strong><br/>                size={100}<br/>                person={{<br/>                    name: &#x27;Katsuko Saruhashi&#x27;,<br/>                    imageId: &#x27;YfeOqp2&#x27;<br/>                }}<br/>            /&gt;<br/></p><p id="1d4694d5-ea46-80b1-819a-f1cfe350834a" class="">        &lt;/Card&gt;<br/>    );<br/>}<br/></p><p id="1d4694d5-ea46-8090-ba98-fabdb6c25fe0" class=""><strong>构建Avatar组件用于展示一个图片，图片的详细属性导入自utils.js，接收person、size参数作为img的详细属性</strong></p><p id="1d4694d5-ea46-80e0-86ac-ca3ff87509d8" class="">function Avatar({ person, size }) {<br/>return (<br/>    &lt;img className=&quot;avatar&quot; src={getImageUrl(person)} alt={<br/><a href="http://person.name/">person.name</a>} width={size} height={size}<br/>    /&gt;<br/>);<br/>}<br/></p><p id="1d4694d5-ea46-80d6-b2dd-f4a37e8f61c6" class=""><strong>构建Card组件，用于展示一个div代码块，接受children参数并作为div的文本内容</strong></p><p id="1d4694d5-ea46-8039-a193-db9a28240b28" class="">function Card({ children }) {<br/>return (<br/>    &lt;div className=&quot;card&quot;&gt;<br/>        {children}<br/>    &lt;/div&gt;<br/>);<br/>}<br/></p></blockquote></li></ul><p id="1d4694d5-ea46-802b-b02d-d8c4487a8b04" class="">
+</p><p id="1d4694d5-ea46-8033-a483-e9b22ceea927" class=""><strong><span style="border-bottom:0.05em solid">条件渲染：</span></strong></p><ul id="1d4694d5-ea46-8044-ae02-c95ea37ddea1" class="bulleted-list"><li style="list-style-type:disc">组件经常根据不同的条件来显示不同的东西，在React中可以使用JS语法，如if语句、&amp;&amp;和？：操作符来根据不同条件渲染JSX<blockquote id="1d4694d5-ea46-8047-9cb2-c07f1343af6f" class=""><strong>示例：JS的&amp;&amp;操作符会根据条件渲染一个复选标签</strong><p id="1d4694d5-ea46-8078-92de-d3f325af1ab3" class=""><strong>构建Item组件，返回一个li列表，接收name、isPacked作为参数来当li的文本内容</strong></p><p id="1d4694d5-ea46-80ab-8bcc-cf674ab075d6" class="">function Item({ name, isPacked }) {<br/>    return (<br/>        &lt;li className=&quot;item&quot;&gt;<br/>            {name} {isPacked &amp;&amp; &#x27;✅&#x27;}  <br/><strong>&amp;&amp;JS逻辑根据参数输入来判断选择哪个变量</strong><br/>        &lt;/li&gt;<br/>    );<br/>}<br/></p><p id="1d4694d5-ea46-80b0-9cfd-dab117f663eb" class=""><strong>默认导出组件，返回一个代码块，包括题目、一个列表、列表内项目为Item组件既li标签，Item的参数作为li的内容加入</strong></p><p id="1d4694d5-ea46-80f1-a654-c0dff7f5413c" class="">export default function PackingList() {<br/>    return (<br/>        &lt;section&gt;<br/>            &lt;h1&gt;Sally Ride&#x27;s Packing List&lt;/h1&gt;<br/>            &lt;ul&gt;<br/>                &lt;Item  isPacked={true}  name=&quot;Space suit&quot; /&gt;<br/>                &lt;Item  isPacked={true}  name=&quot;Helmet with a golden leaf&quot; /&gt;<br/>                &lt;Item  isPacked={false}  name=&quot;Photo of Tam&quot;/&gt;<br/>            &lt;/ul&gt;<br/>        &lt;/section&gt;<br/>    );<br/>}<br/></p></blockquote></li></ul><p id="1d4694d5-ea46-80d5-aef5-c8fb43986819" class="">
+</p><p id="1d4694d5-ea46-8073-90d5-d5c3251a682d" class=""><strong><span style="border-bottom:0.05em solid">渲染列表</span></strong></p><ul id="1d4694d5-ea46-80f8-ad59-f40b00f26b34" class="bulleted-list"><li style="list-style-type:disc">通常需要根据数据集合来渲染多个较为类似的组件，可以在React中使用JS的filter（）和map（）方法来实现数组的过滤和转换，将数据数组转换为组件数组</li></ul><ul id="1d4694d5-ea46-80e0-baf5-c2082d797d24" class="bulleted-list"><li style="list-style-type:disc">filter（）根据指定条件，筛选数组中的元素，返回一个包含符合条件的元素的新数组，<strong>常用于数据过滤</strong><br/><br/><strong>const newArray = array.filter(callback(element, index, array), thisArg);</strong><blockquote id="1d4694d5-ea46-80fa-a5fb-edc571988a14" class="">const numbers = [1, 2, 3, 4, 5];<p id="1d4694d5-ea46-8029-90c0-ea96da9146bc" class="">// 筛选出大于 3 的数字<br/>const filteredNumbers = numbers.filter((num) =&gt; num &gt; 3);<br/></p><p id="1d4694d5-ea46-8094-bee5-d420d9abb1d6" class="">console.log(filteredNumbers); // 输出: [4, 5]</p></blockquote></li></ul><ul id="1d4694d5-ea46-80a4-895b-ef7bc2affeba" class="bulleted-list"><li style="list-style-type:disc">map（）对数组中的每个元素执行回调函数，并将结果组成一个新数组返回，<strong>常用于数据转换、格式化</strong><br/><br/><strong>const newArray = array.map(callback(element, index, array), thisArg);</strong><blockquote id="1d4694d5-ea46-8017-87ed-d0b57fc8cffa" class="">const numbers = [1, 2, 3, 4, 5];<p id="1d4694d5-ea46-809a-b66a-e0c6f7016062" class="">// 将每个数字乘以 2<br/>const doubledNumbers = numbers.map((num) =&gt; num * 2);<br/></p><p id="1d4694d5-ea46-8069-914c-d87a52da9304" class="">console.log(doubledNumbers); // 输出: [2, 4, 6, 8, 10]</p></blockquote></li></ul><ul id="1d4694d5-ea46-807c-807f-e22f7077eaf4" class="bulleted-list"><li style="list-style-type:disc">组合使用filter（）和map（）<blockquote id="1d4694d5-ea46-8098-9f0f-f4cde021f188" class="">const products = [<br/>{ name: &quot;Apple&quot;, price: 100, inStock: true },<br/>{ name: &quot;Banana&quot;, price: 50, inStock: false },<br/>{ name: &quot;Cherry&quot;, price: 200, inStock: true },<br/>];<br/><p id="1d4694d5-ea46-80c1-b3c3-ce51a38d127e" class="">// 筛选出库存商品，并提取其名称和价格<br/>const availableProducts = products<br/>.filter((product) =&gt; product.inStock) // 过滤出库存商品<br/>.map((product) =&gt; ({ name: <br/><a href="http://product.name/">product.name</a>, price: product.price })); // 转换为新格式</p><p id="1d4694d5-ea46-80f6-a50e-fbebdf1cab0e" class="">console.log(availableProducts);<br/>// 输出: [{ name: &quot;Apple&quot;, price: 100 }, { name: &quot;Cherry&quot;, price: 200 }]<br/></p></blockquote></li></ul><p id="1d4694d5-ea46-80a3-b0fe-cacb58cf97f8" class=""><strong>渲染列表：对于数组的每个元素，指定一个key，通常使用数据库中的ID作key，即使列表发生变化，React也可以通过key来跟踪每个元素在列表中的位置</strong><div class="indented"><blockquote id="1d4694d5-ea46-80f6-8bbb-ef091776acce" class=""><strong>data.js用于存储数组等数据</strong><p id="1d4694d5-ea46-80b3-85a0-d87eb6b79a28" class="">export const people = [{<br/>id: 0,<br/>name: &#x27;Creola Katherine Johnson&#x27;,<br/>profession: &#x27;mathematician&#x27;,<br/>accomplishment: &#x27;spaceflight calculations&#x27;,<br/>imageId: &#x27;MK3eW3A&#x27;<br/>}, {<br/>id: 1,<br/>name: &#x27;Mario José Molina-Pasquel Henríquez&#x27;,<br/>profession: &#x27;chemist&#x27;,<br/>accomplishment: &#x27;discovery of Arctic ozone hole&#x27;,<br/>imageId: &#x27;mynHUSa&#x27;<br/>}, {<br/>id: 2,<br/>name: &#x27;Mohammad Abdus Salam&#x27;,<br/>profession: &#x27;physicist&#x27;,<br/>accomplishment: &#x27;electromagnetism theory&#x27;,<br/>imageId: &#x27;bE7W1ji&#x27;<br/>}, {<br/>id: 3,<br/>name: &#x27;Percy Lavon Julian&#x27;,<br/>profession: &#x27;chemist&#x27;,<br/>accomplishment: &#x27;pioneering cortisone drugs, steroids and birth control pills&#x27;,<br/>imageId: &#x27;IOjWm71&#x27;<br/>}, {<br/>id: 4,<br/>name: &#x27;Subrahmanyan Chandrasekhar&#x27;,<br/>profession: &#x27;astrophysicist&#x27;,<br/>accomplishment: &#x27;white dwarf star mass calculations&#x27;,<br/>imageId: &#x27;lrWQx8l&#x27;<br/>}];<br/></p></blockquote><blockquote id="1d4694d5-ea46-8009-ac0c-d037bd9d4b41" class=""><strong>utils.js用于导出一个组件getImageUrl（）返回一个图片的URL地址以及信息</strong><p id="1d4694d5-ea46-80f9-aeef-c7d43aafeb66" class="">export function getImageUrl(person) {<br/>return (<br/>&#x27;<br/><a href="https://i.imgur.com/">https://i.imgur.com/</a>&#x27; +<br/>person.imageId +<br/>&#x27;s.jpg&#x27;<br/>);<br/>}<br/></p></blockquote><blockquote id="1d4694d5-ea46-80a0-9c4c-cc49fdf1ce00" class=""><strong>App.js中List组件用于接收列表内数据、图片URL等，返回一个列表li内容为img+文字描述，内容中数据采取自people组件，图片来自getImageUrl组件</strong><p id="1d4694d5-ea46-80e0-8316-e62e4e2962b0" class="">import { people } from &#x27;./data.js&#x27;;<br/>import { getImageUrl } from &#x27;./utils.js&#x27;;<br/></p><p id="1d4694d5-ea46-80e0-8deb-f608a8ba99bd" class="">export default function List() {<br/>const listItems = people.map(person =&gt;<br/>&lt;li key={<br/><a href="http://person.id/">person.id</a>}&gt;<br/>&lt;img<br/>src={getImageUrl(person)}<br/>alt={<br/><a href="http://person.name/">person.name</a>}<br/>/&gt;<br/>&lt;p&gt;<br/>&lt;b&gt;{<br/><a href="http://person.name/">person.name</a>}:&lt;/b&gt;<br/>{&#x27; &#x27; + person.profession + &#x27; &#x27;}<br/>known for {person.accomplishment}<br/>&lt;/p&gt;<br/>&lt;/li&gt;<br/>);<br/>return (<br/>&lt;article&gt;<br/>&lt;h1&gt;Scientists&lt;/h1&gt;<br/>&lt;ul&gt;{listItems}&lt;/ul&gt;<br/>&lt;/article&gt;<br/>);<br/>}<br/></p></blockquote><p id="1d4694d5-ea46-8087-be46-c090490f09c1" class="">
+</p></div></p><p id="1d4694d5-ea46-8099-bad5-ce0ea16ec8bc" class=""><strong><span style="border-bottom:0.05em solid">保持组件纯粹：</span></strong></p><ul id="1d4694d5-ea46-80c5-98e8-f1df42839b00" class="bulleted-list"><li style="list-style-type:disc">有些JS函数是纯粹的，纯函数，定义如下<ul id="1d4694d5-ea46-8012-bf5a-e035171ca34a" class="bulleted-list"><li style="list-style-type:circle">针对性，只负责一项任务，不会更改在函数调用前就已经存在的对象或变量</li></ul><ul id="1d4694d5-ea46-80ab-8049-e6ae1f0d732b" class="bulleted-list"><li style="list-style-type:circle">输入输出相同，输入相同情况下，纯函数返回的结果也相同<blockquote id="1d4694d5-ea46-8045-afae-d5f792da59d3" class=""><strong>非纯函数组件，直接修改已经存在的变量</strong><p id="1d4694d5-ea46-80ad-8d48-f023753e6400" class="">let guest = 0;</p><p id="1d4694d5-ea46-8099-8e07-d91ebf33b722" class="">function Cup() {<br/>    guest = guest + 1;<br/>    return &lt;h2&gt;Tea cup for guest #{guest}&lt;/h2&gt;;<br/>}<br/></p><p id="1d4694d5-ea46-8062-b0e1-f516cc340011" class="">export default function TeaSet() {<br/>    return (<br/>        &lt;&gt;<br/>            &lt;Cup /&gt;<br/>            &lt;Cup /&gt;<br/>            &lt;Cup /&gt;<br/>        &lt;/&gt;<br/>    );<br/>}<br/></p></blockquote><blockquote id="1d4694d5-ea46-80cd-8cd7-f08560cfb87f" class=""><strong>传递props之后，非纯函数组件，变为纯函数，而不是修改已经存在的变量（使用组件传递变量）</strong><p id="1d4694d5-ea46-806a-9891-eef07b89aa69" class="">function Cup({ guest }) {<br/>    return &lt;h2&gt;Tea cup for guest #{guest}&lt;/h2&gt;;<br/>}<br/></p><p id="1d4694d5-ea46-80e1-974d-f119fbc66fe1" class="">export default function TeaSet() {<br/>    return (<br/>        &lt;&gt;<br/>            &lt;Cup guest={1} /&gt;<br/>            &lt;Cup guest={2} /&gt;<br/>            &lt;Cup guest={3} /&gt;<br/>        &lt;/&gt;<br/>    );<br/>}<br/></p></blockquote></li></ul></li></ul><p id="1d4694d5-ea46-80e0-a54b-ce045012f5f2" class="">
+</p><p id="1d4694d5-ea46-8082-95f2-d49c18525b2c" class=""><strong><span style="border-bottom:0.05em solid">UI树：</span></strong></p><ul id="1d4694d5-ea46-8071-8d98-c08ef7241de3" class="bulleted-list"><li style="list-style-type:disc">React使用树形关系建模来展示组件于模块之间的关系</li></ul><ul id="1d4694d5-ea46-8080-bf31-e241b7c175fe" class="bulleted-list"><li style="list-style-type:disc">React渲染UI树是组件之间父子关系的表示</li></ul><ul id="1d4694d5-ea46-80a9-8dff-ca65fb347c31" class="bulleted-list"><li style="list-style-type:disc">位于树顶部或者靠近根组件的组件视为顶层组件，没有子组件的组件成为叶组件，<strong>理解数据流与渲染性能</strong></li></ul><figure id="1d4694d5-ea46-8001-ab5a-e56089e40aff" class="image"><a href="image.png"><img style="width:561.1875px" src="image.png"/></a></figure><p id="1d4694d5-ea46-8054-ab9a-f94c63f19ecc" class=""><strong><span style="border-bottom:0.05em solid">模块依赖树：</span></strong></p><ul id="1d4694d5-ea46-8047-94b3-f9ee4aecca49" class="bulleted-list"><li style="list-style-type:disc">用于展示JS模块之间的关系</li></ul><ul id="1d4694d5-ea46-8076-92e0-d4dd097a6cc4" class="bulleted-list"><li style="list-style-type:disc">构建工具经常使用模块依赖树来捆绑客户端下载和渲染所需的JS代码，对于React应用，打包大小会导致用户体验退化</li></ul><figure id="1d4694d5-ea46-8099-b3b7-e3c08eee8d5d" class="image"><a href="image%201.png"><img style="width:561.1749877929688px" src="image%201.png"/></a></figure></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
