@@ -1,0 +1,694 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>框架-React基础-描述UI(详解)</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-default_background {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.highlight-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.block-color-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: undefined; }
+.select-value-color-pink { background-color: rgba(225, 136, 179, 0.27); }
+.select-value-color-purple { background-color: rgba(168, 129, 197, 0.27); }
+.select-value-color-green { background-color: rgba(123, 183, 129, 0.27); }
+.select-value-color-gray { background-color: rgba(84, 72, 49, 0.15); }
+.select-value-color-transparentGray { background-color: undefined; }
+.select-value-color-translucentGray { background-color: undefined; }
+.select-value-color-orange { background-color: rgba(224, 124, 57, 0.27); }
+.select-value-color-brown { background-color: rgba(210, 162, 141, 0.35); }
+.select-value-color-red { background-color: rgba(244, 171, 159, 0.4); }
+.select-value-color-yellow { background-color: rgba(236, 191, 66, 0.39); }
+.select-value-color-blue { background-color: rgba(93, 165, 206, 0.27); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="1d5694d5-ea46-80ab-a3a2-fda9c88743c2" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">😶</span></div><h1 class="page-title">框架-React基础-描述UI(详解)</h1><p class="page-description"></p></header><div class="page-body"><p id="1d5694d5-ea46-80f8-8682-d603d9f1e2fb" class=""><mark class="highlight-red"><strong><span style="border-bottom:0.05em solid">1.第一个组件：</span></strong></mark></p><p id="1d5694d5-ea46-805c-9915-fc65c40de435" class="">组件时React的核心概念之一，用于构建用户界面UI的基础</p><p id="1d5694d5-ea46-80b7-88e7-c5a4d4201be0" class=""><strong><span style="border-bottom:0.05em solid">介绍组件：UI构成要素</span></strong></p><ul id="1d5694d5-ea46-8085-8542-c65771515425" class="bulleted-list"><li style="list-style-type:disc">Web中，HTML使用标签来是文档更加结构化</li></ul><ul id="1d5694d5-ea46-80e3-833e-d68d0d55b9d4" class="bulleted-list"><li style="list-style-type:disc">React中可以使用标签、CSS、JS组合成自定义组件，既应用程序中可以重复利用的UI元素<blockquote id="1d5694d5-ea46-805f-9dad-c729ec33954c" class="">Web的HTML文章<p id="1d5694d5-ea46-8047-8e5f-f88c50028a7e" class="">&lt;article&gt;</p><p id="1d5694d5-ea46-8016-a3ec-ffa8cddcbc2f" class="">&lt;h1&gt;我的第一个组件&lt;/h1&gt;</p><p id="1d5694d5-ea46-8040-8878-dec1d29fb78d" class="">&lt;ol&gt;</p><p id="1d5694d5-ea46-802f-a2a1-e3dd01393fe7" class="">&lt;li&gt;组件：UI 构成要素&lt;/li&gt;</p><p id="1d5694d5-ea46-8073-a25d-fdf7db04fd9e" class="">&lt;li&gt;定义组件&lt;/li&gt;</p><p id="1d5694d5-ea46-8089-bd6a-e732649a7292" class="">&lt;li&gt;使用组件&lt;/li&gt;</p><p id="1d5694d5-ea46-80ab-b182-de00e66d60c3" class="">&lt;/ol&gt;</p><p id="1d5694d5-ea46-805a-9f4c-e7b71ed77d50" class="">&lt;/article&gt;</p></blockquote><blockquote id="1d5694d5-ea46-807f-b503-c272de65da7a" class="">React组件<p id="1d5694d5-ea46-8086-8380-e90e1697225a" class="">&lt;PageLayout&gt;</p><p id="1d5694d5-ea46-80b2-8a41-e3e7a029ba53" class="">&lt;NavigationHeader&gt;</p><p id="1d5694d5-ea46-80a4-8246-c5800b37d419" class="">&lt;SearchBar /&gt;</p><p id="1d5694d5-ea46-80f0-81fc-cef2ef313a49" class="">&lt;Link to=&quot;/docs&quot;&gt;文档&lt;/Link&gt;</p><p id="1d5694d5-ea46-801a-ad59-cac74c1b95cd" class="">&lt;/NavigationHeader&gt;</p><p id="1d5694d5-ea46-8067-9f92-cec9dd900f64" class="">&lt;Sidebar /&gt;</p><p id="1d5694d5-ea46-801b-b41e-c320f5a7d505" class="">&lt;PageContent&gt;</p><p id="1d5694d5-ea46-807b-bd64-d1f6a0fc705e" class="">&lt;TableOfContents /&gt;</p><p id="1d5694d5-ea46-80d5-ba64-df9a9221efc7" class="">&lt;DocumentationText /&gt;</p><p id="1d5694d5-ea46-807c-b4e2-d017adf97e8b" class="">&lt;/PageContent&gt;</p><p id="1d5694d5-ea46-8096-a953-ee43d16da5cc" class="">&lt;/PageLayout&gt;</p></blockquote><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1d5694d5-ea46-8047-95b7-e6ba597a1bed"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><p id="1d5694d5-ea46-809a-b611-e1fcf01786c6" class="">React类似于HTML标签，可以组合、排序、嵌套组件来绘制页面。很多布局可以重复使用组件实现（DRY）<br/>多使用<br/><strong>React开源社区分享的大量组件</strong></p></div></figure></li></ul><p id="1d5694d5-ea46-800d-a4d2-d4b4c780b8b8" class=""><strong><span style="border-bottom:0.05em solid">定义组件：</span></strong></p><ul id="1d5694d5-ea46-8020-9cbb-cb28dd84d3c7" class="bulleted-list"><li style="list-style-type:disc">于Web而言，创建网页需要用标签来描述内容，通过JS来增加交互</li></ul><ul id="1d5694d5-ea46-80c9-8aa2-f977f1e0b8c9" class="bulleted-list"><li style="list-style-type:disc">React最为重视交互性，采取了组件的方法：“React组件是一段可以使用标签进行扩展的<strong>JS函数”</strong><blockquote id="1d5694d5-ea46-80a6-9468-f4231d0eed41" class="">Profile组件默认导出返回一个图像<p id="1d5694d5-ea46-8007-ab23-ea9e9c14166d" class="">export default function Profile() {<br/>return (<br/>&lt;img<br/>src=&quot;<br/><a href="https://i.imgur.com/MK3eW3Am.jpg">https://i.imgur.com/MK3eW3Am.jpg</a>&quot;<br/>alt=&quot;Katherine Johnson&quot;<br/>/&gt;<br/>)<br/>}<br/></p></blockquote></li></ul><p id="1d5694d5-ea46-8001-9570-f6b167247bff" class=""><strong><span style="border-bottom:0.05em solid">构建组件：</span></strong></p><ul id="1d5694d5-ea46-8078-af7d-f6de2b2898c6" class="bulleted-list"><li style="list-style-type:disc">第一步导出组件<ul id="1d5694d5-ea46-8038-bfbf-d764bc7f0403" class="bulleted-list"><li style="list-style-type:circle">export default前缀时JS的语法，用于默认导出文件中的一个主要函数</li></ul></li></ul><ul id="1d5694d5-ea46-8021-b5a2-c67043736544" class="bulleted-list"><li style="list-style-type:disc">第二步定义函数<ul id="1d5694d5-ea46-803d-86e6-f3788ae3776d" class="bulleted-list"><li style="list-style-type:circle">使用function Name（）{}，定义名为Name的JS函数。</li></ul><ul id="1d5694d5-ea46-8085-8977-c2f586f26b5b" class="bulleted-list"><li style="list-style-type:circle">React组件就是常规的JS函数，但是<strong>组件的名称必须以大写字母开头</strong></li></ul></li></ul><ul id="1d5694d5-ea46-80b2-812d-dcabc4053238" class="bulleted-list"><li style="list-style-type:disc">第三步添加标签<ul id="1d5694d5-ea46-800a-a6b3-d521bfec1876" class="bulleted-list"><li style="list-style-type:circle">组件会返回一个类似HTML标签的语法，实际上是JS，这种语法成为JSX，允许在JS中嵌入标签</li></ul><ul id="1d5694d5-ea46-801f-9863-cadaaf0630dc" class="bulleted-list"><li style="list-style-type:circle">返回的语句可以全写在一行上，如果<strong>标签和return不在同一行需要括号包裹</strong></li></ul></li></ul><p id="1d5694d5-ea46-807b-96e5-cbcbfc35e521" class=""><strong><span style="border-bottom:0.05em solid">使用组件：</span></strong></p><ul id="1d5694d5-ea46-8030-a902-d77d875b48f5" class="bulleted-list"><li style="list-style-type:disc">组件之间可以相互引用，如下，导出Gallery组件，内部使用了多个Profile组件<blockquote id="1d5694d5-ea46-8092-8fb2-ef688c78945b" class="">function Profile() {<br/>return (<br/>&lt;img<br/>src=&quot;<br/><a href="https://i.imgur.com/MK3eW3As.jpg">https://i.imgur.com/MK3eW3As.jpg</a>&quot;<br/>alt=&quot;Katherine Johnson&quot;<br/>/&gt;<br/>);<br/>}<br/><p id="1d5694d5-ea46-8090-9927-ed454640a758" class="">export default function Gallery() {<br/>return (<br/>&lt;section&gt;<br/>&lt;h1&gt;了不起的科学家&lt;/h1&gt;<br/>&lt;Profile /&gt;<br/>&lt;Profile /&gt;<br/>&lt;Profile /&gt;<br/>&lt;/section&gt;<br/>);<br/>}<br/></p></blockquote><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1d5694d5-ea46-8007-82df-d452bd9d65b5"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><p id="1d5694d5-ea46-8045-8511-d6204b133ff0" class="">&lt;section&gt;是小写标签，React将其认定为HTML标签<br/>&lt;Profile /&gt;是大写组件，React将其认定为组件使用<br/></p></div></figure><blockquote id="1d5694d5-ea46-80a9-9d94-ccc941f062dd" class="">最终浏览器翻译代码如下<p id="1d5694d5-ea46-8051-9615-f24ca7a90829" class="">&lt;section&gt;</p><p id="1d5694d5-ea46-8080-affb-cd99ae1f6318" class="">&lt;h1&gt;了不起的科学家&lt;/h1&gt;</p><p id="1d5694d5-ea46-8070-a7ef-e0c9d1773156" class="">&lt;img src=&quot;https://i.imgur.com/MK3eW3As.jpg&quot; alt=&quot;Katherine Johnson&quot; /&gt;</p><p id="1d5694d5-ea46-8099-9aa1-ef75ad4e2783" class="">&lt;img src=&quot;https://i.imgur.com/MK3eW3As.jpg&quot; alt=&quot;Katherine Johnson&quot; /&gt;</p><p id="1d5694d5-ea46-80f3-b13e-dfad45f96d94" class="">&lt;img src=&quot;https://i.imgur.com/MK3eW3As.jpg&quot; alt=&quot;Katherine Johnson&quot; /&gt;</p><p id="1d5694d5-ea46-802a-bf03-eeabee7e58d5" class="">&lt;/section&gt;</p></blockquote></li></ul><p id="1d5694d5-ea46-80bb-b767-f5d78cf06437" class=""><strong><span style="border-bottom:0.05em solid">嵌套和组织组件：</span></strong></p><ul id="1d5694d5-ea46-8031-b339-e7ad697fd62d" class="bulleted-list"><li style="list-style-type:disc">组件就是常规的JS函数，可以将多个组件保存在同一份文件中（组件相对较小或彼此紧密相关）</li></ul><ul id="1d5694d5-ea46-80d7-a3cd-c14f61cd6252" class="bulleted-list"><li style="list-style-type:disc">如果文件变得臃肿，可以将组件分类放置于单独的文件</li></ul><ul id="1d5694d5-ea46-805b-aa59-e11543e5e644" class="bulleted-list"><li style="list-style-type:disc">仅定义一次组件，然后按需多次使用（DRY原则）</li></ul><ul id="1d5694d5-ea46-8056-b582-e06bf4dde80b" class="bulleted-list"><li style="list-style-type:disc">组件可以嵌套渲染其他组件，既使用变量来代其整体。但是<strong>不要嵌套他们的定义</strong><blockquote id="1d5694d5-ea46-80e7-8c3c-d93f65181d71" class="">代码运行非常慢，并且伴随着bug<p id="1d5694d5-ea46-803b-91b4-c0742c93a897" class="">export default function Gallery() {</p><p id="1d5694d5-ea46-800e-a3ae-e889ea990380" class="">// 🔴 永远不要在组件中定义组件</p><p id="1d5694d5-ea46-808e-a301-ee9aa42f3306" class="">function Profile() {</p><p id="1d5694d5-ea46-80cb-957f-e166fe3a0086" class="">// ...</p><p id="1d5694d5-ea46-805b-a9bd-c0b17853f677" class="">}</p><p id="1d5694d5-ea46-804e-a34c-db60befab198" class="">// ...</p><p id="1d5694d5-ea46-8075-9fe8-f7160bbf473f" class="">}</p></blockquote><blockquote id="1d5694d5-ea46-809e-8330-d5226f5fae3f" class="">顶层定义每个组件，当子组件需要父组件的数据，使用props形式传递，不使用嵌套定义<p id="1d5694d5-ea46-808c-8f5f-d5844e0e257f" class="">export default function Gallery() {</p><p id="1d5694d5-ea46-806c-929d-cf3762912dd2" class="">// ...</p><p id="1d5694d5-ea46-800c-a40d-e75eda60aabe" class="">}</p><p id="1d5694d5-ea46-804e-bbcb-fcdf233644c2" class="">// ✅ 在顶层声明组件</p><p id="1d5694d5-ea46-8047-96cb-e06c4521c0e9" class="">function Profile() {</p><p id="1d5694d5-ea46-80a6-aef4-df8beaea86db" class="">// ...</p><p id="1d5694d5-ea46-8078-83fc-eb1cfc868e1c" class="">}</p></blockquote></li></ul><p id="1d5694d5-ea46-807f-bb9a-e8b57ad8d1f3" class="">
+</p><p id="1d5694d5-ea46-80f8-9c65-c19f0703fe30" class=""><mark class="highlight-red"><strong><span style="border-bottom:0.05em solid">组件导入与导出</span></strong></mark></p><p id="1d5694d5-ea46-8089-beb8-fb2c0ffefbc3" class="">组件具有可重用性，可以创建一个由其他组件构成的组件，组件嵌套过多后，需要将其拆分为不同文件，便于查找，而且可以在更多地方复用组件</p><p id="1d5694d5-ea46-8029-8333-f89a0cc93c72" class=""><strong><span style="border-bottom:0.05em solid">根组件文件：</span></strong></p><ul id="1d5694d5-ea46-8023-8087-c61fefb4d3de" class="bulleted-list"><li style="list-style-type:disc">下例中创建了Profile组件来返回img，并且渲染在Gallery组件里<blockquote id="1d5694d5-ea46-8087-9c41-ce8f56e21b18" class="">function Profile() {<br/>return (<br/>&lt;img<br/>src=&quot;<br/><a href="https://i.imgur.com/MK3eW3As.jpg">https://i.imgur.com/MK3eW3As.jpg</a>&quot;<br/>alt=&quot;Katherine Johnson&quot;<br/>/&gt;<br/>);<br/>}<br/><p id="1d5694d5-ea46-80ee-a790-d2b5dd9b0276" class="">export default function Gallery() {<br/>return (<br/>&lt;section&gt;<br/>&lt;h1&gt;了不起的科学家们&lt;/h1&gt;<br/>&lt;Profile /&gt;<br/>&lt;Profile /&gt;<br/>&lt;Profile /&gt;<br/>&lt;/section&gt;<br/>);<br/>}<br/></p></blockquote></li></ul><ul id="1d5694d5-ea46-8053-abdf-e6742bb69c25" class="bulleted-list"><li style="list-style-type:disc">在此例中，所有组件都定义在根组件App.js中，具体需要根据项目配置决定，有些根组件会声明在其他文件中，如果使用框架基于文件进行路由，如next.js，那么每个页面的根组件不一样</li></ul><p id="1d5694d5-ea46-808e-8ea4-f90d7a678f69" class=""><strong><span style="border-bottom:0.05em solid">导出和导入组件：</span></strong></p><ul id="1d5694d5-ea46-80fd-ba5d-f1f5c3e301ec" class="bulleted-list"><li style="list-style-type:disc">将组建分类放置于不用文件中，更加模块化，可以在其他文件中复用，可以<strong>按下述步骤拆分组件</strong><ul id="1d5694d5-ea46-80c7-9061-c0275e0d57d4" class="bulleted-list"><li style="list-style-type:circle">创建一个新的JS文件来存放组件</li></ul><ul id="1d5694d5-ea46-80dc-9fdb-eb0934d68574" class="bulleted-list"><li style="list-style-type:circle">导出该文件的函数组件（默认导出、具名导出）</li></ul><ul id="1d5694d5-ea46-8055-bfb6-f3aff961aa05" class="bulleted-list"><li style="list-style-type:circle">在需要使用该组件的文件中根据导出方式导入（默认导入、具名导入）<blockquote id="1d5694d5-ea46-80b1-898d-e73be25fa65a" class="">Gallery.js组件导出文件<br/><br/><strong>【定义了Profile组件，组件内部使用没有被导出、使用默认导出方式导出Gallery组件】</strong><p id="1d5694d5-ea46-801e-9993-d3b80321c8bb" class="">function Profile() {<br/>return (<br/>&lt;img<br/>src=&quot;<br/><a href="https://i.imgur.com/QIrZWGIs.jpg">https://i.imgur.com/QIrZWGIs.jpg</a>&quot;<br/>alt=&quot;Alan L. Hart&quot;<br/>/&gt;<br/>);<br/>}<br/></p><p id="1d5694d5-ea46-807a-a985-cbad7544d7c4" class=""><strong>export default function Gallery() {    导出</strong><br/>return (<br/>&lt;section&gt;<br/>&lt;h1&gt;了不起的科学家们&lt;/h1&gt;<br/>&lt;Profile /&gt;<br/>&lt;Profile /&gt;<br/>&lt;Profile /&gt;<br/>&lt;/section&gt;<br/>);<br/>}<br/></p></blockquote><blockquote id="1d5694d5-ea46-8061-8266-ed149abb0554" class="">App.js组件导入文件<br/><br/><strong>【默认导入方式导入Gallery组件从Gallery.js文件中、默认导出方式导出根组件App】</strong><p id="1d5694d5-ea46-80e6-9421-de399141c547" class=""><strong>import Gallery from &#x27;./Gallery.js&#x27;;   导入</strong></p><p id="1d5694d5-ea46-80e2-b3ec-c6b6a92c2089" class="">export default function App() {<br/>return (<br/>&lt;Gallery /&gt;<br/>);<br/>}<br/></p></blockquote></li></ul><ul id="1d5694d5-ea46-804a-809c-cc4fddb648c3" class="bulleted-list"><li style="list-style-type:circle"><strong>导入过程中文件的URL并未添加.js文件后缀，在React中都可以使用<br/>import Gallery from &#x27;./Gallery&#x27;;<br/></strong></li></ul></li></ul><p id="1d5694d5-ea46-8010-95be-da4f550b624b" class=""><strong>同一文件导出导入多个组件：</strong></p><ul id="1d5694d5-ea46-80b3-b8a0-edb0580b3584" class="bulleted-list"><li style="list-style-type:disc">一个文件中不可以定义多个默认导出，可以将其放在新文件中默认导出，或者将组件进行具名导出，<strong>同一文件中，有且仅有一个默认导出，可以有多个具名导出</strong></li></ul><ul id="1d5694d5-ea46-809f-8b25-dad988d2ae8c" class="bulleted-list"><li style="list-style-type:disc">具名导出与导入，<strong>具名导入需要使用大括号包括组件名</strong><ul id="1d5694d5-ea46-800e-8702-eaa9b3629f7b" class="bulleted-list"><li style="list-style-type:circle">export function Name() {}</li></ul><ul id="1d5694d5-ea46-80b7-8a5b-fcbd9a24a4e8" class="bulleted-list"><li style="list-style-type:circle">import {Name} from ‘./Gallery’；</li></ul></li></ul><p id="1d5694d5-ea46-801c-a13f-fdb39856498f" class="">
+</p><p id="1d5694d5-ea46-80b5-9b6a-f1bdce6868f1" class=""><mark class="highlight-red"><strong><span style="border-bottom:0.05em solid">使用JSX书写标签语言：</span></strong></mark></p><p id="1d5694d5-ea46-8010-b267-c18f0ab9018c" class="">JSX是JS的扩展语法，可以在JS文件中书写类似于HTML的标签</p><p id="1d5694d5-ea46-8069-9152-d207356673c3" class=""><strong><span style="border-bottom:0.05em solid">JSX：将标签引入JS</span></strong></p><ul id="1d5694d5-ea46-808f-b871-e4f695f54c3d" class="bulleted-list"><li style="list-style-type:disc">网页构建在HTML、CSS、JS基础上，习惯于网页内容放在HTML，样式放在CSS中，逻辑放在JS中</li></ul><ul id="1d5694d5-ea46-804a-8b57-f9d395fef527" class="bulleted-list"><li style="list-style-type:disc">在React中，逻辑渲染和标签可以共同存放在组件中</li></ul><figure id="1d5694d5-ea46-80d6-946c-eb9f31f4bf53" class="image"><a href="image.png"><img style="width:561.1875px" src="image.png"/></a></figure><ul id="1d5694d5-ea46-80d3-95ad-ff0b6de89e88" class="bulleted-list"><li style="list-style-type:disc">每个React组件都是一个JS函数，它会返回HTML标签，React会直接将这个标签渲染到浏览器中。React组件使用JSX语法扩展来描述标签，J<strong>SX类似于HTML，但是JSX语法更为严格、动态</strong><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1d5694d5-ea46-8074-bd31-f19c81e54201"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><p id="1d5694d5-ea46-80e7-bf64-cd1ce4b3d1d1" class="">JSX和React是相互独立东西，可以单独使用任意一个，JSX是一个语法扩展，React是一个JS库</p></div></figure></li></ul><p id="1d5694d5-ea46-80e4-9379-da06c42a5f71" class=""><strong><span style="border-bottom:0.05em solid">将HTML转化为JSX</span></strong></p><ul id="1d5694d5-ea46-8061-b32d-ea738d5f9559" class="bulleted-list"><li style="list-style-type:disc">现有的完全有效的HTML标签，直接迁移到JS组件中，并不能正常工作，甚至会报错，因为JSX语法更为严格，有更多的限制规则。<figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1d5694d5-ea46-80f5-8739-dcc4ed613801"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><p id="1d5694d5-ea46-8040-aa0a-d96e6afbc000" class="">大部分情况下，React在屏幕上显示的错误，可以直接找到问题所在</p></div></figure></li></ul><p id="1d5694d5-ea46-8052-bef8-c77b7b1fde8c" class=""><strong><span style="border-bottom:0.05em solid">JSX规则：</span></strong></p><ul id="1d5694d5-ea46-804a-b1f6-cfe5c9f19b9d" class="bulleted-list"><li style="list-style-type:disc">只能返回一个根元素</li></ul><ul id="1d5694d5-ea46-80ea-aeae-c4d6fd7076e5" class="bulleted-list"><li style="list-style-type:disc">【空标签被称为Fragment，React Fragment允许将子元素分组，而不是在HTML中添加额外的结构】<ul id="1d5694d5-ea46-80ac-a734-dc318496de78" class="bulleted-list"><li style="list-style-type:circle">如果要在组件中包含多个元素，需要<strong>使用父标签将其包裹起来</strong><blockquote id="1d5694d5-ea46-809a-9542-f393f6fc76c0" class=""><strong>使用div或者空的标签&lt;&gt;&lt;/&gt;</strong><p id="1d5694d5-ea46-80fe-81b2-e6129613263a" class="">&lt;&gt;</p><p id="1d5694d5-ea46-80ca-8f3a-e29e1320fa95" class="">    &lt;h1&gt;海蒂·拉玛的待办事项&lt;/h1&gt;</p><p id="1d5694d5-ea46-80f6-b35b-fb846f47cb3e" class="">    &lt;img src=&quot;https://i.imgur.com/yXOvdOSs.jpg&quot; alt=&quot;Hedy Lamarr&quot; class=&quot;photo&quot;&gt;</p><p id="1d5694d5-ea46-8080-bf9d-e9a7588dc4f6" class="">    &lt;ul&gt;</p><p id="1d5694d5-ea46-80b7-a8d1-cc3d0f743ff9" class="">    ...</p><p id="1d5694d5-ea46-8052-ba83-f780cfc38351" class="">    &lt;/ul&gt;</p><p id="1d5694d5-ea46-80dd-8fa4-caebc1c0e409" class="">&lt;/&gt;</p><p id="1d5694d5-ea46-807a-97eb-e0e79745034d" class="">
+</p></blockquote><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1d5694d5-ea46-80bc-b2e9-ebdca4cf1911"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><p id="1d5694d5-ea46-809c-bfe7-e03687aa2a35" class="">JSX看起来像HTML，但底层是JS对象，不可以在同一个函数中返回多个对象，除非使用数组包装，因此多个JSX标签必须要用一个父元素或者Fragment来包裹</p></div></figure></li></ul></li></ul><ul id="1d5694d5-ea46-8054-901c-c48dc5d7cb46" class="bulleted-list"><li style="list-style-type:disc">标签必须闭合<ul id="1d5694d5-ea46-8094-a418-f828ce42380f" class="bulleted-list"><li style="list-style-type:circle">JSX要求标签必须正确闭合，自闭合标签必须书写为&lt;img /&gt;</li></ul></li></ul><ul id="1d5694d5-ea46-8022-8f5b-c621dfd7b95d" class="bulleted-list"><li style="list-style-type:disc">大部分属性使用驼峰式命名法<ul id="1d5694d5-ea46-802d-96a0-d0f2cba1e482" class="bulleted-list"><li style="list-style-type:circle">JSX最终会被转化为JS，而JSX中的属性也会变成JS对象中的键值对。</li></ul><ul id="1d5694d5-ea46-807c-ad44-e35a65ad50fc" class="bulleted-list"><li style="list-style-type:circle">组件中常用变量的方式来读取属性值，但是JS对变量的命名有限制</li></ul><ul id="1d5694d5-ea46-80c7-b8d2-c4dc3df8b694" class="bulleted-list"><li style="list-style-type:circle">React中大部分HTML和SVG属性使用驼峰式命名法表示，DOM属性命名亦是如此</li></ul></li></ul><ul id="1d5694d5-ea46-807b-b458-e997d5726a00" class="bulleted-list"><li style="list-style-type:disc"><strong>提示：使用JSX转化器</strong><ul id="1d5694d5-ea46-8043-900c-dad0e7fea0e0" class="bulleted-list"><li style="list-style-type:circle">将现有的HTML中的所有属性转化为JSX格式是繁琐的，建议使用转化器将HTML和SVG标签转化为JSX</li></ul></li></ul><p id="1d5694d5-ea46-8029-b4b4-d8c08a6dde36" class="">
+</p><p id="1d5694d5-ea46-80e0-8c7e-cf4c08ab1eb6" class=""><mark class="highlight-red"><strong><span style="border-bottom:0.05em solid">在JSX中通过大括号使用JS：</span></strong></mark></p><p id="1d5694d5-ea46-8056-b197-fc562de76d90" class="">JSX允许在JS中编写类似HTML的标签，从而使渲染的逻辑和内容可以编写在一起，在JSX中使用大括号可以在标签中添加JS逻辑或者引用动态的属性。<strong>类似于格式化引用变量</strong></p><p id="1d5694d5-ea46-8050-9303-dcdbbeec6906" class=""><strong><span style="border-bottom:0.05em solid">使用引号传递字符串：</span></strong></p><ul id="1d5694d5-ea46-80a5-9ac7-f0dace563b85" class="bulleted-list"><li style="list-style-type:disc">把一个字符串的属性传递给JSX，可以把它放到单引号或者双引号中。<blockquote id="1d5694d5-ea46-807c-bb37-ed9ff3cd7ce9" class="">export default function Avatar() {<br/>    return (<br/>        &lt;img<br/>            className=&quot;avatar&quot;  <br/><strong>引号内容作为字符串传递</strong><br/>            src=&quot;<br/><a href="https://i.imgur.com/7vQD0fPs.jpg">https://i.imgur.com/7vQD0fPs.jpg</a>&quot;<br/>            alt=&quot;Gregorio Y. Zara&quot;<br/>        /&gt;<br/>    );<br/>}<br/></blockquote></li></ul><ul id="1d5694d5-ea46-808e-8261-eb211d654556" class="bulleted-list"><li style="list-style-type:disc">动态地指定src和alt的值，可以使用双引号或者大括号来引用<blockquote id="1d5694d5-ea46-802f-86ef-ca18e5143698" class="">export default function Avatar() {<br/>const avatar = &#x27;<br/><a href="https://i.imgur.com/7vQD0fPs.jpg">https://i.imgur.com/7vQD0fPs.jpg</a>&#x27;;<br/>const description = &#x27;Gregorio Y. Zara&#x27;;<br/>    return (<br/>        &lt;img<br/>            className=&quot;avatar&quot;<br/>            src={avatar}    <br/><strong>  动态指定变量值</strong><br/>            alt={description}<br/>        /&gt;<br/>    );<br/>}<br/></blockquote><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1d5694d5-ea46-803d-91c9-e0e6cba6afb2"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><p id="1d5694d5-ea46-8091-a22e-c278022bcde5" class="">注意className=“avatar”和className={avatar}</p></div></figure></li></ul><p id="1d5694d5-ea46-8034-a9b0-c92b445a8dcc" class=""><strong><span style="border-bottom:0.05em solid">使用大括号编写JSX和JS：</span></strong></p><ul id="1d5694d5-ea46-80e6-b956-ff4530825f47" class="bulleted-list"><li style="list-style-type:disc">大括号动态的指定JS变量，写入JSX<blockquote id="1d5694d5-ea46-806d-8c86-df1ec740c747" class="">export default function TodoList() {<br/>    const name = &#x27;Gregorio Y. Zara&#x27;;<br/>    return (<br/>        &lt;h1&gt;{name}的待办事项列表&lt;/h1&gt;<br/>    );<br/>}<br/></blockquote></li></ul><ul id="1d5694d5-ea46-80c5-a939-f9dbd7755ef7" class="bulleted-list"><li style="list-style-type:disc">大括号引用JS表达式函数<blockquote id="1d5694d5-ea46-808b-8db6-ef85d2667492" class="">const today = new Date();<p id="1d5694d5-ea46-802d-afe6-d3116bcf1a5f" class="">function formatDate(date) {<br/>    return new Intl.DateTimeFormat(<br/>        &#x27;zh-CN&#x27;,<br/>        { weekday: &#x27;long&#x27; }<br/>    ).format(date);<br/>}<br/></p><p id="1d5694d5-ea46-80ac-8720-d9019b12e24d" class="">export default function TodoList() {<br/>    return (    <br/><strong>大括号引用JS的表达式结果</strong><br/>        &lt;h1&gt;To Do List for {formatDate(today)}&lt;/h1&gt;<br/>    );<br/>}<br/></p></blockquote><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1d5694d5-ea46-8050-8787-fb95112ba35e"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><p id="1d5694d5-ea46-807e-a7e6-f90292b33f35" class=""><strong>使用大括号的场景<br/>1.用作JSX标签内的文本&lt;h1&gt;{name}&#x27;s To Do List&lt;/h1&gt;<br/>2.用作=后的属性值<br/></strong><code>src={avatar}</code> 会读取 <code>avatar</code> 变量</p></div></figure></li></ul><p id="1d5694d5-ea46-80e1-903f-ebcc4f8d2882" class=""><strong><span style="border-bottom:0.05em solid">使用双大括号编写JSX中的CSS和对象：</span></strong></p><ul id="1d5694d5-ea46-80ce-9bbd-ca0d9dd4ab50" class="bulleted-list"><li style="list-style-type:disc">除了字符串、数字和JS表达式函数，也可以在JSX中传递对象，对象也是用大括号表示<strong>{ name: &quot;Hedy Lamarr&quot;, inventions: 5 }，</strong>因此为了在JSX中使用，就必须使用另一对额外的大括号包裹对象<strong>person={{ name: &quot;Hedy Lamarr&quot;, inventions: 5 }}</strong></li></ul><ul id="1d5694d5-ea46-8042-b619-e33dfc0fbbdc" class="bulleted-list"><li style="list-style-type:disc">React不要求使用内联CSS样式，如果需要内联样式的时候，可以给style属性传递一个对象<blockquote id="1d5694d5-ea46-8076-9cae-ec498b2e5d84" class="">export default function TodoList() {<br/>    return (<br/>        &lt;ul style={{   <br/><strong>因为大括号被认定为外部引用变量</strong><br/>            backgroundColor: &#x27;black&#x27;,<br/>            color: &#x27;pink&#x27;<br/>        }}&gt;<br/>            &lt;li&gt;Improve the videophone&lt;/li&gt;<br/>            &lt;li&gt;Prepare aeronautics lectures&lt;/li&gt;<br/>            &lt;li&gt;Work on the alcohol-fuelled engine&lt;/li&gt;<br/>        &lt;/ul&gt;<br/>    );<br/>}<br/></blockquote></li></ul><p id="1d5694d5-ea46-8067-bb59-fe7303d8122f" class=""><strong>JSX中大括号与对象的组合：</strong></p><ul id="1d5694d5-ea46-80b7-84ed-d0f63501f663" class="bulleted-list"><li style="list-style-type:disc">多个表达式合并到一个对象中<blockquote id="1d5694d5-ea46-80db-b95e-c467c8fa44e4" class="">const person = {<br/>name: &#x27;Gregorio Y. Zara&#x27;,<br/>theme: {<br/>backgroundColor: &#x27;black&#x27;,<br/>color: &#x27;pink&#x27;<br/>}<br/>};<br/><p id="1d5694d5-ea46-80d7-bd0e-d4d675891566" class="">export default function TodoList() {<br/>return (<br/>&lt;div style={person.theme}&gt;<br/>&lt;h1&gt;{<br/><a href="http://person.name/">person.name</a>}&#x27;的待办事项&lt;/h1&gt;<br/>&lt;img<br/>className=&quot;avatar&quot;<br/>src=&quot;<br/><a href="https://i.imgur.com/7vQD0fPs.jpg">https://i.imgur.com/7vQD0fPs.jpg</a>&quot;<br/>alt=&quot;Gregorio Y. Zara&quot;<br/>/&gt;<br/>&lt;ul&gt;<br/>&lt;li&gt;优化视屏电话&lt;/li&gt;<br/>&lt;li&gt;准备航空学课程&lt;/li&gt;<br/>&lt;li&gt;研究乙醇燃料引擎&lt;/li&gt;<br/>&lt;/ul&gt;<br/>&lt;/div&gt;<br/>);<br/>}<br/></p></blockquote></li></ul><ul id="1d5694d5-ea46-806f-90a9-f7ea8331680b" class="bulleted-list"><li style="list-style-type:disc"><strong>JSX 是一种模板语言的最小实现，因为它允许你通过 JavaScript 来组织数据和逻辑。</strong></li></ul><p id="1d6694d5-ea46-80b1-95f1-dbe3a62247f7" class=""><mark class="highlight-red"><strong><span style="border-bottom:0.05em solid">将Props传递给组件：</span></strong></mark></p><p id="1d6694d5-ea46-80cc-a34f-ec37a176d997" class="">React组件使用props来互相传递数据信息，每个父组件可以提供props给他的子组件，进而传递信息，<strong>props类似于HTML属性，可以通过它传递任何JS的值、对象、数组、函数</strong></p><p id="1d6694d5-ea46-80e0-a0cf-d3de843d28df" class=""><strong><span style="border-bottom:0.05em solid">props定义：</span></strong></p><ul id="1d6694d5-ea46-801f-adda-ce3df730e506" class="bulleted-list"><li style="list-style-type:disc">props是传递给JSX标签的信息，例如className、src、alt等传递给img&gt;的props<blockquote id="1d6694d5-ea46-801b-9edf-e1e596dce467" class="">function Avatar() {<br/>return (<br/>&lt;img<br/>className=&quot;avatar&quot;<br/>src=&quot;<br/><a href="https://i.imgur.com/1bX5QH6.jpg">https://i.imgur.com/1bX5QH6.jpg</a>&quot;<br/>alt=&quot;Lin Lanying&quot;<br/>width={100}<br/>height={100}<br/>/&gt;<br/>);<br/>}<br/><p id="1d6694d5-ea46-80f1-a3e2-c33f0850f794" class="">export default function Profile() {<br/>return (<br/>&lt;Avatar /&gt;<br/>);<br/>}<br/></p></blockquote></li></ul><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1d6694d5-ea46-807b-975e-cb0bc61ecbce"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><p id="1d6694d5-ea46-8076-b8e8-d8e5695cea4f" class="">传递给JSX标签的props是预定义的要符合HTML标准，也可以将任何pros传递给自己的组件，例如&lt;Avatar&gt;等自定义组件</p></div></figure><p id="1d6694d5-ea46-8004-a1ed-d410db549842" class=""><strong><span style="border-bottom:0.05em solid">向组件传递props：</span></strong></p><ul id="1d6694d5-ea46-805f-818e-e70e6b6723d7" class="bulleted-list"><li style="list-style-type:disc">下例代码，Profile组件没有向子组件Avatar传递props<blockquote id="1d6694d5-ea46-8062-b2e7-d89d84c24df8" class="">export default function Profile() {<p id="1d6694d5-ea46-80c9-afb1-f184040b3bf1" class="">return (</p><p id="1d6694d5-ea46-8086-8959-c7810a79ee29" class="">&lt;Avatar /&gt;</p><p id="1d6694d5-ea46-8022-b5fd-c2feb5b6c9a1" class="">);</p><p id="1d6694d5-ea46-8039-a3d7-c64586ebcdda" class="">}</p></blockquote></li></ul><ul id="1d6694d5-ea46-809d-b3b6-d9a924716b81" class="bulleted-list"><li style="list-style-type:disc">组件传递props的步骤1<strong>-将props传递给子组件</strong><blockquote id="1d6694d5-ea46-804b-81fa-d54a951c8c1e" class="">以上例示范，将props传递给Avatar子组件：person和size<br/>export default function Profile() {<br/><p id="1d6694d5-ea46-80d6-908a-ea0e33f46216" class="">    return (</p><p id="1d6694d5-ea46-80d1-9b5c-fc9087c9fa74" class="">        &lt;Avatar</p><p id="1d6694d5-ea46-8023-ad15-c4be784eb3ad" class="">            person={{ name: &#x27;Lin Lanying&#x27;, imageId: &#x27;1bX5QH6&#x27; }}</p><p id="1d6694d5-ea46-8011-a3c2-d72111cbeb2f" class="">            size={100}  <strong> 双大括号用于标注它仅是一个对象，不是外部变量</strong></p><p id="1d6694d5-ea46-80ef-812f-cb792607d391" class="">        /&gt;</p><p id="1d6694d5-ea46-807b-9d6e-f1457128d29a" class="">    );</p><p id="1d6694d5-ea46-807a-b27b-f2eefa38cd7a" class="">}</p></blockquote></li></ul><ul id="1d6694d5-ea46-8016-b21c-d45eabc984be" class="bulleted-list"><li style="list-style-type:disc">组件传递props的步骤2-<strong>子组件中读取props</strong><ul id="1d6694d5-ea46-80c8-b06a-c26a9931a4e5" class="bulleted-list"><li style="list-style-type:circle">可以通过在function Avatar之后直接列出props的名字，就是将props在创建函数时作为参数，由逗号分隔<blockquote id="1d6694d5-ea46-80c3-87b9-e30b093d2061" class="">function Avatar({ person, size }) {<p id="1d6694d5-ea46-8032-98b5-ff80bb61488f" class="">// 在这里 person 和 size 是可访问的</p><p id="1d6694d5-ea46-8043-a206-dd04c60cb247" class="">}</p></blockquote></li></ul><ul id="1d6694d5-ea46-8027-b99c-f5c9d88d4bb3" class="bulleted-list"><li style="list-style-type:circle">向Avarar添加逻辑即可完成子组件，可以使用到用户输入的变量参数<blockquote id="1d6694d5-ea46-8075-81d4-edbd1fab8551" class="">import { getImageUrl } from &#x27;./utils.js&#x27;;<p id="1d6694d5-ea46-80e8-86d3-da1a311dc9c4" class="">function Avatar({ person, size }) {<br/>return (<br/>&lt;img<br/>className=&quot;avatar&quot;<br/>src={getImageUrl(person)}<br/>alt={<br/><a href="http://person.name/">person.name</a>}<br/>width={size}<br/>height={size}<br/>/&gt;<br/>);<br/>}<br/></p><p id="1d6694d5-ea46-8087-92fa-fbad5f61536d" class="">export default function Profile() {<br/>return (<br/>&lt;div&gt;<br/>&lt;Avatar<br/>size={100}<br/>person={{<br/>name: &#x27;Katsuko Saruhashi&#x27;,<br/>imageId: &#x27;YfeOqp2&#x27;<br/>}}<br/>/&gt;<br/>&lt;Avatar<br/>size={80}<br/>person={{<br/>name: &#x27;Aklilu Lemma&#x27;,<br/>imageId: &#x27;OKS67lh&#x27;<br/>}}<br/>/&gt;<br/>&lt;Avatar<br/>size={50}<br/>person={{<br/>name: &#x27;Lin Lanying&#x27;,<br/>imageId: &#x27;1bX5QH6&#x27;<br/>}}<br/>/&gt;<br/>&lt;/div&gt;<br/>);<br/>}<br/></p></blockquote></li></ul></li></ul><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1d6694d5-ea46-80f1-b342-d36b1edabe61"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><p id="1d6694d5-ea46-80f9-b3be-c3f37840b679" class="">props可以清晰分隔父组件和子组件，<strong>父组件调用子组件，同时赋予子组件参数。最终实现父组件调用指定参数的子组件</strong></p><p id="1d6694d5-ea46-80c5-a032-f313994eb85c" class="">通过更改子组件的参数使用逻辑，而不用修改父组件</p><p id="1d6694d5-ea46-8055-8224-e4cb42491b65" class="">将props理解为函数的参数，props是组件唯一的参数。<strong>由父组件指定，子组件运行逻辑</strong></p></div></figure><ul id="1d6694d5-ea46-8044-a1dc-c3dca14df710" class="bulleted-list"><li style="list-style-type:disc">同时props的传递也可以理解为，React子组件函数接受一个参数，参数为一个对象，由父组件指定提供。<blockquote id="1d6694d5-ea46-8017-a2ad-d4ced07bf92c" class="">function Avatar(props) {<p id="1d6694d5-ea46-808a-a489-f144746676b1" class="">let person = props.person;</p><p id="1d6694d5-ea46-801b-b046-cb22995792e3" class="">let size = props.size;   </p><p id="1d6694d5-ea46-801c-b1b9-c347bff17642" class=""><strong>通常不需要整个对象作为props，也可以解构为单独的props</strong></p><p id="1d6694d5-ea46-800a-87e5-ccb217bc73cb" class="">// ...</p><p id="1d6694d5-ea46-800f-8042-cd26ba0e1713" class="">}</p></blockquote></li></ul><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1d6694d5-ea46-802d-9512-c5e9d33e7096"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><p id="1d6694d5-ea46-809d-9d44-dbbf96d5629b" class="">声明props时，不要忘记对象与JSX的关系，<strong>一对大括号就是了</strong></p><p id="1d6694d5-ea46-806c-b90c-de9105285942" class=""><strong>解构等同于从函数的参数中读取属性</strong></p><p id="1d6694d5-ea46-8091-9061-d4c5da6cdf69" class="">function Avatar(props) {  <strong>传入整个对象参数</strong></p><p id="1d6694d5-ea46-803f-b55c-c73be650fdea" class="">let person = props.person;  <strong>将整个对象的属性拆分为小的变量</strong></p><p id="1d6694d5-ea46-807a-a80c-e4d77f606040" class="">let size = props.size;   <strong> 这个叫解构</strong></p><p id="1d6694d5-ea46-801b-a49a-cb2ee444610f" class="">// ...</p><p id="1d6694d5-ea46-804b-bd1b-f06a9a6ea9f5" class="">}</p></div></figure><p id="1d6694d5-ea46-8067-9272-e18675b4a5ce" class=""><strong><span style="border-bottom:0.05em solid">给prop指定一个默认值：</span></strong></p><ul id="1d6694d5-ea46-806b-9f40-f12663951c4f" class="bulleted-list"><li style="list-style-type:disc">在没有指定值的情况下，可以给prop一个默认值，可以通过在参数后写（prop=默认值）来进行解构<blockquote id="1d6694d5-ea46-80fb-bc96-c8c313291af0" class="">function Avatar （{person，size = 100}）{<br/>//…..<br/>}<br/></blockquote><ul id="1d6694d5-ea46-8066-9972-eb8795f81616" class="bulleted-list"><li style="list-style-type:circle">如果渲染时没有指定prop的值，prop会被赋值为默认值，这里的size会被指定为100</li></ul><ul id="1d6694d5-ea46-80f6-b07d-f33b954b8b96" class="bulleted-list"><li style="list-style-type:circle">默认值仅在没有指定prop或者prop={undefined}才会使用，如果传递size={null}或者size={0}，不会触发使用默认值</li></ul></li></ul><p id="1d6694d5-ea46-80a7-8e68-d3fd7560bca5" class=""><strong><span style="border-bottom:0.05em solid">使用JSX展开语法来传递props</span></strong></p><p id="1d6694d5-ea46-80d7-ac92-c66f8345d70e" class="">有时候传递props会重复使用，代码不会出错，但是可以会更简洁，将组件所有的props转发给子组件，</p><ul id="1d6694d5-ea46-80d3-bc13-ddcbda405388" class="bulleted-list"><li style="list-style-type:disc">重复传递props<blockquote id="1d6694d5-ea46-801f-a493-d6f38abef755" class="">function Profile({ person, size, isSepia, thickBorder }) {<br/><br/><strong>传递多个props使代码看起来繁琐</strong><p id="1d6694d5-ea46-8060-a7a0-e639ec8bb8ff" class="">    return (</p><p id="1d6694d5-ea46-80b7-ab42-d7ba17a327b8" class="">        &lt;div className=&quot;card&quot;&gt;</p><p id="1d6694d5-ea46-8035-ab91-f597e07a0333" class="">            &lt;Avatar<div class="indented"><p id="1d6694d5-ea46-8014-a276-fc89904d054c" class="">      person={person}<div class="indented"><p id="1d6694d5-ea46-8014-85fb-f91b78e189ee" class="">size={size}                  </p><p id="1d6694d5-ea46-8074-b69e-f4daa860b9fb" class="">isSepia={isSepia}</p><p id="1d6694d5-ea46-80a8-b278-f40427be729f" class="">thickBorder={thickBorder}</p><p id="1d6694d5-ea46-808b-9837-cbb76e9ea061" class="">/&gt;</p></div></p><p id="1d6694d5-ea46-8073-a2c4-ed0eb38f7ef1" class="">&lt;/div&gt;</p><p id="1d6694d5-ea46-80d2-a904-c2412f1b14a1" class="">);</p></div></p><p id="1d6694d5-ea46-801d-81e4-fead5c0d921e" class="">}</p></blockquote></li></ul><ul id="1d6694d5-ea46-80c4-b388-e91312ac14e7" class="bulleted-list"><li style="list-style-type:disc">JSX展开语法传递props<blockquote id="1d6694d5-ea46-8085-af61-dcb27c6757cb" class="">function Profile(props) {    <br/><br/><strong>将Profile的所有props转发搭配Avatar组件，而不用列出每个名字</strong><p id="1d6694d5-ea46-8077-a8e4-cc3aeeeb7d54" class="">    return (</p><p id="1d6694d5-ea46-80ca-b604-c3dc79128f00" class="">        &lt;div className=&quot;card&quot;&gt;</p><p id="1d6694d5-ea46-8046-95a3-ee28a4500a5d" class="">        &lt;Avatar {...props} /&gt;</p><p id="1d6694d5-ea46-80e7-8489-def0646125eb" class="">        &lt;/div&gt;</p><p id="1d6694d5-ea46-8021-bd9d-f54fa2113f01" class="">    );</p><p id="1d6694d5-ea46-80e5-80e4-c4b888b8af70" class="">}</p></blockquote><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1d6694d5-ea46-80f0-8d79-db8832467b5d"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><p id="1d6694d5-ea46-803f-a66e-dcdd302c1e91" class="">请克制的使用展开语法，如果在所有组件中都是用展开语法，会出现报错</p><p id="1d6694d5-ea46-8086-a5cf-f8d30e313cf7" class=""><strong>正常方法应该拆分组件，将子组件作为JSX传递</strong></p></div></figure></li></ul><p id="1d6694d5-ea46-80a6-aa11-f4fbc3ed4d5f" class="">
+</p><p id="1d6694d5-ea46-8037-95dd-c831e8d93465" class=""><strong><span style="border-bottom:0.05em solid">将JSX作为子组件传递：使用childrenprops</span></strong></p><ul id="1d6694d5-ea46-801d-80a7-cea338f8e5ca" class="bulleted-list"><li style="list-style-type:disc">浏览器中，嵌套使用标签是常见的<blockquote id="1d6694d5-ea46-80ae-a066-f2ab7277f3bf" class="">&lt;div&gt;<p id="1d6694d5-ea46-8030-bd02-f684f5917083" class="">&lt;img /&gt;</p><p id="1d6694d5-ea46-8008-b724-f6aaaacfa82f" class="">&lt;/div&gt;</p></blockquote></li></ul><ul id="1d6694d5-ea46-809c-8d12-f16113283ff7" class="bulleted-list"><li style="list-style-type:disc">在React中也可以使用相同的方式嵌套组件<ul id="1d6694d5-ea46-803f-a88d-cc386d13085c" class="bulleted-list"><li style="list-style-type:circle">下例将内容嵌套在JSX标签后，<strong>父组件接受子prop-children</strong><br/>下面的Card组件接受一个被设定为&lt;Avatar /&gt;组件的子prop，冰包裹在div中渲染<br/><blockquote id="1d6694d5-ea46-80a1-aab9-c28f3087a23c" class="">import Avatar from &#x27;./Avatar.js&#x27;;<p id="1d6694d5-ea46-80e4-b762-dac5766810bb" class="">function Card({ children }) {    <strong>父组件，接受子组件作为参数</strong><br/>    return (<br/>        &lt;div className=&quot;card&quot;&gt;<br/>            {children}      <br/><strong>将子组件所谓变量prop引入</strong><br/>        &lt;/div&gt;<br/>    );<br/>}<br/></p><p id="1d6694d5-ea46-80f7-a1e0-db26d0f6f9e4" class="">export default function Profile() {   <strong>根父组件</strong><br/>    return (<br/>        &lt;Card&gt;    <br/><strong>子组件</strong><br/>            &lt;Avatar    <br/><strong>子组件的子组件，这里会当作children参数传递</strong><br/>                size={100}<br/>                person={{<br/>                    name: &#x27;Katsuko Saruhashi&#x27;,<br/>                    imageId: &#x27;YfeOqp2&#x27;<br/>                }}<br/>            /&gt;<br/>        &lt;/Card&gt;<br/>    );<br/>}<br/></p></blockquote></li></ul><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1d6694d5-ea46-803f-9774-eaf806ab79b4"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><p id="1d6694d5-ea46-80ce-93e0-e04cb6a9d33f" class="">可以将children prop子组件看作一个洞，使用父组件的JSX来填充，常用children prop来进行视觉包装：面板和网络等</p></div></figure></li></ul><p id="1d6694d5-ea46-8046-ba40-f555ee434d30" class=""><strong><span style="border-bottom:0.05em solid">props随时间变化：</span></strong></p><ul id="1d6694d5-ea46-80b2-8c5c-d4b942957f83" class="bulleted-list"><li style="list-style-type:disc">Clock组件从父组件中接受两个参数prop：color和time，父组件使用state<blockquote id="1d6694d5-ea46-80d8-823f-df16f73a8545" class="">export default function Clock({ color, time }) {<br/>    return (<br/>        &lt;h1 style={{ color: color }}&gt;<br/>            {time}<br/>        &lt;/h1&gt;<br/>    );<br/>}<br/></blockquote><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1d6694d5-ea46-80ea-8240-cfa3cc61124f"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><p id="1d6694d5-ea46-808f-b9b1-efb2c4b7d5ed" class="">这个例子说明：<strong>一个组件可以随着时间的推移接收到不同的props</strong></p><p id="1d6694d5-ea46-8082-b346-e29e9d3ae240" class=""><strong>props不总是静态的</strong>，它反映了组件在任何时间点的数据，并不仅仅是在开始</p><p id="1d6694d5-ea46-8011-802e-c352191daff3" class="">但是<strong>props是不可变的</strong>，当组件需要改变props（例如响应用户交互或新数据），就<strong>会请求父组件传递不同的props—一个新对象</strong>，而<strong>旧的props会被丢弃</strong>，被回收占用的内存</p><p id="1d6694d5-ea46-80e9-a12d-fea2e2e71d63" class=""><strong>不要改变props</strong>，当需要响应用户输入（例如更改所选颜色等内容），<strong>可以设置不同的state</strong></p></div></figure></li></ul><p id="1d6694d5-ea46-80d6-8d1f-fce0ca1d0936" class=""><strong>摘要：</strong><strong><span style="border-bottom:0.05em solid">将参数与函数分离</span></strong></p><ul id="1d6694d5-ea46-802a-97d5-f9b086d3114c" class="bulleted-list"><li style="list-style-type:disc">要传递 props，请将它们添加到 JSX，就像使用 HTML 属性一样。</li></ul><ul id="1d6694d5-ea46-80cc-86e4-df0774ad2387" class="bulleted-list"><li style="list-style-type:disc">要读取 props，请使用 <code>function Avatar({ person, size })</code> 解构语法。</li></ul><ul id="1d6694d5-ea46-809f-a2cd-d1b5615513cf" class="bulleted-list"><li style="list-style-type:disc">你可以指定一个默认值，如 <code>size = 100</code>，用于缺少值或值为 <code>undefined</code> 的 props 。</li></ul><ul id="1d6694d5-ea46-80d6-8c9e-c48e2dc6a4b3" class="bulleted-list"><li style="list-style-type:disc">你可以使用 <code>&lt;Avatar {...props} /&gt;</code> JSX 展开语法转发所有 props，但不要过度使用它！</li></ul><ul id="1d6694d5-ea46-8097-9b3a-f30388c1784b" class="bulleted-list"><li style="list-style-type:disc">像 <code>&lt;Card&gt;&lt;Avatar /&gt;&lt;/Card&gt;</code> 这样的嵌套 JSX，将被视为 <code>Card</code> 组件的 <code>children</code> prop。</li></ul><ul id="1d6694d5-ea46-80c6-a2a3-ea85d0272d72" class="bulleted-list"><li style="list-style-type:disc">Props 是只读的时间快照：每次渲染都会收到新版本的 props。</li></ul><ul id="1d6694d5-ea46-8094-91f0-dd421d466ae5" class="bulleted-list"><li style="list-style-type:disc">你不能改变 props。当你需要交互性时，你可以设置 state。</li></ul><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1d6694d5-ea46-804e-bbdc-ef55970d09c4"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><p id="1d6694d5-ea46-80e6-b771-c6f1934fff1a" class=""><mark class="highlight-teal"><strong>理解：标准格式模块化，export组件内部仅包含参数、对象等内容，其他组件为函数以及运行逻辑</strong></mark></p></div></figure><p id="1d6694d5-ea46-8017-9070-ca7033459231" class="">
+</p><p id="1d6694d5-ea46-80c7-beb3-fd2a6b692d4f" class=""><mark class="highlight-red"><strong><span style="border-bottom:0.05em solid">条件渲染：</span></strong></mark></p><p id="1d6694d5-ea46-80dc-adce-caab34d88dda" class="">通常组件会根据不同的情况显示不同的内容，<strong>在React中可以通过使用JS中的逻辑判断来选择性地渲染JSX，if语句、&amp;&amp;和？：</strong></p><p id="1d6694d5-ea46-8083-9b56-cef5ec799025" class=""><strong><span style="border-bottom:0.05em solid">使用条件来返回JSX：</span></strong></p><ul id="1d6694d5-ea46-8088-a55f-d1d93abcf469" class="bulleted-list"><li style="list-style-type:disc">假设有一个PackingList组件，包含多个Item组件需要渲染，每个物品可以标记为打包与否<blockquote id="1d6694d5-ea46-809f-8fb7-df09983b312a" class="">function Item({ name, isPacked }) {<br/>    return &lt;li className=&quot;item&quot;&gt;{name}&lt;/li&gt;;<br/>}<br/><p id="1d6694d5-ea46-80ec-b2d0-f7f4ce7209af" class="">export default function PackingList() {<br/>    return (<br/>        &lt;section&gt;<br/>            &lt;h1&gt;Sally Ride 的行李清单&lt;/h1&gt;<br/>            &lt;ul&gt;<br/>                &lt;Item<br/>                    isPacked={true}<br/>                    name=&quot;宇航服&quot;<br/>                /&gt;<br/>                &lt;Item<br/>                     isPacked={true}<br/>                     name=&quot;带金箔的头盔&quot;<br/>                /&gt;<br/>               &lt;Item<br/>                   isPacked={false}<br/>                   name=&quot;Tam 的照片&quot;<br/>               /&gt;<br/>          &lt;/ul&gt;<br/>    &lt;/section&gt;<br/>);<br/>}<br/></p></blockquote></li></ul><ul id="1d6694d5-ea46-807e-942a-cc1999634566" class="bulleted-list"><li style="list-style-type:disc">Item组件的isPacked属性被区分为true/false，可以在true物体旁加一个√符号。使用if/else条件语句判断<blockquote id="1d6694d5-ea46-803b-932b-f81463065439" class="">if (isPacked) {<p id="1d6694d5-ea46-80ca-bf0e-d210f0aef851" class="">return &lt;li className=&quot;item&quot;&gt;{name} ✅&lt;/li&gt;;</p><p id="1d6694d5-ea46-804d-97bd-d4d209b7d04d" class="">}</p><p id="1d6694d5-ea46-8085-95de-cb8c3ba662e7" class="">return &lt;li className=&quot;item&quot;&gt;{name}&lt;/li&gt;;</p></blockquote><ul id="1d6694d5-ea46-8099-b45d-c87edfc0e359" class="bulleted-list"><li style="list-style-type:circle">true，代码会返回不一样的JSX，</li></ul><blockquote id="1d6694d5-ea46-80a8-b289-d689e13b9983" class="">function Item({ name, isPacked }) {<br/>    if (isPacked) {<br/>        return &lt;li className=&quot;item&quot;&gt;{name} ✅&lt;/li&gt;;<br/>    }<br/>    return &lt;li className=&quot;item&quot;&gt;{name}&lt;/li&gt;;<br/>}<br/><p id="1d6694d5-ea46-8013-bbaa-e923a61509a1" class="">export default function PackingList() {<br/>    return (<br/>        &lt;section&gt;<br/>            &lt;h1&gt;Sally Ride 的行李清单&lt;/h1&gt;<br/>            &lt;ul&gt;<br/>                &lt;Item<br/>                    isPacked={true}<br/>                    name=&quot;宇航服&quot;<br/>                /&gt;<br/>                &lt;Item<br/>                     isPacked={true}<br/>                     name=&quot;带金箔的头盔&quot;<br/>                 /&gt;<br/>                &lt;Item<br/>                     isPacked={false}<br/>                     name=&quot;Tam 的照片&quot;<br/>                  /&gt;<br/>            &lt;/ul&gt;<br/>        &lt;/section&gt;<br/>    );<br/>}<br/></p></blockquote></li></ul><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1d6694d5-ea46-808d-b89d-cbb70d60afd7"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><p id="1d6694d5-ea46-80d1-9f43-dabed3552776" class="">使用JS的if和return语句来写分支逻辑，在React中，使用JavaScript来控制流（比如条件）</p></div></figure><p id="1d6694d5-ea46-802c-bc61-c94f1ea08d1f" class=""><strong><span style="border-bottom:0.05em solid">选择性的返回null：</span></strong></p><ul id="1d6694d5-ea46-80ee-9c3c-ebcec30e3fa2" class="bulleted-list"><li style="list-style-type:disc">某些情况下，不需要所有东西都被渲染，比如不想显示已经打包好的物品，但是组件又必须返回有些东西，这种情况下，可以直接返回null。<blockquote id="1d6694d5-ea46-8020-bdc9-e7feab7fd5f0" class="">if (isPacked) {<p id="1d6694d5-ea46-8051-9abc-fbbfb21e1275" class="">return null;</p><p id="1d6694d5-ea46-801b-8ba2-c8694ec9afaf" class="">}</p><p id="1d6694d5-ea46-80f8-a9e0-c9592c09a681" class="">return &lt;li className=&quot;item&quot;&gt;{name}&lt;/li&gt;;</p></blockquote><ul id="1d6694d5-ea46-800a-96fe-d370c3002ba5" class="bulleted-list"><li style="list-style-type:circle">如果组件的isPacked属性为true，他会返回null，否则他将会返回相应的JSX用来渲染</li></ul><blockquote id="1d6694d5-ea46-80c6-a44d-c8de74ee91b9" class="">function Item({ name, isPacked }) {<br/>  if (isPacked) {<br/>    return null;<br/>  }<br/>  return &lt;li className=&quot;item&quot;&gt;{name}&lt;/li&gt;;<br/>}<br/><br/>export default function PackingList() {<br/>  return (<br/>    &lt;section&gt;<br/>      &lt;h1&gt;Sally Ride 的行李清单&lt;/h1&gt;<br/>      &lt;ul&gt;<br/>        &lt;Item <br/>          isPacked={true} <br/>          name=&quot;宇航服&quot; <br/>        /&gt;<br/>        &lt;Item <br/>          isPacked={true} <br/>          name=&quot;带金箔的头盔&quot; <br/>        /&gt;<br/>        &lt;Item <br/>          isPacked={false} <br/>          name=&quot;Tam 的照片&quot; <br/>        /&gt;<br/>      &lt;/ul&gt;<br/>    &lt;/section&gt;<br/>  );<br/>}<br/></blockquote></li></ul><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1d6694d5-ea46-8044-8bc5-d72b41fcba5b"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><p id="1d6694d5-ea46-8062-9141-fee714bad114" class=""><strong>实际上，再组件里返回null并不常见，通常可以在父组件里选择是否要渲染该组件</strong></p></div></figure><p id="1d6694d5-ea46-8020-a42a-e9430f175418" class=""><strong><span style="border-bottom:0.05em solid">选择性的包含JSX：</span></strong></p><ul id="1d6694d5-ea46-8032-a308-d37c66d76216" class="bulleted-list"><li style="list-style-type:disc">在之前的例子中，在组件内部空值JSX树会返回一些东西，在渲染中总会有一些重复的内容<blockquote id="1d6694d5-ea46-802d-abeb-ffcfaf3faeca" class="">&lt;li className=“item”&gt;{name}√&lt;/li&gt;</blockquote><p id="1d6694d5-ea46-80e1-aefa-ee011bf6edbd" class="">类似于</p><blockquote id="1d6694d5-ea46-8028-9d7c-d3af40145688" class="">&lt;li className=”item”&gt;{name}&lt;/li&gt;</blockquote></li></ul><ul id="1d6694d5-ea46-800d-963f-ca24512c15f0" class="bulleted-list"><li style="list-style-type:disc">两个条件分支都会返回&lt;li&gt;<blockquote id="1d6694d5-ea46-80f7-a965-cde028218d4d" class="">if (isPacked) {<br/>  return &lt;li className=&quot;item&quot;&gt;{name} ✅&lt;/li&gt;;<br/>}<br/>return &lt;li className=&quot;item&quot;&gt;{name}&lt;/li&gt;;<br/></blockquote></li></ul><ul id="1d6694d5-ea46-80a5-b90a-c2ea54127263" class="bulleted-list"><li style="list-style-type:disc">重复的内容不会报错，但是繁杂了以后会导致代码难以维护，可以选择性的包含一小段JSX来让代码更加简洁</li></ul><p id="1d6694d5-ea46-8046-8276-d856ae363520" class=""><strong><span style="border-bottom:0.05em solid">三元运算符（？：）：</span></strong></p><ul id="1d6694d5-ea46-80ef-9bda-c7c9d26f8e6b" class="bulleted-list"><li style="list-style-type:disc">JS中有一种紧凑型语法来实现条件判断表达式-条件运算符，又称三元运算符<ul id="1d6694d5-ea46-80d6-89b7-e6b901a81b60" class="bulleted-list"><li style="list-style-type:circle">常见if条件判断</li></ul><blockquote id="1d6694d5-ea46-804d-ab88-ecec97da0956" class="">if (isPacked) {<br/>  return &lt;li className=&quot;item&quot;&gt;{name} ✅&lt;/li&gt;;<br/>}<br/>return &lt;li className=&quot;item&quot;&gt;{name}&lt;/li&gt;;<br/></blockquote><ul id="1d6694d5-ea46-802c-aa39-f2d43e0e5a78" class="bulleted-list"><li style="list-style-type:circle">三元运算符进行条件判断</li></ul><blockquote id="1d6694d5-ea46-8097-8d8c-dbd98dd52a15" class="">return (<br/>  &lt;li className=&quot;item&quot;&gt;<br/>    {isPacked ? name + &#x27; ✅&#x27; : name}<br/>  &lt;/li&gt;<br/>);<br/></blockquote></li></ul><ul id="1d6694d5-ea46-80cf-a140-ffa5fdf16fe2" class="bulleted-list"><li style="list-style-type:disc">假如把对应物品的文本放到另一个HTML标签中，使用&lt;del&gt;标签来显示删除线，也可以添加更多的换行和括号，便于在不同情况下嵌套JSX<blockquote id="1d6694d5-ea46-80b2-b026-d9d2dcffe3eb" class="">function Item({ name, isPacked }) {<br/>  return (<br/>    &lt;li className=&quot;item&quot;&gt;<br/>      {isPacked ? (<br/>        &lt;del&gt;<br/>          {name + &#x27; ✅&#x27;}<br/>        &lt;/del&gt;<br/>      ) : (<br/>        name<br/>      )}<br/>    &lt;/li&gt;<br/>  );<br/>}<br/><br/>export default function PackingList() {<br/>  return (<br/>    &lt;section&gt;<br/>      &lt;h1&gt;Sally Ride 的行李清单&lt;/h1&gt;<br/>      &lt;ul&gt;<br/>        &lt;Item <br/>          isPacked={true} <br/>          name=&quot;宇航服&quot; <br/>        /&gt;<br/>        &lt;Item <br/>          isPacked={true} <br/>          name=&quot;带金箔的头盔&quot; <br/>        /&gt;<br/>        &lt;Item <br/>          isPacked={false} <br/>          name=&quot;Tam 的照片&quot; <br/>        /&gt;<br/>      &lt;/ul&gt;<br/>    &lt;/section&gt;<br/>  );<br/>}<br/></blockquote><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1d6694d5-ea46-8073-9929-ff566ea65c35"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><p id="1d6694d5-ea46-801d-b96e-e68e5f70564d" class="">对于简单的条件判断，可以使用三元运算符，要适量食用，如果组件中有很多嵌套式条件表达式，需要考虑通过提取子组件来简化嵌套表达式。</p><p id="1d6694d5-ea46-80f2-a330-c0a022338e56" class="">在React中。标签是代码的一部分，可以使用变量和函数来整理复杂的表达式</p></div></figure></li></ul><p id="1d6694d5-ea46-80f2-b913-cba5b2566f7a" class=""><strong><span style="border-bottom:0.05em solid">逻辑与运算符&amp;&amp;</span></strong></p><ul id="1d6694d5-ea46-804c-9ae4-d7463b44601e" class="bulleted-list"><li style="list-style-type:disc">另一个用于逻辑判断的快捷表达式就是JS逻辑与运算符&amp;&amp;，</li></ul><ul id="1d6694d5-ea46-8086-b3df-c2382146d1dc" class="bulleted-list"><li style="list-style-type:disc">在React组件中，通常用在条件成立时，用于渲染一些JSX，或者不做任何渲染，</li></ul><ul id="1d6694d5-ea46-803f-9148-d0331b7eea9d" class="bulleted-list"><li style="list-style-type:disc">使用&amp;&amp;，也可以实现仅当isPacked为true，渲染勾选符号<blockquote id="1d6694d5-ea46-801b-a2a5-dd5984e443c1" class="">return (<br/>  &lt;li className=&quot;item&quot;&gt;<br/>    {name} {isPacked &amp;&amp; &#x27;✅&#x27;}<br/>  &lt;/li&gt;<br/>);<br/></blockquote><ul id="1d6694d5-ea46-804e-a02e-d2813c58b8e3" class="bulleted-list"><li style="list-style-type:circle">仅当isPacked为真值时，则&amp;&amp;渲染勾选符号，否则不渲染</li></ul><blockquote id="1d6694d5-ea46-80da-9e30-d1997ec3c762" class="">function Item({ name, isPacked }) {<br/>  return (<br/>    &lt;li className=&quot;item&quot;&gt;<br/>      {name} {isPacked &amp;&amp; &#x27;✅&#x27;}<br/>    &lt;/li&gt;<br/>  );<br/>}<br/><br/>export default function PackingList() {<br/>  return (<br/>    &lt;section&gt;<br/>      &lt;h1&gt;Sally Ride 的行李清单&lt;/h1&gt;<br/>      &lt;ul&gt;<br/>        &lt;Item <br/>          isPacked={true} <br/>          name=&quot;宇航服&quot; <br/>        /&gt;<br/>        &lt;Item <br/>          isPacked={true} <br/>          name=&quot;带金箔的头盔&quot; <br/>        /&gt;<br/>        &lt;Item <br/>          isPacked={false} <br/>          name=&quot;Tam 的照片&quot; <br/>        /&gt;<br/>      &lt;/ul&gt;<br/>    &lt;/section&gt;<br/>  );<br/>}<br/></blockquote></li></ul><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1d6694d5-ea46-80a6-8f47-f746ef2f0d01"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><p id="1d6694d5-ea46-8093-8955-ffa577512e24" class=""><strong>当JS逻辑与&amp;&amp;表达式的左侧条件为true时，返回其右侧的值</strong>，<strong>条件结果为false，则表达式会变成false，</strong>在JSX中，React会将false视为空值，类似null、undefined，这样<strong>React就不会进行任何渲染</strong></p></div></figure><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1d6694d5-ea46-800a-b992-e09f73fb636a"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><p id="1d6694d5-ea46-80a2-8b4c-d451e89080aa" class=""><strong>请勿将数字放在&amp;&amp;左侧作为条件</strong></p><p id="1d6694d5-ea46-80d8-9ec0-e622c672dc3b" class="">JS会自动将左侧的值转换为布尔类型，判断条件成立与否，然而左侧值为0，React此时会渲染0而不是不进行渲染</p><p id="1d6694d5-ea46-80ec-b75d-de88209eba2d" class="">例如，一个常见的错误是 <code>messageCount &amp;&amp; &lt;p&gt;New messages&lt;/p&gt;</code>。其原本是想当 <code>messageCount</code> 为 0 的时候不进行渲染，但实际上却渲染了 <code>0</code>。</p><p id="1d6694d5-ea46-8067-b630-cd74e39f0977" class="">为了更正，可以将左侧的值改成布尔类型：<code>messageCount &gt; 0 &amp;&amp; &lt;p&gt;New messages&lt;/p&gt;</code>。</p></div></figure><p id="1d6694d5-ea46-80ed-ba54-d3446953c4d8" class="">
+</p><p id="1d6694d5-ea46-8034-9c37-c9ea8e6ed471" class=""><strong><span style="border-bottom:0.05em solid">选择性的将JSX赋值给变量</span></strong></p><ul id="1d6694d5-ea46-8041-bde6-e97152a4309b" class="bulleted-list"><li style="list-style-type:disc">当一些快捷方式妨碍写普通代码时，可以考虑使用if语句和变量，因为可以使用let重新赋值变量。<ul id="1d6694d5-ea46-8012-ae6f-cfbfe4fa49eb" class="bulleted-list"><li style="list-style-type:circle">这种方式是最冗长的、也是最灵活的</li></ul><blockquote id="1d6694d5-ea46-8046-9c66-d264c5334a47" class="">function Item({ name, isPacked }) {<br/>  let itemContent = name;<br/>  if (isPacked) {<br/>    itemContent = name + &quot; ✅&quot;;<br/>  }<br/>  return (<br/>    &lt;li className=&quot;item&quot;&gt;<br/>      {itemContent}<br/>    &lt;/li&gt;<br/>  );<br/>}<br/><br/>export default function PackingList() {<br/>  return (<br/>    &lt;section&gt;<br/>      &lt;h1&gt;Sally Ride 的行李清单&lt;/h1&gt;<br/>      &lt;ul&gt;<br/>        &lt;Item <br/>          isPacked={true} <br/>          name=&quot;宇航服&quot; <br/>        /&gt;<br/>        &lt;Item <br/>          isPacked={true} <br/>          name=&quot;带金箔的头盔&quot; <br/>        /&gt;<br/>        &lt;Item <br/>          isPacked={false} <br/>          name=&quot;Tam 的照片&quot; <br/>        /&gt;<br/>      &lt;/ul&gt;<br/>    &lt;/section&gt;<br/>  );<br/>}<br/></blockquote><ul id="1d6694d5-ea46-804d-adcb-c48534d0b051" class="bulleted-list"><li style="list-style-type:circle">这种方式不仅适用于文本，也适用于任意的JSX</li></ul><blockquote id="1d6694d5-ea46-8024-a09b-fc0b4eec2414" class="">function Item({ name, isPacked }) {<br/>  let itemContent = name;<br/>  if (isPacked) {<br/>    itemContent = (<br/>      &lt;del&gt;<br/>        {name + &quot; ✅&quot;}<br/>      &lt;/del&gt;<br/>    );<br/>  }<br/>  return (<br/>    &lt;li className=&quot;item&quot;&gt;<br/>      {itemContent}<br/>    &lt;/li&gt;<br/>  );<br/>}<br/><br/>export default function PackingList() {<br/>  return (<br/>    &lt;section&gt;<br/>      &lt;h1&gt;Sally Ride 的行李清单&lt;/h1&gt;<br/>      &lt;ul&gt;<br/>        &lt;Item <br/>          isPacked={true} <br/>          name=&quot;宇航服&quot; <br/>        /&gt;<br/>        &lt;Item <br/>          isPacked={true} <br/>          name=&quot;带金箔的头盔&quot; <br/>        /&gt;<br/>        &lt;Item <br/>          isPacked={false} <br/>          name=&quot;Tam 的照片&quot; <br/>        /&gt;<br/>      &lt;/ul&gt;<br/>    &lt;/section&gt;<br/>  );<br/>}<br/></blockquote></li></ul><p id="1d6694d5-ea46-8013-a650-d1380ea13330" class="">
+</p><p id="1d6694d5-ea46-803e-8567-dbc30c5cb289" class=""><mark class="highlight-red"><strong><span style="border-bottom:0.05em solid">渲染列表：</span></strong></mark></p><p id="1d6694d5-ea46-8059-a672-d8c4016e5bc6" class="">有时会需要多个JS的数组方法来操作数组中的数据，从而将一个数据集渲染成多个相似的组件。<strong>在React中常用filter（）筛选需要渲染的组件和map（）把数组转换成组件数组</strong></p><p id="1d6694d5-ea46-80d3-bd1b-e4f863cdfea0" class=""><strong><span style="border-bottom:0.05em solid">从数组中渲染数据：</span></strong></p><ul id="1d6694d5-ea46-80a0-a434-d6dbaa398160" class="bulleted-list"><li style="list-style-type:disc">在同一个列表中可能仅有一项不同的类，在不同场景下，<strong>根据不同的数据渲染出相似的组件</strong>，比如评论列表或者个人资料的图库，在这种情况下，<strong>可以把要用到的数据存入JS对象或数组中，然后使用map（）或者filter（）方法来渲染出组件列表</strong></li></ul><ul id="1d6694d5-ea46-804c-b33c-ed0e910a9768" class="bulleted-list"><li style="list-style-type:disc">由数组生成一系列列表项的简单示例<ul id="1d6694d5-ea46-80c8-98cf-e8193a2ab89c" class="bulleted-list"><li style="list-style-type:circle">首先，将数据存储到数组people中<blockquote id="1d6694d5-ea46-8007-ba42-c9d522743e50" class="">const people = [<br/>  &#x27;凯瑟琳·约翰逊: 数学家&#x27;,<br/>  &#x27;马里奥·莫利纳: 化学家&#x27;,<br/>  &#x27;穆罕默德·阿卜杜勒·萨拉姆: 物理学家&#x27;,<br/>  &#x27;珀西·莱温·朱利亚: 化学家&#x27;,<br/>  &#x27;苏布拉马尼扬·钱德拉塞卡: 天体物理学家&#x27;,<br/>];<br/></blockquote></li></ul><ul id="1d6694d5-ea46-804d-8b02-cfcf46ba3475" class="bulleted-list"><li style="list-style-type:circle">其次，遍历people数组中的每一项，并获得一个新的JSX节点数组listItems<blockquote id="1d6694d5-ea46-8075-ba3f-c589b02258fd" class="">const listItems = people.map(person =&gt; &lt;li&gt;{person}&lt;/li&gt;);</blockquote></li></ul><ul id="1d6694d5-ea46-809e-9ff9-e346ceefbaf7" class="bulleted-list"><li style="list-style-type:circle">最后将listItems用&lt;ul&gt;包括起来，然后将其返回<blockquote id="1d6694d5-ea46-802a-aa60-f03aecfbfc76" class="">return &lt;ul&gt;{listItems}&lt;/ul&gt;;</blockquote><p id="1d6694d5-ea46-80d0-a8c8-e2d1ce70ae8c" class=""><strong>整体内容</strong></p><blockquote id="1d6694d5-ea46-809c-ace8-f73d841787ae" class="">const people = [<br/>  &#x27;凯瑟琳·约翰逊: 数学家&#x27;,<br/>  &#x27;马里奥·莫利纳: 化学家&#x27;,<br/>  &#x27;穆罕默德·阿卜杜勒·萨拉姆: 物理学家&#x27;,<br/>  &#x27;珀西·莱温·朱利亚: 化学家&#x27;,<br/>  &#x27;苏布拉马尼扬·钱德拉塞卡: 天体物理学家&#x27;,<br/>];<br/><br/>export default function List() {<br/>  const listItems = people.map(person =&gt;<br/>    &lt;li&gt;{person}&lt;/li&gt;<br/>  );<br/>  return &lt;ul&gt;{listItems}&lt;/ul&gt;;<br/>}<br/><br/><strong>会出现没有key警告</strong></blockquote></li></ul></li></ul><p id="1d6694d5-ea46-8050-96c4-eee9e4caa707" class=""><strong><span style="border-bottom:0.05em solid">对数组项进行过滤：</span></strong></p><ul id="1d6694d5-ea46-8081-9f5d-edba7f5c9264" class="bulleted-list"><li style="list-style-type:disc">把people数组变得更加结构化<blockquote id="1d6694d5-ea46-80f1-9f6f-fc29aa0492f3" class="">const people = [{<br/>  id: 0,<br/>  name: &#x27;凯瑟琳·约翰逊&#x27;,<br/>  profession: &#x27;数学家&#x27;,<br/>}, {<br/>  id: 1,<br/>  name: &#x27;马里奥·莫利纳&#x27;,<br/>  profession: &#x27;化学家&#x27;,<br/>}, {<br/>  id: 2,<br/>  name: &#x27;穆罕默德·阿卜杜勒·萨拉姆&#x27;,<br/>  profession: &#x27;物理学家&#x27;,<br/>}, {<br/>  id: 3,<br/>  name: &#x27;珀西·莱温·朱利亚&#x27;,<br/>  profession: &#x27;化学家&#x27;,<br/>}, {<br/>  id: 4,<br/>  name: &#x27;苏布拉马尼扬·钱德拉塞卡&#x27;,<br/>  profession: &#x27;天体物理学家&#x27;,<br/>}];<br/></blockquote></li></ul><ul id="1d6694d5-ea46-8009-977e-cf9e278a3d44" class="bulleted-list"><li style="list-style-type:disc">假如只渲染职业是化学家的人，可以使用JS的filter（）来返回满足的值。</li></ul><ul id="1d6694d5-ea46-8003-b9c4-f6c551a18260" class="bulleted-list"><li style="list-style-type:disc">这个方法会将数组的子项，每一个筛选，只返回一个包含满足条件的项的新数组。</li></ul><ul id="1d6694d5-ea46-80ae-832b-d35866579052" class="bulleted-list"><li style="list-style-type:disc">条件如下“(person) =&gt; person.profession === &#x27;化学家’”。实现过程如下<ul id="1d6694d5-ea46-80fb-803b-f1bd0694adde" class="bulleted-list"><li style="list-style-type:circle">首先，创建一个用来储存化学家的新数组chemistes，用到filter方法来筛选people数组<blockquote id="1d6694d5-ea46-80ef-9b7c-c2963d9ef7cc" class="">const chemists = people.filter(person =&gt;<br/>  person.profession === &#x27;化学家&#x27;<br/>);<br/></blockquote></li></ul><ul id="1d6694d5-ea46-80b2-a89e-e20153a8b726" class="bulleted-list"><li style="list-style-type:circle">其次，使用map方法遍历chemists数组<blockquote id="1d6694d5-ea46-80db-84ab-c7e02bdc7d7f" class="">const listItems = chemists.map(person =&gt;<br/>  &lt;li&gt;<br/>     &lt;img<br/>       src={getImageUrl(person)}<br/>       alt={person.name}<br/>     /&gt;<br/>     &lt;p&gt;<br/>       &lt;b&gt;{person.name}:&lt;/b&gt;<br/>       {&#x27; &#x27; + person.profession + &#x27; &#x27;}<br/>       因{person.accomplishment}而闻名世界<br/>     &lt;/p&gt;<br/>  &lt;/li&gt;<br/>);<br/></blockquote></li></ul><ul id="1d6694d5-ea46-8010-a2ae-f320d9476823" class="bulleted-list"><li style="list-style-type:circle">最后返回listItems<blockquote id="1d6694d5-ea46-8036-b5ca-f9ca19568cb7" class="">return &lt;ul&gt;{listItems}&lt;/ul&gt;</blockquote></li></ul><ul id="1d6694d5-ea46-80ac-9b0f-e6b844b15d44" class="bulleted-list"><li style="list-style-type:circle">整体来看<blockquote id="1d6694d5-ea46-808d-8520-deaf4c086960" class="">import { people } from &#x27;./data.js&#x27;;<br/>import { getImageUrl } from &#x27;./utils.js&#x27;;<br/><br/>export default function List() {<br/>  const chemists = people.filter(person =&gt;<br/>    person.profession === &#x27;化学家&#x27;<br/>  );<br/>  const listItems = chemists.map(person =&gt;<br/>    &lt;li&gt;<br/>      &lt;img<br/>        src={getImageUrl(person)}<br/>        alt={person.name}<br/>      /&gt;<br/>      &lt;p&gt;<br/>        &lt;b&gt;{person.name}:&lt;/b&gt;<br/>        {&#x27; &#x27; + person.profession + &#x27; &#x27;}<br/>        因{person.accomplishment}而闻名世界<br/>      &lt;/p&gt;<br/>    &lt;/li&gt;<br/>  );<br/>  return &lt;ul&gt;{listItems}&lt;/ul&gt;;<br/>}<br/></blockquote></li></ul><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1d6694d5-ea46-80b1-b3f0-d5c3b1bc93d9"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><p id="1d6694d5-ea46-80be-af11-f4c8fc05329c" class=""><strong>箭头函数会隐式的返回⇒之后的表达式，可以省略return语句</strong></p><p id="1d6694d5-ea46-8074-8f1b-f9a67f1e08ea" class="">const listItems = chemists.map(person =&gt;</p><p id="1d6694d5-ea46-809b-9bf0-f8869ad356fd" class="">&lt;li&gt;...&lt;/li&gt; // 隐式地返回！</p><p id="1d6694d5-ea46-80ca-8348-e225c98352be" class="">);</p><p id="1d6694d5-ea46-80fd-99b7-c8a1ff4a75b2" class=""><strong>如果⇒后面跟了一对大括号{}，就必须使用return来指定返回值</strong></p><p id="1d6694d5-ea46-8009-9b31-d9927ecce8ba" class="">const listItems = chemists.map(person =&gt; { // 花括号</p><p id="1d6694d5-ea46-8009-9249-f85e14e8dc50" class="">return &lt;li&gt;...&lt;/li&gt;;</p><p id="1d6694d5-ea46-80a0-880f-c12d9f419fd6" class="">});</p><p id="1d6694d5-ea46-8083-8351-c86178ad7d27" class="">箭头函数⇒{后面的部分被称为块函数体，支持多行代码的写法，但必须要使用return语句才能指定返回值，不写，就什么都没有返回</p></div></figure></li></ul><p id="1d6694d5-ea46-8026-a0db-edf2f8321cff" class=""><strong><span style="border-bottom:0.05em solid">使用key来保持列表项的顺序：</span></strong></p><ul id="1d6694d5-ea46-8033-a9d6-e418f74bd867" class="bulleted-list"><li style="list-style-type:disc">上面对列表进行操作的代码，都会报错<br/><br/><mark class="highlight-red_background">Warning: Each child in a list should have a unique “key” prop.</mark></li></ul><ul id="1d6694d5-ea46-8067-b0e2-f83607d04d79" class="bulleted-list"><li style="list-style-type:disc">因为必须给数组中的每一项都指定一个key—可以是字符串或者数字的形式，只要能唯一标示出各个数组项即可&lt;li key={<a href="http://person.id/">person.id</a>}&gt;...&lt;/li&gt;</li></ul><ul id="1d6694d5-ea46-8080-95ef-ee7831319c7d" class="bulleted-list"><li style="list-style-type:disc">这个key会告诉React，每个组件对应着数组中哪一项，React可以把他们匹配起来，这个对于数组项的排序、插入、删除等操作很有用</li></ul><ul id="1d6694d5-ea46-8082-8257-e2a41a472322" class="bulleted-list"><li style="list-style-type:disc">key的值应该在数据中准备好<figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1d6694d5-ea46-80ba-a5a1-e3d1ec39569c"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><p id="1d6694d5-ea46-8011-bd5b-fa8b48446480" class=""><strong>直接放在map（）方法里的JSX元素都需要制定key值！</strong></p></div></figure></li></ul><p id="1d6694d5-ea46-8042-9f54-c8eb6a8991aa" class=""><strong><span style="border-bottom:0.05em solid">如何设定key值</span></strong></p><p id="1d6694d5-ea46-80a9-addc-ca171522cc43" class="">不同来源的数据对那个这不同的key的获取方式</p><ul id="1d6694d5-ea46-800c-be09-f5bfe0828b99" class="bulleted-list"><li style="list-style-type:disc">来自数据库的数据：可以直接使用数据表中的主键，主键具有唯一性和</li></ul><ul id="1d6694d5-ea46-8089-ba0c-cc88cf3a5ca2" class="bulleted-list"><li style="list-style-type:disc">本地产生数据：可以使用一个自增的计数器，或者一个类似uuid的库来生成key</li></ul><p id="1d6694d5-ea46-80b7-9009-c3b161c7696b" class=""><strong><span style="border-bottom:0.05em solid">key需要满足的条件</span></strong></p><ul id="1d6694d5-ea46-80c9-a083-c7d50bbe4887" class="bulleted-list"><li style="list-style-type:disc">key值在兄弟节点之间是唯一的，不要求全局唯一，在不同的数组中可以使用相同的key</li></ul><ul id="1d6694d5-ea46-80d4-b1d9-d4db77764d08" class="bulleted-list"><li style="list-style-type:disc">key值不可改变，不要再渲染时动态的生成key</li></ul><p id="1d6694d5-ea46-8068-b2a2-c024a8ba7f9f" class=""><strong><span style="border-bottom:0.05em solid">React中为什么需要key：</span></strong></p><p id="1d6694d5-ea46-800c-96b6-d3982e673160" class="">React中需要key和文件夹里的文件需要命名道理类似，key可以从众多兄弟元素中唯一标识出某一项JSX节点，进而一个仔细选择的key能提供的信息要比元素在数组中的索引重要许多。即使元素的位置在渲染过程中发生了改变，记录的key值也能让React在整个生命周期中一直能够识别他</p><p id="1d6694d5-ea46-803e-813f-f5f0f67a1244" class="">直接把数组项的索引当作 key 值来用，实际上，如果你没有显式地指定 <code>key</code> 值，React 确实默认会这么做。但是数组项的顺序在插入、删除或者重新排序等操作中会发生改变，此时把索引顺序用作 key 值会产生一些微妙且令人困惑的 bug<br/>与之类似，请不要在运行过程中动态地产生 key，像是 <br/><code>key={Math.random()}</code> 这种方式<br/>有一点需要注意，组件不会把 <br/><code>key</code> 当作 props 的一部分。Key 的存在只对 React 本身起到提示作用。如果你的组件需要一个 ID，那么请把它作为一个单独的 prop 传给组件： <code>&lt;Profile key={id} userId={id} /&gt;</code>。</p><p id="1d7694d5-ea46-8034-8c5b-da386f32d930" class="">
+</p><p id="1d7694d5-ea46-8033-976a-e3a10e7549f6" class=""><mark class="highlight-red"><strong><span style="border-bottom:0.05em solid">保持组件单一纯粹：</span></strong></mark></p><p id="1d7694d5-ea46-80fd-9a79-c96743208c43" class="">部分JS函数是单一的纯粹的，这类函数被称为纯函数。纯函数仅执行计算操作，可以通过将组件按照纯函数编写，来避免代码库过长出现不可预测的bug</p><p id="1d7694d5-ea46-8061-9028-d9142ff8846f" class=""><strong><span style="border-bottom:0.05em solid">纯函数：组件作为公式</span></strong></p><p id="1d7694d5-ea46-808d-8ed6-cf1f158b6424" class="">纯函数具有如下特征：</p><ul id="1d7694d5-ea46-8060-8ac7-d8a2af1bdf56" class="bulleted-list"><li style="list-style-type:disc">只负责自己的任务：不会更改在函数调用前就已经存在的对象和变量</li></ul><ul id="1d7694d5-ea46-8021-8ffe-c4b7a2a4a2e2" class="bulleted-list"><li style="list-style-type:disc">输入相同，输出相同：给定相同的输入，纯函数返回相同的结果</li></ul><p id="1d7694d5-ea46-8070-a2a8-f63b9bf9a274" class="">React围绕纯函数概念设计。假设编写的组件是纯函数，输入相同的内容，组件总是返回相同的JSX<div class="indented"><blockquote id="1d7694d5-ea46-8095-8ebb-c0c0b52c25b1" class="">function Recipe({ drinkers }) {<br/>  return (<br/>    &lt;ol&gt;    <br/>      &lt;li&gt;Boil {drinkers} cups of water.&lt;/li&gt;<br/>      &lt;li&gt;Add {drinkers} spoons of tea and {0.5 * drinkers} spoons of spice.&lt;/li&gt;<br/>      &lt;li&gt;Add {0.5 * drinkers} cups of milk to boil and sugar to taste.&lt;/li&gt;<br/>    &lt;/ol&gt;<br/>  );<br/>}<br/><br/>export default function App() {<br/>  return (<br/>    &lt;section&gt;<br/>      &lt;h1&gt;Spiced Chai Recipe&lt;/h1&gt;<br/>      &lt;h2&gt;For two&lt;/h2&gt;<br/>      &lt;Recipe drinkers={2} /&gt;<br/>      &lt;h2&gt;For a gathering&lt;/h2&gt;<br/>      &lt;Recipe drinkers={4} /&gt;<br/>    &lt;/section&gt;<br/>  );<br/>}<br/></blockquote><ul id="1d7694d5-ea46-8041-a278-dcfc9da83d49" class="bulleted-list"><li style="list-style-type:disc">给函数Recipe传入drinkers={2}，将返回包含两杯水的JSX，永远如此，就像数学公式一般。</li></ul><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1d7694d5-ea46-80c7-b94f-c9a4de4e10d1"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><p id="1d7694d5-ea46-8012-a9fc-d482982e7899" class="">可以将组建作为菜谱，做饭过程中按照菜谱，不引入新食材，会得到相同的菜品，菜品就是组件用于React渲染的JSX</p></div></figure></div></p><p id="1d7694d5-ea46-8017-8688-e11c64d8ee48" class=""><strong><span style="border-bottom:0.05em solid">副作用：不符合预期的结果：</span></strong></p><p id="1d7694d5-ea46-8057-931b-cd8ebe1b3e33" class="">React的渲染过程必须是单一纯粹的，组件应该只返回他们的JSX，不改变存在的任何变量核对下。<div class="indented"><blockquote id="1d7694d5-ea46-8067-8b94-c336ef898003" class="">错误示例，修改了渲染前就存在的变量。<br/>let guest = 0;<br/><br/>function Cup() {<br/>  // Bad：正在更改预先存在的变量！<br/>  guest = guest + 1;<br/>  return &lt;h2&gt;Tea cup for guest #{guest}&lt;/h2&gt;;<br/>}<br/><br/>export default function TeaSet() {<br/>  return (<br/>    &lt;&gt;<br/>      &lt;Cup /&gt;<br/>      &lt;Cup /&gt;<br/>      &lt;Cup /&gt;<br/>    &lt;/&gt;<br/>  );<br/>}<br/></blockquote><ul id="1d7694d5-ea46-80d1-a119-c6a9e8a33476" class="bulleted-list"><li style="list-style-type:disc">Cup组件在读取外部变量guest时候，会多次调用这个组件，生成不同的JSX，如果其他组件读取guest也会产生不同的JSX</li></ul><ul id="1d7694d5-ea46-803b-bdff-e812606e46b4" class="bulleted-list"><li style="list-style-type:disc">可以将guest作为prop传入来修复此组件</li></ul><blockquote id="1d7694d5-ea46-8070-8b9c-f208f4b9ee72" class="">function Cup({ guest }) {<br/>  return &lt;h2&gt;Tea cup for guest #{guest}&lt;/h2&gt;;<br/>}<br/><br/>export default function TeaSet() {<br/>  return (<br/>    &lt;&gt;<br/>      &lt;Cup guest={1} /&gt;<br/>      &lt;Cup guest={2} /&gt;<br/>      &lt;Cup guest={3} /&gt;<br/>    &lt;/&gt;<br/>  );<br/>}<br/></blockquote><ul id="1d7694d5-ea46-80c4-b41a-d3e2ae050175" class="bulleted-list"><li style="list-style-type:disc">现在的组件就是单一纯粹的，返回的JSX只依赖于guest</li></ul></div></p><p id="1d7694d5-ea46-80d5-9b0d-ce5a0c907af9" class=""><strong>局部mutation：组建的特殊用法：</strong></p><ul id="1d7694d5-ea46-80fe-98fc-e78abf7c3520" class="bulleted-list"><li style="list-style-type:disc">上述示例的渲染过程，组件改变了渲染前存在的变量，这种行为称为突变。纯函数不会改变函数作用域外的变量、对象</li></ul><ul id="1d7694d5-ea46-8058-9d84-fb19ca3aa3a6" class="bulleted-list"><li style="list-style-type:disc">可以在渲染时更改刚刚创建的变量和对象，下例创建数组，将其分配给一个cups变量，<blockquote id="1d7694d5-ea46-8007-b563-db65c063b9df" class="">function Cup({ guest }) {<br/>  return &lt;h2&gt;Tea cup for guest #{guest}&lt;/h2&gt;;<br/>}<br/><br/>export default function TeaGathering() {<br/>  let cups = [];<br/>  for (let i = 1; i &lt;= 12; i++) {<br/>    cups.push(&lt;Cup key={i} guest={i} /&gt;);<br/>  }<br/>  return cups;<br/>}<br/></blockquote><ul id="1d7694d5-ea46-80da-a57a-dfc77edc1b04" class="bulleted-list"><li style="list-style-type:circle">如果cups数组在函数之外创建，这就会出现问题。push方法就会更改预先存在的对象。这里不会，<strong>在每次渲染时都会重新在函数内部创建一次，这里就是局部变量的作用</strong></li></ul></li></ul><p id="1d7694d5-ea46-8057-97e1-daafe5c0af82" class=""><strong><span style="border-bottom:0.05em solid">常出现副作用场景：</span></strong></p><ul id="1d7694d5-ea46-8024-a27a-ea143a83a5dc" class="bulleted-list"><li style="list-style-type:disc">函数式编程很大程度上依赖于纯函数，在某些情况下纯函数又不得不发生改变。包括更新屏幕、启动动画、更写数据等，这些行为被称为副作用。这些事额外发生的改动，与渲染过程无关</li></ul><ul id="1d7694d5-ea46-8059-9630-ff315756424f" class="bulleted-list"><li style="list-style-type:disc">在React中，副作用属于事件处理程序。就是在进行操作时运行的函数，即使事件处理程序是在组件内部定义的，他们也不会在渲染期间运行（类似于按钮触发事件），因此事件处理程序无需是纯函数</li></ul><ul id="1d7694d5-ea46-80d8-b733-db0e50e1be00" class="bulleted-list"><li style="list-style-type:disc">最后万不得已，如果无法为副作用找到合适的事件处理程序，可以<strong>调用组件中的useEffect方法将其附加到返回的JSX中，这会在React渲染结束后执行</strong></li></ul><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1d7694d5-ea46-8087-8b9a-f54c1e9b44ce"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><p id="1d7694d5-ea46-8015-bed3-f30308f2bf39" class=""><strong>React 无法保证组件函数以任何特定的顺序执行，因此你无法通过设置变量在它们之间进行通信。所有的交流都必须通过 props 进行。</strong></p><p id="1d7694d5-ea46-80f7-854f-de445bb467e1" class=""><strong>当你想要更改数组的任意项时，必须先对其进行拷贝。</strong></p><p id="1d7694d5-ea46-80ad-a438-f9c386b876a1" class=""><strong>记住数组上的哪些操作会修改原始数组、哪些不会，这非常有帮助。例如，</strong><code><strong>push</strong></code><strong>、</strong><code><strong>pop</strong></code><strong>、</strong><code><strong>reverse</strong></code><strong> 和 </strong><code><strong>sort</strong></code><strong> 会改变原始数组，但 </strong><code><strong>slice</strong></code><strong>、</strong><code><strong>filter</strong></code><strong> 和 </strong><code><strong>map</strong></code><strong> 则会创建一个新数组</strong></p></div></figure><p id="1d7694d5-ea46-80bc-9672-ed62ec0b6d60" class="">
+</p><p id="1d7694d5-ea46-8073-9a92-d42cea049e88" class=""><mark class="highlight-red"><strong><span style="border-bottom:0.05em solid">将UI视为树：</span></strong></mark></p><p id="1d7694d5-ea46-80bc-a77c-c4ecfd815e37" class="">当React应用逐渐成型时，许多组件会出现嵌套</p><p id="1d7694d5-ea46-8091-8890-c621fd605ef6" class="">React为解决该问题，将UI建模为树，将应用程序理解为树对于理解组件之间的关系以及调试性能和状态管理等未来将会遇到的一些概念有用</p><p id="1d7694d5-ea46-8089-b995-dfb9071f4377" class=""><strong><span style="border-bottom:0.05em solid">将UI视为树：</span></strong></p><ul id="1d7694d5-ea46-80c0-9601-fa8b80591434" class="bulleted-list"><li style="list-style-type:disc">树是项目和UI之间的关系模型，通常使用树结构来表示UI，例如浏览器使用树结构来构建HTML（DOM）和CSS（CSSOM），移动平台也是用树来表示其视图层次机构<ul id="1d7694d5-ea46-80f1-8cf3-ff40f3842212" class="bulleted-list"><li style="list-style-type:circle">React从组件中创建UI树，UI树最后用于渲染DOM</li></ul><figure id="1d7694d5-ea46-8056-8b11-ff35fd398145" class="image"><a href="image%201.png"><img style="width:561.1625366210938px" src="image%201.png"/></a></figure></li></ul><ul id="1d7694d5-ea46-80da-b961-dd7c646194ad" class="bulleted-list"><li style="list-style-type:disc">与浏览器和移动平台一样，React使用树结构来管理和建模React应用程序中组件之间的关系。树用于理解数据如何在React应用程序中流动以及如何优化呈现和应用程序大小</li></ul><p id="1d7694d5-ea46-802f-8700-e5e66269e773" class=""><strong><span style="border-bottom:0.05em solid">渲染树：</span></strong></p><ul id="1d7694d5-ea46-8030-88a9-f3a2911b77ca" class="bulleted-list"><li style="list-style-type:disc">组件的一个主要特征就是能够由其他组件组合而成，组件之间嵌套，由父组件和子组件概念</li></ul><ul id="1d7694d5-ea46-803e-ab1b-c44cf98c4533" class="bulleted-list"><li style="list-style-type:disc">在渲染React应用时，可以在渲染树中建模这种关系<ul id="1d7694d5-ea46-80a2-bdeb-fa6e58c80512" class="bulleted-list"><li style="list-style-type:circle">渲染树示例<blockquote id="1d7694d5-ea46-80d1-9ac9-cb659a118fa1" class="">import FancyText from &#x27;./FancyText&#x27;;<br/>import InspirationGenerator from &#x27;./InspirationGenerator&#x27;;<br/>import Copyright from &#x27;./Copyright&#x27;;<br/><br/>export default function App() {<br/>  return (<br/>    &lt;&gt;<br/>      &lt;FancyText title text=&quot;Get Inspired App&quot; /&gt;<br/>      &lt;InspirationGenerator&gt;<br/>        &lt;Copyright year={2004} /&gt;<br/>      &lt;/InspirationGenerator&gt;<br/>    &lt;/&gt;<br/>  );<br/>}<br/></blockquote></li></ul><ul id="1d7694d5-ea46-800a-a17b-eab62a9d08bf" class="bulleted-list"><li style="list-style-type:circle">渲染树结构如下</li></ul><figure id="1d7694d5-ea46-800f-9dd4-ce303de041c0" class="image"><a href="image%202.png"><img style="width:531.1749877929688px" src="image%202.png"/></a></figure><ul id="1d7694d5-ea46-80d9-9895-f0ee8e1e506c" class="bulleted-list"><li style="list-style-type:circle">树由节点组成，一个节点为一个组件，如App、FancyText、Copyright等</li></ul><ul id="1d7694d5-ea46-8026-acd2-d0928bf26b5b" class="bulleted-list"><li style="list-style-type:circle">React渲染树中，根节点是应用程序的根组件，React渲染的第一个组件，书中的每个箭头都是父组件指向子组件</li></ul></li></ul><ul id="1d7694d5-ea46-8089-827c-e3f3ff5c5827" class="bulleted-list"><li style="list-style-type:disc">渲染树表示React应用程序的单个渲染过程，在条件渲染中，父组件可以根据传递不同数据而渲染不同的子组件<figure id="1d7694d5-ea46-80e5-a170-d8da32e76524" class="image"><a href="image%203.png"><img style="width:531.1625366210938px" src="image%203.png"/></a></figure></li></ul><p id="1d7694d5-ea46-8061-a68e-cf268ec96846" class=""><strong><span style="border-bottom:0.05em solid">模块依赖树：</span></strong></p><p id="1d7694d5-ea46-80cd-a33e-ff298ea69308" class="">在React应用程序中，可以使用树来建模的原因是应用程序的模块依赖关系。当拆分组件和逻辑到不同的文件中，就创建了JS，在这些模块中可以到处组件、函数或常量</p><p id="1d7694d5-ea46-80d8-8dbf-c42f8dfcfc8c" class="">模块依赖树中的每个节点都是一个模块，每个分支代表该模块中的import语句</p><ul id="1d7694d5-ea46-8013-bcc5-de39ce2de0b9" class="bulleted-list"><li style="list-style-type:disc">根基构建一个模块依赖树<figure id="1d7694d5-ea46-8063-a923-ec5ac479913e" class="image"><a href="image%204.png"><img style="width:531.1625366210938px" src="image%204.png"/></a></figure><ul id="1d7694d5-ea46-80d1-8c1a-dedb49c1449d" class="bulleted-list"><li style="list-style-type:circle">树的根节点是跟模块，也是入口文件，通常包含根组件的模块。</li></ul><ul id="1d7694d5-ea46-80d4-b27a-d01fbdaa6b37" class="bulleted-list"><li style="list-style-type:circle">与渲染树相比，存在相似的结构，也有显著的差别<ul id="1d7694d5-ea46-8098-a224-dea7106f1045" class="bulleted-list"><li style="list-style-type:square">构成依赖树的节点是模块，而不是组件</li></ul><ul id="1d7694d5-ea46-80a0-b947-d414e9432e42" class="bulleted-list"><li style="list-style-type:square">非组件模块，如inspirations.js，在树中也有体现，在渲染树中仅为封装组件</li></ul><ul id="1d7694d5-ea46-80f2-8d35-c08f11b6902e" class="bulleted-list"><li style="list-style-type:square">Copyright.js在App.js下。在渲染树中Copyright作为组件出现，因为InspirationGenerator接受JSX作为childrenprops，将Copyright作为子组件渲染，但不导入该模块</li></ul></li></ul></li></ul><ul id="1d7694d5-ea46-8077-abd9-d781f4d80976" class="bulleted-list"><li style="list-style-type:disc">依赖书对于确定运行React应用程序的模块很有用，在生产环境下构建React应用程序，通常会有构建步骤</li></ul><ul id="1d7694d5-ea46-803d-b86b-dd5781eb173c" class="bulleted-list"><li style="list-style-type:disc">构建步骤捆绑所有必要的JS来供客户端使用。负责该步骤的工具称为bundler捆绑器</li></ul><ul id="1d7694d5-ea46-8096-ab4f-dbee6d0b93bb" class="bulleted-list"><li style="list-style-type:disc">bundler捆绑器，使用依赖树来确定应包含哪些模块。</li></ul><ul id="1d7694d5-ea46-8089-9b46-e6a878735e66" class="bulleted-list"><li style="list-style-type:disc">随着应用程序增长，捆绑包大小通常会增加，大型捆绑包大小对于哭护短来说，下载和运行成本高昂，并会延迟UI绘制的时间。</li></ul></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
