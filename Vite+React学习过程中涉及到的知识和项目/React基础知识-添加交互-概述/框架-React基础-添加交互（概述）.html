@@ -1,0 +1,684 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>框架-React基础-添加交互（概述）</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-default_background {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.highlight-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.block-color-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: undefined; }
+.select-value-color-pink { background-color: rgba(225, 136, 179, 0.27); }
+.select-value-color-purple { background-color: rgba(168, 129, 197, 0.27); }
+.select-value-color-green { background-color: rgba(123, 183, 129, 0.27); }
+.select-value-color-gray { background-color: rgba(84, 72, 49, 0.15); }
+.select-value-color-transparentGray { background-color: undefined; }
+.select-value-color-translucentGray { background-color: undefined; }
+.select-value-color-orange { background-color: rgba(224, 124, 57, 0.27); }
+.select-value-color-brown { background-color: rgba(210, 162, 141, 0.35); }
+.select-value-color-red { background-color: rgba(244, 171, 159, 0.4); }
+.select-value-color-yellow { background-color: rgba(236, 191, 66, 0.39); }
+.select-value-color-blue { background-color: rgba(93, 165, 206, 0.27); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="1d7694d5-ea46-8090-bd89-c59a66248055" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">🤪</span></div><h1 class="page-title">框架-React基础-添加交互（概述）</h1><p class="page-description"></p></header><div class="page-body"><p id="1d7694d5-ea46-8012-b366-ebfa666a7f6a" class=""><mark class="highlight-red"><strong><span style="border-bottom:0.05em solid">添加交互：</span></strong></mark></p><p id="1d7694d5-ea46-80cd-8975-dc2d3947cc2b" class="">界面上的控件会根据用户的输入而更新，例如点击按钮切换轮播图的展示，在React中，随时间变化的数据被称为状态state，可以向任何组件添加状态，并按需更新。</p><p id="1d7694d5-ea46-80b0-815c-f7d2b2fa1942" class=""><strong><span style="border-bottom:0.05em solid">响应事件：</span></strong></p><ul id="1d7694d5-ea46-800f-939f-f1a273ef53ed" class="bulleted-list"><li style="list-style-type:disc">React允许向JSX中添加事件处理程序，事件处理程序是自己制定的函数，将在用户交互时被处罚，如点击、悬停、聚焦在表单输入框上等等。<ul id="1d7694d5-ea46-8064-b5f8-d66991704c5d" class="bulleted-list"><li style="list-style-type:circle">例如&lt;button&gt;等内置组件只支持内置浏览器时间，如onClick。但是可以创建自己的组件，并给事件处理程序props指定任何特定与应用的名称，可以任意命名<blockquote id="1d7694d5-ea46-80fc-9a99-ddb34a7e2c26" class=""><strong>默认导出App组件，返回一个Toolbar组件，指定Toolbar组件的参数为alert</strong><br/>export default function App() {<br/>  return (<br/>    &lt;Toolbar<br/>      onPlayMovie={() =&gt; alert(&#x27;Playing!&#x27;)}<br/>      onUploadImage={() =&gt; alert(&#x27;Uploading!&#x27;)}<br/>    /&gt;<br/>  );<br/>}<br/><br/><strong>指定Toolbar组件，返回两个Button组件，指定点击触发参数为onPlayMovie和onUploadImage两个函数，button的内容为play和upload两个参数</strong><br/>function Toolbar({ onPlayMovie, onUploadImage }) {<br/>  return (<br/>    &lt;div&gt;<br/>      &lt;Button onClick={onPlayMovie}&gt;<br/>        Play Movie<br/>      &lt;/Button&gt;<br/>      &lt;Button onClick={onUploadImage}&gt;<br/>        Upload Image<br/>      &lt;/Button&gt;<br/>    &lt;/div&gt;<br/>  );<br/>}<br/><br/><strong>指定Button组件，返回一个button，点击触发为参数的函数，button的内容为参数的children</strong><br/>function Button({ onClick, children }) {<br/>  return (           <br/>    &lt;button onClick={onClick}&gt;<br/>      {children}<br/>    &lt;/button&gt;<br/>  );<br/>}<br/></blockquote></li></ul></li></ul><p id="1d7694d5-ea46-80c4-ad10-eb1859b7d72e" class=""><strong><span style="border-bottom:0.05em solid">State：记忆组件：</span></strong></p><ul id="1d7694d5-ea46-80b8-a6c7-e04b6eb3ad0b" class="bulleted-list"><li style="list-style-type:disc">组件通常需要根据交互来改变屏幕上的内容，例如在表单中键入更新输入栏，在轮播图上点击下一个改变图片，点击购买将产品放入购物车等等。</li></ul><ul id="1d7694d5-ea46-8098-af61-df3fc69203cd" class="bulleted-list"><li style="list-style-type:disc">组件需要记住一些东西，例如当前的输入值，当前的图片，购物车状态等等。</li></ul><ul id="1d7694d5-ea46-8035-ac83-f1bea8c1bbed" class="bulleted-list"><li style="list-style-type:disc">这种特定于组件的记忆被称为状态state。</li></ul><ul id="1d7694d5-ea46-803b-ba97-ebf4069b4683" class="bulleted-list"><li style="list-style-type:disc">可以使用useState的Hook为组件添加状态，Hook是能够让组件使用React功能的特殊函数（state是功能之一）</li></ul><ul id="1d7694d5-ea46-80c9-aedb-f133112d08b3" class="bulleted-list"><li style="list-style-type:disc">useState的Hook让你声明一个状态变量，它接收初始状态并返回一对值：当前状态和一个让你更新状态的设置函数<blockquote id="1d7694d5-ea46-8025-b96b-e83484b42d5b" class="">const [index, setIndex] = useState(0);<p id="1d7694d5-ea46-8063-9dd6-e1069abae5c8" class="">const [showMore, setShowMore] = useState(false);</p></blockquote></li></ul><ul id="1d7694d5-ea46-80d5-b73f-df047847b53f" class="bulleted-list"><li style="list-style-type:disc">下例为一个图库，点击更新状态，data数据自定<blockquote id="1d7694d5-ea46-8053-a7f3-c05e086b13fe" class=""><strong>导入需要的组件和功能库</strong><br/>import { useState } from &#x27;react&#x27;;<br/>import { sculptureList } from &#x27;./data.js&#x27;;<br/><br/><strong>默认导出div展示框架</strong><br/>export default function Gallery() {<br/>  const [index, setIndex] = useState(0);<br/>  const [showMore, setShowMore] = useState(false);  <br/><strong>定义两个状态</strong><br/>  const hasNext = index &lt; sculptureList.length - 1;<br/><br/><strong>定义状态index的设置函数</strong><br/>  function handleNextClick() {<br/>    if (hasNext) {<br/>      setIndex(index + 1);<br/>    } else {<br/>      setIndex(0);<br/>    }<br/>  }<br/><br/><strong>定义状态showmore的设置函数</strong><br/>  function handleMoreClick() {<br/>    setShowMore(!showMore);<br/>  }<br/><br/>  let sculpture = sculptureList[index];<br/>  return (<br/>    &lt;&gt;<br/>      &lt;button onClick={handleNextClick}&gt;<br/>        Next<br/>      &lt;/button&gt;<br/>      &lt;h2&gt;<br/>        &lt;i&gt;{sculpture.name} &lt;/i&gt;<br/>        by {sculpture.artist}<br/>      &lt;/h2&gt;<br/>      &lt;h3&gt;<br/>        ({index + 1} of {sculptureList.length})<br/>      &lt;/h3&gt;<br/>      &lt;button onClick={handleMoreClick}&gt;<br/>        {showMore ? &#x27;Hide&#x27; : &#x27;Show&#x27;} details<br/>      &lt;/button&gt;<br/>      {showMore &amp;&amp; &lt;p&gt;{sculpture.description}&lt;/p&gt;}<br/>      &lt;img<br/>        src={sculpture.url}<br/>        alt={sculpture.alt}<br/>      /&gt;<br/>    &lt;/&gt;<br/>  );<br/>}<br/></blockquote></li></ul><p id="1d7694d5-ea46-80f8-8fbf-cb1c8db50e82" class=""><strong><span style="border-bottom:0.05em solid">渲染和提交：</span></strong></p><ul id="1d7694d5-ea46-80f1-a02c-d61a8c1ade44" class="bulleted-list"><li style="list-style-type:disc">在组建显示在屏幕上之前，必须由React进行渲染</li></ul><ul id="1d7694d5-ea46-808c-8142-d2a8adb16a8f" class="bulleted-list"><li style="list-style-type:disc">请求和服务UI的过程有三个步骤（以厨房上菜为例）<ul id="1d7694d5-ea46-80ac-a47e-cc000cbb0c52" class="bulleted-list"><li style="list-style-type:circle">触发渲染（食客将订单送到厨房）</li></ul><ul id="1d7694d5-ea46-80ce-9e1b-f88197f6d172" class="bulleted-list"><li style="list-style-type:circle">渲染组件（厨房做菜）</li></ul><ul id="1d7694d5-ea46-800c-a901-c860738f2af7" class="bulleted-list"><li style="list-style-type:circle">提交到DOM（将菜给顾客）</li></ul></li></ul><p id="1d7694d5-ea46-8088-ac8c-df7eb6a89aa7" class=""><strong><span style="border-bottom:0.05em solid">State状态：类似快照：</span></strong></p><ul id="1d7694d5-ea46-80a1-a9b9-d8d717e9fcaa" class="bulleted-list"><li style="list-style-type:disc">与普通的JS变量不同，React状态state的行为更像一个快照，设置他并不改变已有的状态变量，而是重新触发一次渲染。<blockquote id="1d7694d5-ea46-8019-bf81-e4a7e16f57c5" class="">console.log(count);  // 0<p id="1d7694d5-ea46-8085-8905-de1782e5afd3" class="">setCount(count + 1); // 请求用 1 重新渲染</p><p id="1d7694d5-ea46-80fb-9c7f-f15105264ddd" class="">console.log(count);  // 仍然是 0！</p></blockquote></li></ul><ul id="1d7694d5-ea46-8058-a5ef-c18d8ab089c5" class="bulleted-list"><li style="list-style-type:disc">React这样运行为了帮助避免bug，下例为聊天应用程序<blockquote id="1d7694d5-ea46-80d2-8158-c5b69cfcd673" class="">import { useState } from &#x27;react&#x27;;<br/><br/>export default function Form() {<br/>  const [to, setTo] = useState(&#x27;Alice&#x27;);<br/>  const [message, setMessage] = useState(&#x27;Hello&#x27;);<br/><br/>  function handleSubmit(e) {<br/>    e.preventDefault();<br/>    setTimeout(() =&gt; {<br/>      alert(`You said ${message} to ${to}`);<br/>    }, 5000);<br/>  }<br/><br/>  return (<br/>    &lt;form onSubmit={handleSubmit}&gt;<br/>      &lt;label&gt;<br/>        To:{&#x27; &#x27;}<br/>        &lt;select<br/>          value={to}<br/>          onChange={e =&gt; setTo(e.target.value)}&gt;<br/>          &lt;option value=&quot;Alice&quot;&gt;Alice&lt;/option&gt;<br/>          &lt;option value=&quot;Bob&quot;&gt;Bob&lt;/option&gt;<br/>        &lt;/select&gt;<br/>      &lt;/label&gt;<br/>      &lt;textarea<br/>        placeholder=&quot;Message&quot;<br/>        value={message}<br/>        onChange={e =&gt; setMessage(e.target.value)}<br/>      /&gt;<br/>      &lt;button type=&quot;submit&quot;&gt;Send&lt;/button&gt;<br/>    &lt;/form&gt;<br/>  );<br/>}<br/></blockquote></li></ul><p id="1d7694d5-ea46-8055-adc9-cb7ecfd9189a" class=""><strong><span style="border-bottom:0.05em solid">把一系列state更新加入对列</span></strong></p><ul id="1d7694d5-ea46-8034-8dd4-ca928a925d1e" class="bulleted-list"><li style="list-style-type:disc">从例子触发，下例点击一次【+3】，只能增加一次分数<blockquote id="1d7694d5-ea46-8067-904c-e82c1617932f" class="">import { useState } from &#x27;react&#x27;;<br/><br/>export default function Counter() {<br/>  const [score, setScore] = useState(0);<br/><br/>  function increment() {<br/>    setScore(score + 1);<br/>  }<br/><br/>  return (<br/>    &lt;&gt;<br/>      &lt;button onClick={() =&gt; increment()}&gt;+1&lt;/button&gt;<br/>      &lt;button onClick={() =&gt; {<br/>        increment();<br/>        increment();<br/>        increment();<br/>      }}&gt;+3&lt;/button&gt;<br/>      &lt;h1&gt;Score: {score}&lt;/h1&gt;<br/>    &lt;/&gt;<br/>  )<br/>}<br/></blockquote><ul id="1d7694d5-ea46-80b9-93a2-dcad7d1bb493" class="bulleted-list"><li style="list-style-type:circle">state如同一张快照，设置状态会请求一个新的重新渲染，但不会在已经运行的代码中更改他。在调用setScore（score + 1 ），score值仍为0</li></ul><ul id="1d7694d5-ea46-807d-acb8-d550cb55c9f1" class="bulleted-list"><li style="list-style-type:circle"><strong>理解为在setState时候，使用的state，一直都会是触发事件时的值</strong></li></ul><ul id="1d7694d5-ea46-80a5-9ca5-ecdaca2319c1" class="bulleted-list"><li style="list-style-type:circle"><mark class="highlight-teal"><strong>好比点击按钮时state=0，点击按钮会触发三次函数，这三次函数都会以state=0为参数</strong></mark><blockquote id="1d7694d5-ea46-80c6-9bf0-e24cac1f36ed" class="">console.log(score);  // 0<br/>setScore(score + 1); // setScore(0 + 1);<br/>console.log(score);  // 0<br/>setScore(score + 1); // setScore(0 + 1);<br/>console.log(score);  // 0<br/>setScore(score + 1); // setScore(0 + 1);<br/>console.log(score);  // 0<br/></blockquote></li></ul><ul id="1d7694d5-ea46-80e1-a11e-c99c9e1e8516" class="bulleted-list"><li style="list-style-type:circle">可以在设置状态时传递一个更新其函数，来解决这个问题<blockquote id="1d7694d5-ea46-8005-a185-f23455cd2b94" class="">import { useState } from &#x27;react&#x27;;<br/><br/>export default function Counter() {<br/>  const [score, setScore] = useState(0);<br/><br/>  function increment() {<br/>    setScore(s =&gt; s + 1);<br/>  }<br/><br/>  return (<br/>    &lt;&gt;<br/>      &lt;button onClick={() =&gt; increment()}&gt;+1&lt;/button&gt;<br/>      &lt;button onClick={() =&gt; {<br/>        increment();<br/>        increment();<br/>        increment();<br/>      }}&gt;+3&lt;/button&gt;<br/>      &lt;h1&gt;Score: {score}&lt;/h1&gt;<br/>    &lt;/&gt;<br/>  )<br/>}<br/></blockquote></li></ul></li></ul><p id="1d7694d5-ea46-80a6-b0cd-f7e97a9fda4c" class=""><strong><span style="border-bottom:0.05em solid">更新state中的对象：</span></strong></p><ul id="1d7694d5-ea46-80f8-919d-fb00759ac748" class="bulleted-list"><li style="list-style-type:disc">状态state可以持有任何类型的JS值，包括对象，</li></ul><ul id="1d7694d5-ea46-807c-92eb-ff4d9ac6cde7" class="bulleted-list"><li style="list-style-type:disc">不可以直接改变React状态中持有的对象和数组，相反，想要更新一个对象和数组时，需要创建一个新的对象，或者复制现有的对象，用这个副本来更新状态。</li></ul><ul id="1d7694d5-ea46-8029-a149-c719f7fc10f6" class="bulleted-list"><li style="list-style-type:disc">通常会使用…展开语法来复制想改变的对象和数组，下例更新一个嵌套对象</li></ul><ul id="1d7694d5-ea46-804f-a8a9-d831061d8fe8" class="bulleted-list"><li style="list-style-type:disc"><strong>推荐的做法是每次更新一个状态变量或一个相关的状态对象</strong><blockquote id="1d7694d5-ea46-8048-a6e4-fd77b4a3596c" class="">import { useState } from &#x27;react&#x27;;<br/><br/>export default function Form() {<br/>  const [person, setPerson] = useState({   <br/><strong>创建一个state状态</strong><br/>    name: &#x27;Niki de Saint Phalle&#x27;,<br/>    artwork: {                              <br/><strong> state状态初始量为对象</strong><br/>      title: &#x27;Blue Nana&#x27;,<br/>      city: &#x27;Hamburg&#x27;,<br/>      image: &#x27;https://i.imgur.com/Sd1AgUOm.jpg&#x27;,<br/>    }<br/>  });<br/><br/>  function handleNameChange(e) {<br/>    setPerson({<br/>      ...person,        <br/><strong> state状态的set函数，仅修改对象的姓名属性</strong><br/>      name: e.target.value<br/>    });<br/>  }<br/><br/>  function handleTitleChange(e) {<br/>    setPerson({<br/>      ...person,<br/>      artwork: {                        <br/><strong>同理仅修改title属性</strong><br/>        ...person.artwork,<br/>        title: e.target.value<br/>      }<br/>    });<br/>  }<br/><br/>  function handleCityChange(e) {<br/>    setPerson({<br/>      ...person,                                <br/><strong>   city</strong><br/>      artwork: {<br/>        ...person.artwork,<br/>        city: e.target.value<br/>      }<br/>    });<br/>  }<br/><br/>  function handleImageChange(e) {<br/>    setPerson({<br/>      ...person,                        <br/><strong> image属性</strong><br/>      artwork: {<br/>        ...person.artwork,<br/>        image: e.target.value<br/>      }<br/>    });<br/>  }<br/><br/>  return (<br/>    &lt;&gt;<br/>      &lt;label&gt;<br/>        Name:<br/>        &lt;input<br/>          value={person.name}<br/>          onChange={handleNameChange}<br/>        /&gt;<br/>      &lt;/label&gt;<br/>      &lt;label&gt;<br/>        Title:<br/>        &lt;input<br/>          value={person.artwork.title}<br/>          onChange={handleTitleChange}<br/>        /&gt;<br/>      &lt;/label&gt;<br/>      &lt;label&gt;<br/>        City:<br/>        &lt;input<br/>          value={person.artwork.city}<br/>          onChange={handleCityChange}<br/>        /&gt;<br/>      &lt;/label&gt;<br/>      &lt;label&gt;<br/>        Image:<br/>        &lt;input<br/>          value={person.artwork.image}<br/>          onChange={handleImageChange}<br/>        /&gt;<br/>      &lt;/label&gt;<br/>      &lt;p&gt;<br/>        &lt;i&gt;{person.artwork.title}&lt;/i&gt;<br/>        {&#x27; by &#x27;}<br/>        {person.name}<br/>        &lt;br /&gt;<br/>        (located in {person.artwork.city})<br/>      &lt;/p&gt;<br/>      &lt;img<br/>        src={person.artwork.image}<br/>        alt={person.artwork.title}<br/>      /&gt;<br/>    &lt;/&gt;<br/>  );<br/>}<br/></blockquote><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1d7694d5-ea46-8037-a12c-c4edb8af0fa6"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><p id="1d7694d5-ea46-8050-9849-c442a691987a" class=""><strong>展开语法…person，</strong></p><ul id="1d7694d5-ea46-8089-87ba-d92cc00fb319" class="bulleted-list"><li style="list-style-type:disc">展开语法会“展开”数组或对象的全部内容。</li></ul><ul id="1d7694d5-ea46-8087-b8b3-ea1d5830f50b" class="bulleted-list"><li style="list-style-type:disc">如果新的数组或对象包含与展开的数组或对象相同的值（对于数组是索引位置，对于对象是键名），那么在字面量中<strong>后出现的值会更新（覆盖）之前的值</strong>。</li></ul><ul id="1d7694d5-ea46-80ca-9cf3-eb9da11710ff" class="bulleted-list"><li style="list-style-type:disc">没有在旧的数组或对象中出现的值会被<strong>添加到</strong>新的数组或对象中。</li></ul><p id="1d7694d5-ea46-80d1-99ba-fd159b68413b" class=""><strong>使用展开语法的优势：</strong></p><ul id="1d7694d5-ea46-803d-b381-d6057a6818fb" class="bulleted-list"><li style="list-style-type:disc"><strong>简洁性：</strong> 相比于手动复制对象的每个属性，展开语法使代码更加简洁易读。</li></ul><ul id="1d7694d5-ea46-801b-8044-f8aaf65d2649" class="bulleted-list"><li style="list-style-type:disc"><strong>不可变性 (Immutability)：</strong> 在 React 中，推荐以不可变的方式更新 state。展开语法可以方便地创建基于现有 state 的新对象或数组，而不会直接修改原始的 state 对象。这有助于 React 更好地追踪变化和进行优化。</li></ul><ul id="1d7694d5-ea46-8037-a070-ddc2efda43f1" class="bulleted-list"><li style="list-style-type:disc"><strong>易于合并和修改：</strong> 可以轻松地将多个对象或数组合并在一起，或者在现有对象或数组的基础上添加或修改属性/元素。</li></ul></div></figure></li></ul><p id="1d7694d5-ea46-801a-8dda-eadfad345ce0" class=""><strong><span style="border-bottom:0.05em solid">更新state中的数组：</span></strong></p><ul id="1d7694d5-ea46-802d-99c1-c17bc92ee5b9" class="bulleted-list"><li style="list-style-type:disc">数组是另一种可以存在状态state的可变JS对象，应将其视为只读状态，就像对象一样，想要更新存在的状态state中的数组时，需要创建一个新数组，或者复制现有数组，然后用新数组来更新状态<ul id="1d7694d5-ea46-8051-b069-c3d9f9f53125" class="bulleted-list"><li style="list-style-type:circle">数组状态state示例，内容为对象</li></ul><blockquote id="1d7694d5-ea46-80df-bc10-c5c4ca5b8651" class="">import { useState } from &#x27;react&#x27;;<br/><br/>const initialList = [<br/>  { id: 0, title: &#x27;Big Bellies&#x27;, seen: false },<br/>  { id: 1, title: &#x27;Lunar Landscape&#x27;, seen: false },<br/>  { id: 2, title: &#x27;Terracotta Army&#x27;, seen: true },<br/>];<br/><br/>export default function BucketList() {<br/>  const [list, setList] = useState(<br/>    initialList<br/>  );<br/><br/>  function handleToggle(artworkId, nextSeen) {<br/>    setList(list.map(artwork =&gt; {<br/>      if (artwork.id === artworkId) {<br/>        return { ...artwork, seen: nextSeen };<br/>      } else {<br/>        return artwork;<br/>      }<br/>    }));<br/>  }<br/><br/>  return (<br/>    &lt;&gt;<br/>      &lt;h1&gt;Art Bucket List&lt;/h1&gt;<br/>      &lt;h2&gt;My list of art to see:&lt;/h2&gt;<br/>      &lt;ItemList<br/>        artworks={list}<br/>        onToggle={handleToggle} /&gt;<br/>    &lt;/&gt;<br/>  );<br/>}<br/><br/>function ItemList({ artworks, onToggle }) {<br/>  return (<br/>    &lt;ul&gt;<br/>      {artworks.map(artwork =&gt; (<br/>        &lt;li key={artwork.id}&gt;<br/>          &lt;label&gt;<br/>            &lt;input<br/>              type=&quot;checkbox&quot;<br/>              checked={artwork.seen}<br/>              onChange={e =&gt; {<br/>                onToggle(<br/>                  artwork.id,<br/>                  e.target.checked<br/>                );<br/>              }}<br/>            /&gt;<br/>            {artwork.title}<br/>          &lt;/label&gt;<br/>        &lt;/li&gt;<br/>      ))}<br/>    &lt;/ul&gt;<br/>  );<br/>}<br/></blockquote></li></ul></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
