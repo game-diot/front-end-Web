@@ -1,0 +1,685 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>框架-React基础-添加交互（详解）</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-default_background {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.highlight-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.block-color-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: undefined; }
+.select-value-color-pink { background-color: rgba(225, 136, 179, 0.27); }
+.select-value-color-purple { background-color: rgba(168, 129, 197, 0.27); }
+.select-value-color-green { background-color: rgba(123, 183, 129, 0.27); }
+.select-value-color-gray { background-color: rgba(84, 72, 49, 0.15); }
+.select-value-color-transparentGray { background-color: undefined; }
+.select-value-color-translucentGray { background-color: undefined; }
+.select-value-color-orange { background-color: rgba(224, 124, 57, 0.27); }
+.select-value-color-brown { background-color: rgba(210, 162, 141, 0.35); }
+.select-value-color-red { background-color: rgba(244, 171, 159, 0.4); }
+.select-value-color-yellow { background-color: rgba(236, 191, 66, 0.39); }
+.select-value-color-blue { background-color: rgba(93, 165, 206, 0.27); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="1d7694d5-ea46-80e0-97c1-f03939a8fc76" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">😶</span></div><h1 class="page-title">框架-React基础-添加交互（详解）</h1><p class="page-description"></p></header><div class="page-body"><p id="1d7694d5-ea46-8096-bfc9-d99587301b29" class=""><mark class="highlight-red"><strong><span style="border-bottom:0.05em solid">响应事件：</span></strong></mark></p><p id="1d7694d5-ea46-801f-aa49-d4fb83a9d2ae" class="">使用React可以在JSX中添加事件处理函数，其中事件处理函数为自定义函数，会在响应交互时触发。如点击、悬停、表单输入框获得焦点。</p><p id="1d7694d5-ea46-8063-962c-e0651d769de3" class=""><strong><span style="border-bottom:0.05em solid">添加事件处理函数：</span></strong></p><ul id="1d7694d5-ea46-8056-bbf4-cccb14d2cfb4" class="bulleted-list"><li style="list-style-type:disc">如需添加一个事件处理函数，需要先定义一个函数，然后将其作为prop传入合适的JSX标签中<ul id="1d7694d5-ea46-8007-a61b-f18917afc64f" class="bulleted-list"><li style="list-style-type:circle">例如，一个未绑定事件的按钮<blockquote id="1d7694d5-ea46-80e2-a2f6-c9af40e30fce" class="">export default function Button() {<br/>  return (<br/>    &lt;button&gt;<br/>      未绑定任何事件<br/>    &lt;/button&gt;<br/>  );<br/>}<br/></blockquote></li></ul><ul id="1d7694d5-ea46-8088-b0b5-c40af6e733e2" class="bulleted-list"><li style="list-style-type:circle">三个步骤，为按钮添加交互，在用户点击时显示消息<ul id="1d7694d5-ea46-80a9-84bb-c9dc613a47f3" class="bulleted-list"><li style="list-style-type:square">在Button组件内部声明一个handleClick的函数</li></ul><ul id="1d7694d5-ea46-8085-bb82-fed3a9a92800" class="bulleted-list"><li style="list-style-type:square">实现函数内部的逻辑（使用alert来显示消息）</li></ul><ul id="1d7694d5-ea46-806e-8fab-dec480667947" class="bulleted-list"><li style="list-style-type:square">添加onClick={handleClick}到button的JSX中<blockquote id="1d7694d5-ea46-80f6-91d8-c02d4d3a7232" class="">export default function Button() {<br/>  function handleClick() {<br/>    alert(&#x27;你点击了我！&#x27;);<br/>  }<br/><p id="1d7694d5-ea46-809b-b38e-c70053b4a7aa" class="">  return (<br/>    &lt;button onClick={handleClick}&gt;<br/>      点我<br/>    &lt;/button&gt;<br/>  );<br/>}<br/></p></blockquote></li></ul></li></ul></li></ul><ul id="1d7694d5-ea46-8011-82e2-df3d98ef9431" class="bulleted-list"><li style="list-style-type:disc">可以自定义一个handleClick函数，将其作为prop传入&lt;button&gt;，其中hanldeClick时事件处理函数，有如下特点<ul id="1d7694d5-ea46-8091-a92f-e4bb95376ceb" class="bulleted-list"><li style="list-style-type:circle">通常在组件内部定义</li></ul><ul id="1d7694d5-ea46-805a-8017-d5b82250ad11" class="bulleted-list"><li style="list-style-type:circle">名称以hancdle开头后面跟事件名称</li></ul><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1d7694d5-ea46-800b-996c-c8a8d54e6a6d"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><p id="1d7694d5-ea46-80e6-b366-db8b4b2bf869" class=""><strong>按照惯例，通常将事件处理程序命名为 </strong><code><strong>handle</strong></code><strong>，后接事件名。你会经常看到 </strong><code><strong>onClick={handleClick}</strong></code><strong>，</strong><code><strong>onMouseEnter={handleMouseEnter}</strong></code><strong> 等。</strong></p></div></figure></li></ul><ul id="1d7694d5-ea46-8038-a71f-ec6434f7b4ca" class="bulleted-list"><li style="list-style-type:disc">或者也可以在JSX中定义一个内联的事件处理函数<blockquote id="1d7694d5-ea46-80c6-8c12-cb9c247595ef" class="">&lt;button onClick={function handleClick() {<br/>  alert(&#x27;你点击了我！&#x27;);<br/>}}&gt;<br/></blockquote></li></ul><ul id="1d7694d5-ea46-802e-acbc-d6dacfc5479d" class="bulleted-list"><li style="list-style-type:disc">或者，直接使用更为简洁的箭头函数<blockquote id="1d7694d5-ea46-8042-94f4-fc3c930be3ad" class="">&lt;button onClick={() =&gt; {<br/>  alert(&#x27;你点击了我！&#x27;);<br/>}}&gt;<br/></blockquote></li></ul><p id="1d7694d5-ea46-8045-92b3-e19c8a4258a2" class=""><strong>上述所有方式都是等效的，根据函数体复杂程度选择不同的处理方式</strong></p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1d7694d5-ea46-8084-ac4d-fa24c2393ccb"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><p id="1d7694d5-ea46-80c2-8ef8-dca921a6d920" class="">传递给事件处理函数的函数应该直接传递，并非是调用既不加（）</p><p id="1d7694d5-ea46-80e4-9a1b-dd212be72451" class="">会在 <a href="https://zh-hans.react.dev/learn/render-and-commit">渲染</a> 过程中 <strong>立即</strong> 触发函数，即使没有任何点击。这是因为位于 <a href="https://zh-hans.react.dev/learn/javascript-in-jsx-with-curly-braces">JSX </a><code><a href="https://zh-hans.react.dev/learn/javascript-in-jsx-with-curly-braces">{}</a></code> 之间的 JavaScript 会立即执行。</p><p id="1d7694d5-ea46-80ce-8f37-d5abeed6b35d" class=""><strong> 传递内联代码这个 alert 在组件渲染时触发，而不是点击时触发</strong>！</p><p id="1d7694d5-ea46-80d0-b392-e9bc645065b9" class="">&lt;button onClick={alert(&#x27;你点击了我！&#x27;)}&gt;</p><p id="1d7694d5-ea46-80e8-8923-d2b5e9365836" class=""><strong>定义内联事件处理函数，请将其包装在匿名函数中，如下所示：</strong></p><p id="1d7694d5-ea46-80bd-b9d9-e842c83d5d3c" class="">&lt;button onClick={() =&gt; alert(&#x27;你点击了我！&#x27;)}&gt;创建了一个稍后调用的函数，而不会在每次渲染时执行其内部代码。</p></div></figure><p id="1d7694d5-ea46-809a-a152-dd731da15d6b" class=""><strong><span style="border-bottom:0.05em solid">在事件处理函数中读取props：</span></strong></p><ul id="1d7694d5-ea46-80d0-8331-d1b26636d21e" class="bulleted-list"><li style="list-style-type:disc">由于事件处理函数在组件内部声明，因此他们可以直接访问组件的props<ul id="1d7694d5-ea46-80ca-a6a0-e09aec3dca80" class="bulleted-list"><li style="list-style-type:circle">示例，按钮点击，弹出message的prop的alert<blockquote id="1d7694d5-ea46-807a-96e0-f99c7fff0d97" class="">function AlertButton({ message, children }) {<br/>  return (<br/>    &lt;button onClick={() =&gt; alert(message)}&gt;  <br/><br/><strong>可以直接访问作为prop的message</strong><br/>      {children}<br/>    &lt;/button&gt;<br/>  );<br/>}<br/><br/>export default function Toolbar() {<br/>  return (<br/>    &lt;div&gt;<br/>      &lt;AlertButton message=&quot;正在播放！&quot;&gt;<br/>        播放电影<br/>      &lt;/AlertButton&gt;<br/>      &lt;AlertButton message=&quot;正在上传！&quot;&gt;<br/>        上传图片<br/>      &lt;/AlertButton&gt;<br/>    &lt;/div&gt;<br/>  );<br/>}<br/></blockquote></li></ul></li></ul><p id="1d7694d5-ea46-8046-ab70-f77974efa376" class=""><strong><span style="border-bottom:0.05em solid">将事件处理函数作为props传递</span></strong></p><ul id="1d7694d5-ea46-8057-928d-f9474ebb48c7" class="bulleted-list"><li style="list-style-type:disc">通常我，我们在父组件中定义子组件的事件处理函数，比如置于不同位置的Button组件，最终执行的功能也不同。<ul id="1d7694d5-ea46-80b0-91a4-cae8a79d5c02" class="bulleted-list"><li style="list-style-type:circle">为此将组件从父组件接受的prop作为事件处理函数传递，如下实例<blockquote id="1d7694d5-ea46-803b-a506-dac68cc1d968" class="">function Button({ onClick, children }) {<br/>  return (<br/>    &lt;button onClick={onClick}&gt;<br/>      {children}<br/>    &lt;/button&gt;<br/>  );<br/>}<br/>function PlayButton({ movieName }) { <br/><br/><strong> movieName是prop传递给事件函数</strong><br/>  function handlePlayClick() {<br/>    alert(<br/><code>正在播放 ${movieName}！</code>);<br/>  }<br/>  return (<br/>    &lt;Button onClick={handlePlayClick}&gt;<br/>      播放 &quot;{movieName}&quot;<br/>    &lt;/Button&gt;<br/>  );<br/>}<br/>function UploadButton() {<br/>  return (<br/>    &lt;Button onClick={() =&gt; alert(&#x27;正在上传！&#x27;)}&gt;<br/>      上传图片<br/>    &lt;/Button&gt;<br/>  );<br/>}<br/>export default function Toolbar() {<br/>  return (<br/>    &lt;div&gt;<br/>      &lt;PlayButton movieName=&quot;魔女宅急便&quot; /&gt;<br/>      &lt;UploadButton /&gt;<br/>    &lt;/div&gt;<br/>  );<br/>}<br/></blockquote><ul id="1d7694d5-ea46-80f9-a4b9-cb1f1f795081" class="bulleted-list"><li style="list-style-type:square">Toolbar组件渲染了一个PlayButton和UploadButton组件<ul id="1d7694d5-ea46-806f-82b9-e711fc162db6" class="bulleted-list"><li style="list-style-type:disc">PlayButton组件将handlePlayClick作为onClick的prop传入Button组件内部</li></ul><ul id="1d7694d5-ea46-8081-8e1d-e9bc52779733" class="bulleted-list"><li style="list-style-type:disc">UploadButton组件将()⇒alert()作为onClick prop传入Button组件内部</li></ul></li></ul><ul id="1d7694d5-ea46-8073-adea-edf7683d2ff0" class="bulleted-list"><li style="list-style-type:square">最后Button组件接收一个名为onClick的prop，这个prop以onClick={onClick}方式传递给浏览器内置的&lt;Button&gt;，点击按钮时，React会调用传入的函数。</li></ul></li></ul></li></ul><p id="1d7694d5-ea46-80fa-84f6-e94b074a3e57" class=""><strong><span style="border-bottom:0.05em solid">命名事件处理函数prop：</span></strong></p><ul id="1d7694d5-ea46-8051-b331-f7311b03ec8b" class="bulleted-list"><li style="list-style-type:disc">内置组件&lt;button&gt;和&lt;div&gt;仅支持浏览器事件名称，例如onClick，但是当自己构建组件时，可以自由命名事件处理函数的prop</li></ul><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1d7694d5-ea46-804e-8b25-d1147d807944"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><p id="1d7694d5-ea46-80bb-ba38-d390d5ef66f1" class="">按照惯例，事件处理函数的props应该以on开头，后面跟大写字母</p></div></figure><ul id="1d7694d5-ea46-8076-abaa-e46986dd6ef8" class="bulleted-list"><li style="list-style-type:disc">例如Button的组件onClick prop也可以被命名为onSmash<blockquote id="1d7694d5-ea46-80ef-a20e-ec8f88b4cdf9" class="">function Button({ onSmash, children }) {<br/>  return (<br/>    &lt;button onClick={onSmash}&gt; <br/> <br/><strong>用于prop传递的函数，可以任意命名</strong><br/>      {children}<br/>    &lt;/button&gt;<br/>  );<br/>}<br/><br/>export default function App() {<br/>  return (<br/>    &lt;div&gt;<br/>      &lt;Button onSmash={() =&gt; alert(&#x27;正在播放！&#x27;)}&gt;<br/>        播放电影<br/>      &lt;/Button&gt;<br/>      &lt;Button onSmash={() =&gt; alert(&#x27;正在上传！&#x27;)}&gt;<br/>        上传图片<br/>      &lt;/Button&gt;<br/>    &lt;/div&gt;<br/>  );<br/>}<br/></blockquote></li></ul><ul id="1d7694d5-ea46-80c8-844c-c83467aa1da8" class="bulleted-list"><li style="list-style-type:disc">当组件支持多种交互时，可以根据不同的应用程序命名事件处理程序来处理函数的prop，例如一个Toolbar组件接受onPlayMovie和onUploadImage两个事件处理函数<blockquote id="1d7694d5-ea46-80de-9574-c63d0492d266" class="">export default function App() {<br/>  return (<br/>    &lt;Toolbar<br/>      onPlayMovie={() =&gt; alert(&#x27;正在播放！&#x27;)}<br/>      onUploadImage={() =&gt; alert(&#x27;正在上传！&#x27;)}<br/>    /&gt;<br/>  );<br/>}<br/><p id="1d7694d5-ea46-8096-8cdd-d1e465b246ec" class="">function Toolbar({ onPlayMovie, onUploadImage }) {<br/>  return (<br/>    &lt;div&gt;<br/>      &lt;Button onClick={onPlayMovie}&gt;<br/>        播放电影<br/>      &lt;/Button&gt;<br/>      &lt;Button onClick={onUploadImage}&gt;<br/>        上传图片<br/>      &lt;/Button&gt;<br/>    &lt;/div&gt;<br/>  );<br/>}<br/></p><p id="1d7694d5-ea46-8088-9ad9-cbee18668799" class="">function Button({ onClick, children }) {<br/>  return (<br/>    &lt;button onClick={onClick}&gt;<br/>      {children}<br/>    &lt;/button&gt;<br/>  );<br/>}<br/></p></blockquote></li></ul><ul id="1d7694d5-ea46-8024-88fe-c0b93b9857e7" class="bulleted-list"><li style="list-style-type:disc">App组件并不需要了解Toolbar组件会对两个prop函数做什么。上述示例是 <code>Toolbar</code> 的实现细节。其中，<code>Toolbar</code> 将它们作为 <code>onClick</code> 处理函数传递给了 <code>Button</code> 组件，其实还可以通过键盘快捷键来触发它们。根据应用程序特定的交互方式（如 <code>onPlayMovie</code>）来命名 prop ，可以让你灵活地更改以后使用它们的方式。</li></ul><p id="1d7694d5-ea46-8051-b2c9-c15793797f19" class=""><strong><span style="border-bottom:0.05em solid">事件传播：</span></strong></p><ul id="1d7694d5-ea46-80f9-a865-ffe6219357ff" class="bulleted-list"><li style="list-style-type:disc">事件处理函数还将捕获来自子组件的事件，通常会称为事件沿着树向上传播，她是从事件发生开始的地方，然后沿着树向上传播。<ul id="1d7694d5-ea46-804c-b220-d2147b614f6c" class="bulleted-list"><li style="list-style-type:circle">示例，div包含两个按钮，div和每个按钮都有自己的onClick处理函数<blockquote id="1d7694d5-ea46-809f-ab42-d37432c3d91b" class="">export default function Toolbar() {<br/>  return (<br/>    &lt;div className=&quot;Toolbar&quot; onClick={() =&gt; {<br/>      alert(&#x27;你点击了 toolbar ！&#x27;);<br/>    }}&gt;<br/>      &lt;button onClick={() =&gt; alert(&#x27;正在播放！&#x27;)}&gt;<br/>        播放电影<br/>      &lt;/button&gt;<br/>      &lt;button onClick={() =&gt; alert(&#x27;正在上传！&#x27;)}&gt;<br/>        上传图片<br/>      &lt;/button&gt;<br/>    &lt;/div&gt;<br/>  );<br/>}<br/></blockquote></li></ul><ul id="1d7694d5-ea46-805a-96b4-d016018a2ca5" class="bulleted-list"><li style="list-style-type:circle">点击任意按钮，自身的onClick会首先执行，然后父级的div的onClick会接着执行，出现两条信息，如果点击div本身，就只有父级的toolbar的onClick会执行</li></ul><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1d7694d5-ea46-8011-bbdb-c54fe5f7f741"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><p id="1d7694d5-ea46-80d6-b075-c6a76fa06052" class="">React中所有事件都会传播，除了onScroll，它仅适用于附加到JSX标签</p></div></figure></li></ul><p id="1d7694d5-ea46-8060-a0bc-d9af272ec94d" class=""><strong><span style="border-bottom:0.05em solid">阻止传播：</span></strong></p><ul id="1d7694d5-ea46-8019-ab7e-d19123ab7334" class="bulleted-list"><li style="list-style-type:disc">事件处理函数接收一个事件对象作为唯一的参数，按照惯例它通常被称为e，代表event事件，可以使用此对象来读取有关事件的信息。<ul id="1d7694d5-ea46-80a0-b9db-c162159c092b" class="bulleted-list"><li style="list-style-type:circle">这个事件对象允许阻止传播，如果想要阻止一个事件到达父组件，如下实例，Button组件调用e.stopPropagation（）；</li></ul><blockquote id="1d7694d5-ea46-8036-9a24-e4b6e8b1b5ef" class="">function Button({ onClick, children }) {<br/>  return (<br/>    &lt;button onClick={e =&gt; {   <br/><strong>button自身限制上传事件</strong><br/>      e.stopPropagation();<br/>      onClick();   <br/><strong>button prop函数</strong><br/>    }}&gt;<br/>      {children}<br/>    &lt;/button&gt;<br/>  );<br/>}<br/><br/>export default function Toolbar() {<br/>  return (<br/>    &lt;div className=&quot;Toolbar&quot; onClick={() =&gt; {<br/>      alert(&#x27;你点击了 toolbar ！&#x27;);<br/>    }}&gt;<br/>      &lt;Button onClick={() =&gt; alert(&#x27;正在播放！&#x27;)}&gt;<br/>        播放电影<br/>      &lt;/Button&gt;<br/>      &lt;Button onClick={() =&gt; alert(&#x27;正在上传！&#x27;)}&gt;<br/>        上传图片<br/>      &lt;/Button&gt;<br/>    &lt;/div&gt;<br/>  );<br/>}<br/></blockquote><ul id="1d7694d5-ea46-800c-899c-c7f8013f34aa" class="bulleted-list"><li style="list-style-type:circle">点击按钮，发生事件<ul id="1d7694d5-ea46-805d-8111-c7c244187aff" class="bulleted-list"><li style="list-style-type:square">React调用了传递给button的onClick处理函数</li></ul><ul id="1d7694d5-ea46-8041-816a-f9f6b58eba78" class="bulleted-list"><li style="list-style-type:square">定义在Button中的处理函数执行如下操作<ul id="1d7694d5-ea46-80ca-b319-c91de555789e" class="bulleted-list"><li style="list-style-type:disc">调用e.stopPropagation（）阻止事件上传</li></ul><ul id="1d7694d5-ea46-80c5-a89b-fc0634b82857" class="bulleted-list"><li style="list-style-type:disc">调用onClick函数，他是从Toolbar组件传递的prop</li></ul></li></ul><ul id="1d7694d5-ea46-8025-b8c9-ee6664ba626f" class="bulleted-list"><li style="list-style-type:square">在Toolbar组件中定义的函数，显示按钮对应的alert</li></ul><ul id="1d7694d5-ea46-8008-824b-cf3adb736e16" class="bulleted-list"><li style="list-style-type:square">上传被组织1，父级div的onClick处理函数不会执行。</li></ul></li></ul></li></ul><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1d7694d5-ea46-8055-966a-c6cb8103cb56"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><p id="1d7694d5-ea46-8031-bfef-fc5dce822b26" class=""><strong>点击按钮与点击周围的 toolbar 不同，因此阻止传播对这个 UI 是有意义的</strong></p></div></figure><p id="1d7694d5-ea46-8028-ac8e-cb5dc3b5a09a" class=""><strong><span style="border-bottom:0.05em solid">捕获阶段事件：</span></strong></p><ul id="1d7694d5-ea46-808b-82b9-e482a4a74931" class="bulleted-list"><li style="list-style-type:disc">少数情况下，需要捕获子元素上的所有事件，即便他组织了传播，</li></ul><ul id="1d7694d5-ea46-8054-8d55-fe76ddb7bc71" class="bulleted-list"><li style="list-style-type:disc">例如你可能相对每次点击进行埋点记录，可以通过在事件名称末尾添加Capture来实现<blockquote id="1d7694d5-ea46-80b9-b6f7-e6be66ce35bd" class="">&lt;div onClickCapture={() =&gt; { /* 这会首先执行 */ }}&gt;<br/>  &lt;button onClick={e =&gt; e.stopPropagation()} /&gt;<br/>  &lt;button onClick={e =&gt; e.stopPropagation()} /&gt;<br/>&lt;/div&gt;<br/></blockquote></li></ul><ul id="1d7694d5-ea46-80a1-96b2-c11958764de5" class="bulleted-list"><li style="list-style-type:disc">事件分三个阶段传播<ul id="1d7694d5-ea46-804c-acdd-f85a59f873f0" class="bulleted-list"><li style="list-style-type:circle">首先向下传播，调用所有的onClickCapture处理函数</li></ul><ul id="1d7694d5-ea46-80c5-b43c-f5dd2a0fa0d3" class="bulleted-list"><li style="list-style-type:circle">执行被点击的元素的onClick处理函数</li></ul><ul id="1d7694d5-ea46-800f-a91e-c57979da0082" class="bulleted-list"><li style="list-style-type:circle">向上传播，调用所有的onClick处理函数</li></ul></li></ul><ul id="1d7694d5-ea46-8079-a0c2-eacf71b76756" class="bulleted-list"><li style="list-style-type:disc"><strong>捕获事件对于路由或者数据分析之类的代码很有效</strong></li></ul><p id="1d7694d5-ea46-800b-a0af-feaec1a9b93f" class=""><strong><span style="border-bottom:0.05em solid">传递处理函数作为事件传播的替代方案</span></strong></p><ul id="1d7694d5-ea46-800f-a682-fbcdbd3f5e85" class="bulleted-list"><li style="list-style-type:disc">示例，此处的点击事件处理函数限制性了一行代码，然后调用父组件传递的onClick prop<blockquote id="1d7694d5-ea46-8019-9046-c875d4cdfb61" class="">function Button({ onClick, children }) {<br/>  return (<br/>    &lt;button onClick={e =&gt; {<br/>      e.stopPropagation();<br/>      onClick();<br/>    }}&gt;<br/>      {children}<br/>    &lt;/button&gt;<br/>  );<br/>}<br/></blockquote></li></ul><ul id="1d7694d5-ea46-8076-8a90-d1d2945272c1" class="bulleted-list"><li style="list-style-type:disc">可以再调用父元素onClick函数之前，像这个处理函数添加更多代码，这个模式是事件传播的另一种代替方案。</li></ul><ul id="1d7694d5-ea46-801f-b948-f2180540eb4e" class="bulleted-list"><li style="list-style-type:disc">让子组件处理事件，父组件指定一些额外的行为，</li></ul><ul id="1d7694d5-ea46-8026-96b6-f26b8f949c7d" class="bulleted-list"><li style="list-style-type:disc">与事件传播不同，这个并非自动，使用这种模式可以清楚的追踪某个事件触发执行的整条代码链。</li></ul><p id="1d7694d5-ea46-8055-89e2-efc1dd244235" class=""><strong><span style="border-bottom:0.05em solid">阻止默认行为</span></strong></p><ul id="1d8694d5-ea46-8051-8a60-c43cbd85e48e" class="bulleted-list"><li style="list-style-type:disc">某些浏览器时间具有与事件相关连的默认行为，例如点击form表单内部的按钮，会出发表单提交事件，默认情况下会重新加载整个页面。<blockquote id="1d8694d5-ea46-80e0-a945-d8b9a28ecbbb" class="">export default function Signup() {<br/>  return (<br/>    &lt;form onSubmit={() =&gt; alert(&#x27;提交表单！&#x27;)}&gt;<br/>      &lt;input /&gt;<br/>      &lt;button&gt;发送&lt;/button&gt;<br/>    &lt;/form&gt;<br/>  );<br/>}<br/></blockquote></li></ul><ul id="1d8694d5-ea46-8016-9448-d8dcc75c1a9e" class="bulleted-list"><li style="list-style-type:disc">可以调用事件对象的e.preventDefault（）来阻止这种情况发生。<blockquote id="1d8694d5-ea46-80d5-b677-e65665f8de5d" class="">export default function Signup() {<br/>  return (<br/>    &lt;form onSubmit={e =&gt; {<br/>      e.preventDefault();<br/>      alert(&#x27;提交表单！&#x27;);<br/>    }}&gt;<br/>      &lt;input /&gt;<br/>      &lt;button&gt;发送&lt;/button&gt;<br/>    &lt;/form&gt;<br/>  );<br/>}<br/></blockquote></li></ul><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1d8694d5-ea46-80cd-b592-e68160d71145"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><p id="1d8694d5-ea46-80a3-9125-f138bf6c08c9" class=""><strong>不要混淆e.stopPropagation（）和e.preventDefault（）</strong></p><p id="1d8694d5-ea46-8076-9597-c54d36f83e74" class="">e.stopPropagation（）为了阻止出发绑定在外层标签上的事件处理函数，为了阻止上传行为</p><p id="1d8694d5-ea46-80de-be58-f456b2e40d2d" class="">e.preventDefault（）为了阻止少数事件的默认浏览器行为</p></div></figure><p id="1d8694d5-ea46-8035-a7fc-f9f90985ed06" class=""><strong><span style="border-bottom:0.05em solid">事件处理函数可以包含副作用：</span></strong></p><p id="1d8694d5-ea46-8072-ad93-c0f47c90f96c" class="">是按处理函数是执行副作用的最佳位置。<div class="indented"><ul id="1d8694d5-ea46-8070-96b5-ecf0361e8042" class="bulleted-list"><li style="list-style-type:disc">与渲染函数不同，事件处理函数不需要纯函数，因此它可以用来更改某些值的位置。例如更改输入框的值以响应键入，或者更改列表来响应按钮的处罚，但是为了更改某些信息，需要使用state存储</li></ul></div></p><p id="1d8694d5-ea46-8024-a538-c2a92f6daec3" class="">
+</p><p id="1d8694d5-ea46-8011-b3b6-cd22feac3ea2" class=""><mark class="highlight-red"><strong><span style="border-bottom:0.05em solid">组件的记忆：state</span></strong></mark></p><p id="1d8694d5-ea46-8088-8379-dde0a3168422" class="">组件通常需要根据交互来更改屏幕上显示的内容。例如，输入表单应该更新输入字段，单击轮播图上的“下一个”来更改显示的图片，单击“购买”应该将商品放入购物车。组件需要“记忆”某些东西，比如当前的输入值、当前图片、购物车。</p><p id="1d8694d5-ea46-8077-aa20-de3da517e37a" class=""><strong>在React中这种组件特有的记忆被称为state</strong></p><p id="1d8694d5-ea46-808b-be90-ea3e1ff24e81" class=""><strong><span style="border-bottom:0.05em solid">普通变量不起作用：</span></strong></p><ul id="1d8694d5-ea46-8050-8d4c-eaab9075ec15" class="bulleted-list"><li style="list-style-type:disc">举例说明，下面是一个渲染雕塑图片的组件，点击next按钮先实现一个雕像，将index1改为2，以此类推。data数据不考虑，<blockquote id="1d8694d5-ea46-80bd-b189-c6273bc90f18" class="">import { sculptureList } from &#x27;./data.js&#x27;;<br/><br/>export default function Gallery() {<br/>  let index = 0;<br/><br/>  function handleClick() {<br/>    index = index + 1;<br/>  }<br/><br/>  let sculpture = sculptureList[index];<br/>  return (<br/>    &lt;&gt;<br/>      &lt;button onClick={handleClick}&gt;<br/>        Next<br/>      &lt;/button&gt;<br/>      &lt;h2&gt;<br/>        &lt;i&gt;{sculpture.name} &lt;/i&gt; <br/>        by {sculpture.artist}<br/>      &lt;/h2&gt;<br/>      &lt;h3&gt;  <br/>        ({index + 1} of {sculptureList.length})<br/>      &lt;/h3&gt;<br/>      &lt;img <br/>        src={sculpture.url} <br/>        alt={sculpture.alt}<br/>      /&gt;<br/>      &lt;p&gt;<br/>        {sculpture.description}<br/>      &lt;/p&gt;<br/>    &lt;/&gt;<br/>  );<br/>}<br/></blockquote><ul id="1d8694d5-ea46-8010-a908-eb0c68c67b63" class="bulleted-list"><li style="list-style-type:circle">单击next按钮无响应。原因在于handleClick（）事件处理函数正在更新局部变量index，但存在两个原因使得变化不可见<ul id="1d8694d5-ea46-8074-8a1d-f7b06e7b09ec" class="bulleted-list"><li style="list-style-type:square">局部变量无法再多次渲染中持久保存。当React再次渲染这个组件时，会从头开始渲染，调用函数，不会考虑之前对局部变量的改变</li></ul><ul id="1d8694d5-ea46-80c2-9f64-c7805f9a7bca" class="bulleted-list"><li style="list-style-type:square">更改局部变量不会出发渲染。React没有意识到它需要使用新数据再次渲染组件</li></ul></li></ul><ul id="1d8694d5-ea46-806a-a589-eb14266f80e5" class="bulleted-list"><li style="list-style-type:circle">需要使用新数据更新组件：<ul id="1d8694d5-ea46-806f-8239-e0362ec2d844" class="bulleted-list"><li style="list-style-type:square">保留渲染之前的数据</li></ul><ul id="1d8694d5-ea46-8064-addc-d2d4752fd52e" class="bulleted-list"><li style="list-style-type:square">触发React使用新数据来重新渲染组件</li></ul></li></ul><ul id="1d8694d5-ea46-80f1-88d3-fd49f042b448" class="bulleted-list"><li style="list-style-type:circle"><strong>useState Hook提供了两个功能</strong><ul id="1d8694d5-ea46-8051-a907-d61aa62769a5" class="bulleted-list"><li style="list-style-type:square"><strong>State变量用于保存渲染前的数据</strong></li></ul><ul id="1d8694d5-ea46-808b-925a-e0ef22aaf171" class="bulleted-list"><li style="list-style-type:square"><strong>State setter函数更新变量，并触发React再次渲染</strong></li></ul></li></ul></li></ul><p id="1d8694d5-ea46-80ea-b988-f6fca6fcb133" class=""><strong><span style="border-bottom:0.05em solid">添加state变量：</span></strong></p><ul id="1d8694d5-ea46-80f9-938c-d85797516684" class="bulleted-list"><li style="list-style-type:disc">首先从文件顶部的React中导入useState</li></ul><ul id="1d8694d5-ea46-80cd-a760-eb060d8bb3cf" class="bulleted-list"><li style="list-style-type:disc">然后替换掉let index = 0</li></ul><ul id="1d8694d5-ea46-808a-87f6-fb5461a95fa2" class="bulleted-list"><li style="list-style-type:disc">将其修改为 const 【index ，setIndex】= useState（0）；</li></ul><ul id="1d8694d5-ea46-80e6-8c2c-e379193bbf4b" class="bulleted-list"><li style="list-style-type:disc">index是一个state变量，setIndex是对应的setter函数。<ul id="1d8694d5-ea46-8045-8213-d9f831e421c0" class="bulleted-list"><li style="list-style-type:circle">这里的【】语法称为数组解构，它允许你从数组中读取值，useState返回的数组总是由两项。</li></ul></li></ul><ul id="1d8694d5-ea46-809a-9fd2-f60bb6536591" class="bulleted-list"><li style="list-style-type:disc">setter函数放在handleClick中<ul id="1d8694d5-ea46-8068-8245-cbd4ae3ba942" class="bulleted-list"><li style="list-style-type:circle">整体效果如下<blockquote id="1d8694d5-ea46-804a-a59a-cd8fc46ae8f6" class="">import { useState } from &#x27;react&#x27;;<br/>import { sculptureList } from &#x27;./data.js&#x27;;<br/><br/>export default function Gallery() {<br/>  const [index, setIndex] = useState(0);<br/><br/>  function handleClick() {<br/>    setIndex(index + 1);<br/>  }<br/><br/>  let sculpture = sculptureList[index];<br/>  return (<br/>    &lt;&gt;<br/>      &lt;button onClick={handleClick}&gt;<br/>        Next<br/>      &lt;/button&gt;<br/>      &lt;h2&gt;<br/>        &lt;i&gt;{sculpture.name} &lt;/i&gt; <br/>        by {sculpture.artist}<br/>      &lt;/h2&gt;<br/>      &lt;h3&gt;  <br/>        ({index + 1} of {sculptureList.length})<br/>      &lt;/h3&gt;<br/>      &lt;img <br/>        src={sculpture.url} <br/>        alt={sculpture.alt}<br/>      /&gt;<br/>      &lt;p&gt;<br/>        {sculpture.description}<br/>      &lt;/p&gt;<br/>    &lt;/&gt;<br/>  );<br/>}<br/></blockquote></li></ul></li></ul><p id="1d8694d5-ea46-80eb-9b94-de5f9caadb8d" class=""><strong><span style="border-bottom:0.05em solid">React中第一个Hook-useState</span></strong></p><ul id="1d8694d5-ea46-80e2-b9fc-fbbdc442e8d5" class="bulleted-list"><li style="list-style-type:disc">在React中，useState以及任何其他以use开头的函数被称为Hook</li></ul><ul id="1d8694d5-ea46-8009-9bd0-d67679b00048" class="bulleted-list"><li style="list-style-type:disc">Hook是特殊的函数，旨在React渲染时有效。可以使用不同的React特性</li></ul><ul id="1d8694d5-ea46-8088-8e03-cb5a04c774b4" class="bulleted-list"><li style="list-style-type:disc">State只是这些特征中的一个</li></ul><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1d8694d5-ea46-8049-a20a-ee2e094d65cd"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><p id="1d8694d5-ea46-80cd-8b91-f72422e7087c" class=""><strong>Hooks-以use开头的函数-只能在组件或者自定义Hook的最顶层调用</strong></p><p id="1d8694d5-ea46-8044-af92-dbf0c9020fd3" class="">不能再条件语句、循环语句、其他嵌套函数内调用Hook。</p><p id="1d8694d5-ea46-80cf-a911-e4b41dd44258" class="">Hook是函数，可以将其视为关于组建需求的无条件声明。</p><p id="1d8694d5-ea46-8041-b0c5-f2ab39d3d475" class="">在组建顶部使用useReact特性，类似于在文件顶部导入模块</p></div></figure><p id="1d8694d5-ea46-80bf-a27b-e17957f17006" class=""><strong><span style="border-bottom:0.05em solid">剖析useState：</span></strong></p><ul id="1d8694d5-ea46-804a-b744-e859c4177c6d" class="bulleted-list"><li style="list-style-type:disc">当你调用useState时，要告诉React这个组件记住一些东西<ul id="1d8694d5-ea46-8047-afe5-d9f58fede116" class="bulleted-list"><li style="list-style-type:circle">const 【index，setIndex】=useState（0）；</li></ul><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1d8694d5-ea46-80f8-9557-ea38ac9d6b70"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><p id="1d8694d5-ea46-8064-9a9b-cc39ea5abb59" class="">管理是将返回值命名如此，也可以将其命名为习惯。</p></div></figure></li></ul><ul id="1d8694d5-ea46-80c3-a9bc-dcfd6e6559a0" class="bulleted-list"><li style="list-style-type:disc">如上例而言。useState的唯一参数是state变量的初始值。index的初始值被useState（0）设置为0</li></ul><ul id="1d8694d5-ea46-80eb-9de6-cb4849519f6f" class="bulleted-list"><li style="list-style-type:disc">每次渲染时，useState都会给你一个包含两个值的数组。<ul id="1d8694d5-ea46-8013-bb89-e2c602def3c5" class="bulleted-list"><li style="list-style-type:circle">state变量（index）会保存上次渲染的值</li></ul><ul id="1d8694d5-ea46-8001-ba21-e05a18e201f8" class="bulleted-list"><li style="list-style-type:circle">state setter函数（setIndex）可以更新state变量并触发React重新渲染组件。</li></ul></li></ul><ul id="1d8694d5-ea46-809a-86a8-de3250fe14bb" class="bulleted-list"><li style="list-style-type:disc">const【index，setIndex】=useState（0）；实际发生<ul id="1d8694d5-ea46-8088-95ae-ed4f30c243f5" class="bulleted-list"><li style="list-style-type:circle">组件进行第一次渲染。将0作为index初始值传递给useState，它将返回【0，setIndex】，React记住0为最新的state值</li></ul><ul id="1d8694d5-ea46-80f2-9d93-d6ccf35d74e7" class="bulleted-list"><li style="list-style-type:circle">你更新了state，当用户点击按钮时，会调用setIndex（index + 1）。index是0，所以为setIndex（1），这告诉React现在记住index为1并处罚下一次渲染</li></ul><ul id="1d8694d5-ea46-80ab-9960-c9698c0b778c" class="bulleted-list"><li style="list-style-type:circle">组件进行第二次渲染，React仍然看到useState（0），但是因为React记住了你将index设置了1，它将返回【1，setIndex】。</li></ul><ul id="1d8694d5-ea46-807c-b3a8-fd9c818ac9ed" class="bulleted-list"><li style="list-style-type:circle">以此类推</li></ul></li></ul><p id="1d8694d5-ea46-80d0-8adc-f39306d2f9eb" class=""><strong><span style="border-bottom:0.05em solid">赋予一个组件多个state变量：</span></strong></p><ul id="1d8694d5-ea46-8016-8519-da6a5fd98b4f" class="bulleted-list"><li style="list-style-type:disc">你可以在一个组件中拥有任意多种类型的state。该组件由两个state变量，一个为数字index，和一个布尔值showMore，点击show details会改变showMore的值<blockquote id="1d8694d5-ea46-800e-9dce-c30406c59829" class="">import { useState } from &#x27;react&#x27;;<br/>import { sculptureList } from &#x27;./data.js&#x27;;<br/><br/>export default function Gallery() {<br/>  const [index, setIndex] = useState(0);<br/>  const [showMore, setShowMore] = useState(false);<br/><br/>  function handleNextClick() {<br/>    setIndex(index + 1);<br/>  }<br/><br/>  function handleMoreClick() {<br/>    setShowMore(!showMore);<br/>  }<br/><br/>  let sculpture = sculptureList[index];<br/>  return (<br/>    &lt;&gt;<br/>      &lt;button onClick={handleNextClick}&gt;<br/>        Next<br/>      &lt;/button&gt;<br/>      &lt;h2&gt;<br/>        &lt;i&gt;{sculpture.name} &lt;/i&gt; <br/>        by {sculpture.artist}<br/>      &lt;/h2&gt;<br/>      &lt;h3&gt;  <br/>        ({index + 1} of {sculptureList.length})<br/>      &lt;/h3&gt;<br/>      &lt;button onClick={handleMoreClick}&gt;<br/>        {showMore ? &#x27;Hide&#x27; : &#x27;Show&#x27;} details<br/>      &lt;/button&gt;<br/>      {showMore &amp;&amp; &lt;p&gt;{sculpture.description}&lt;/p&gt;}<br/>      &lt;img <br/>        src={sculpture.url} <br/>        alt={sculpture.alt}<br/>      /&gt;<br/>    &lt;/&gt;<br/>  );<br/>}<br/></blockquote></li></ul><ul id="1d8694d5-ea46-80b7-a5ca-e9a014e9561c" class="bulleted-list"><li style="list-style-type:disc">如果不相关，存在state变量是一个好主意，例如本例中index和showMore，但是，如果发现经常同时更改两个state变量，那么将二者合并更好。</li></ul><ul id="1d8694d5-ea46-8009-af3e-f576df5cd84a" class="bulleted-list"><li style="list-style-type:disc">例如，如果你有一个包含多个字段的表单，那么由一个值为对象的state变量比每个字段对应一个state变量更方便</li></ul><p id="1d8694d5-ea46-80c2-9065-cd2a4349987d" class=""><strong><span style="border-bottom:0.05em solid">State是隔离且私有的：</span></strong></p><ul id="1d8694d5-ea46-80f6-b16d-da4b8d77900f" class="bulleted-list"><li style="list-style-type:disc">State是屏幕上组件实例内部的状态，“如果渲染同一个组件两次，每个副本都会有完全隔离的state”改变其中一个不会改变另一个</li></ul><ul id="1d8694d5-ea46-803b-ba91-e70a8d375617" class="bulleted-list"><li style="list-style-type:disc">在下例中，之前的Gallery组件以同样的逻辑渲染了两次，<blockquote id="1d8694d5-ea46-8047-9ef2-e2b2928c7ac8" class="">import { useState } from &#x27;react&#x27;;<br/>import { sculptureList } from &#x27;./data.js&#x27;;<br/><br/>export default function Gallery() {<br/>  const [index, setIndex] = useState(0);<br/>  const [showMore, setShowMore] = useState(false);<br/><br/>  function handleNextClick() {<br/>    setIndex(index + 1);<br/>  }<br/><br/>  function handleMoreClick() {<br/>    setShowMore(!showMore);<br/>  }<br/><br/>  let sculpture = sculptureList[index];<br/>  return (<br/>    &lt;section&gt;<br/>      &lt;button onClick={handleNextClick}&gt;<br/>        Next<br/>      &lt;/button&gt;<br/>      &lt;h2&gt;<br/>        &lt;i&gt;{sculpture.name} &lt;/i&gt; <br/>        by {sculpture.artist}<br/>      &lt;/h2&gt;<br/>      &lt;h3&gt;  <br/>        ({index + 1} of {sculptureList.length})<br/>      &lt;/h3&gt;<br/>      &lt;button onClick={handleMoreClick}&gt;<br/>        {showMore ? &#x27;Hide&#x27; : &#x27;Show&#x27;} details<br/>      &lt;/button&gt;<br/>      {showMore &amp;&amp; &lt;p&gt;{sculpture.description}&lt;/p&gt;}<br/>      &lt;img <br/>        src={sculpture.url} <br/>        alt={sculpture.alt}<br/>      /&gt;<br/>    &lt;/section&gt;<br/>  );<br/>}<br/></blockquote><blockquote id="1d8694d5-ea46-801c-8ae3-ef212c448328" class="">import Gallery from &#x27;./Gallery.js&#x27;;<br/><br/>export default function Page() {<br/>  return (<br/>    &lt;div className=&quot;Page&quot;&gt;<br/>      &lt;Gallery /&gt;<br/>      &lt;Gallery /&gt;<br/>    &lt;/div&gt;<br/>  );<br/>}<br/></blockquote></li></ul><ul id="1d8694d5-ea46-805c-9b14-c735b2ef4a88" class="bulleted-list"><li style="list-style-type:disc">state与声明在模块顶部的铍铜变量不同的原因。<ul id="1d8694d5-ea46-801f-b7b4-cf7f966ac852" class="bulleted-list"><li style="list-style-type:circle">State不依赖于特定的函数调用或者在代码中的位置，它的作用域只限于屏幕上的模块特定区域，渲染了两个&lt;Gallery /&gt;组件，所以他们的state是分别存储的。</li></ul><ul id="1d8694d5-ea46-80c5-abc4-f8b629faffaf" class="bulleted-list"><li style="list-style-type:circle">还要注意Page组件“不知道”关于Gallery state的任何信息，甚至不知道他是否有任何state，与props不同，<strong>state完全私有域声明他的组件</strong>，父组件无法更改他，这是你可以向任何组件添加或删除state，而不会影响其他组件。</li></ul><ul id="1d8694d5-ea46-80b9-bb68-f7f4ab797abd" class="bulleted-list"><li style="list-style-type:circle">如果希望两个画廊保持其states同步怎么办，在React中执行此操作的方法是从子组件删除state并将其添加到理他们最近的共享负组件中。</li></ul></li></ul><p id="1d8694d5-ea46-80b4-aa22-d7ddeba5429c" class=""><strong><span style="border-bottom:0.05em solid">渲染和提交</span></strong></p><ul id="1d8694d5-ea46-80d2-90a9-c992526a5348" class="bulleted-list"><li style="list-style-type:disc">组件显示到屏幕之前，必须被React渲染。步骤如下：</li></ul><ul id="1d8694d5-ea46-808b-8c5f-ec965895c0db" class="bulleted-list"><li style="list-style-type:disc"><strong>步骤1：触发一次渲染-两种原因导致组件渲染</strong><ul id="1d8694d5-ea46-8002-a9bf-ff50e6563cd2" class="bulleted-list"><li style="list-style-type:circle">组件的初次渲染<ul id="1d8694d5-ea46-80f0-9a77-eda5a59af552" class="bulleted-list"><li style="list-style-type:square">当应用启动时，会触发初次渲染。框架和沙箱有时会隐藏这部分代码，但是通过调用createRoot的方法并传入目标DOM节点，然后用你的组件调用render函数完成。<blockquote id="1d8694d5-ea46-8035-9df8-fce031799220" class="">import Image from &#x27;./Image.js&#x27;;<br/>import { createRoot } from &#x27;react-dom/client&#x27;;<br/>试着注释掉root.render（），组件会消失<br/>const root = createRoot(document.getElementById(&#x27;root&#x27;))<br/>root.render(&lt;Image /&gt;);<br/></blockquote></li></ul></li></ul><ul id="1d8694d5-ea46-800f-b605-def074962d4f" class="bulleted-list"><li style="list-style-type:circle">状态更新时重新渲染<ul id="1d8694d5-ea46-8047-baef-d143e40865e9" class="bulleted-list"><li style="list-style-type:square">一旦组件被初次渲染，就可以使用set函数更新状态来触发之后的渲染。更新组件的状态会自动讲一次渲染送入对列。</li></ul></li></ul></li></ul><ul id="1d8694d5-ea46-8076-bf0d-e81680bbbb47" class="bulleted-list"><li style="list-style-type:disc"><strong>步骤2：React渲染你的组件</strong><ul id="1d8694d5-ea46-803a-bfe9-fdc9765afa98" class="bulleted-list"><li style="list-style-type:circle">在触发渲染后，React回调用你的组件来确定要在屏幕上显示的内容。<strong>渲染中既是React再调用你的组件</strong><ul id="1d8694d5-ea46-8007-8eed-fef8a176cb74" class="bulleted-list"><li style="list-style-type:square">在初次渲染时，React会调用根组件</li></ul><ul id="1d8694d5-ea46-80ec-b669-e2bdbcbd87ed" class="bulleted-list"><li style="list-style-type:square">对于后续的渲染，React会调用内部状态更新触发渲染的函数组件。</li></ul></li></ul><ul id="1d8694d5-ea46-8062-9cff-ca563da67bdd" class="bulleted-list"><li style="list-style-type:circle">这个过程是递归的：如果更新后的组件会返回某个另外的组件，那么React会渲染这个返回的组件，如果这个组件又返回了某个组件，React有会渲染那儿组件，以此类推，这个过程会持续，直到没有嵌套组件并且React确切知道那些东西应该被显示到屏幕上<ul id="1d8694d5-ea46-802c-b82b-c4b41794a2b6" class="bulleted-list"><li style="list-style-type:square">下例，React会调用Gallery（）和Image（）若干次<blockquote id="1d8694d5-ea46-80f9-ad53-e0ca2eefe7c1" class="">export default function Gallery() {<br/>  return (<br/>    &lt;section&gt;<br/>      &lt;h1&gt;鼓舞人心的雕塑&lt;/h1&gt;<br/>      &lt;Image /&gt;<br/>      &lt;Image /&gt;<br/>      &lt;Image /&gt;<br/>    &lt;/section&gt;<br/>  );<br/>}<br/><br/>function Image() {<br/>  return (<br/>    &lt;img<br/>      src=&quot;https://i.imgur.com/ZF6s192.jpg&quot;<br/>      alt=&quot;&#x27;Floralis Genérica&#x27; by Eduardo Catalano: a gigantic metallic flower sculpture with reflective petals&quot;<br/>    /&gt;<br/>  );<br/>}<br/></blockquote><blockquote id="1d8694d5-ea46-8079-b178-e5c0c4f2433f" class="">import Gallery from &#x27;./Gallery.js&#x27;;<br/>import { createRoot } from &#x27;react-dom/client&#x27;;<br/><br/>const root = createRoot(document.getElementById(&#x27;root&#x27;))<br/>root.render(&lt;Gallery /&gt;);<br/></blockquote><ul id="1d8694d5-ea46-8078-b6bd-cb8b2df26579" class="bulleted-list"><li style="list-style-type:disc">在初次渲染中，React为&lt;section&gt;&lt;h1&gt;&lt;img&gt;三个标签创建DOM节点</li></ul><ul id="1d8694d5-ea46-804d-83fd-eb69dd104e36" class="bulleted-list"><li style="list-style-type:disc">在一次重渲染过程中，React将计算它们的属性，自上次渲染后有何更改，在下一步阶段提交之前，不会对这些信息进行操作</li></ul></li></ul><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1d8694d5-ea46-80c5-b0ec-ef7ca48f88c8"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><p id="1d8694d5-ea46-8085-b1bc-dd84251ac011" class="">渲染必须始终是一次纯计算：<div class="indented"><p id="1d8694d5-ea46-80a7-9184-cac8b55df170" class="">输入相同、输出相同：给定相同的输入，组件返回相同的JSX</p><p id="1d8694d5-ea46-809e-b127-e03fbd4fd99d" class="">只做自己的事情：他不应该更改任何存在于渲染之前的变量和对象</p></div></p><p id="1d8694d5-ea46-8051-bbcd-df4d8a0e9af7" class="">否则随着代码库复杂性的增加，会出现不可预测的行为。严格模式下React会调用每个组件的函数两次。</p></div></figure></li></ul></li></ul><ul id="1d8694d5-ea46-80df-b632-d00f558eda63" class="bulleted-list"><li style="list-style-type:disc"><strong>步骤3：React把更改提交到DOM上</strong><ul id="1d8694d5-ea46-8051-a8cc-e6213949b600" class="bulleted-list"><li style="list-style-type:circle">在渲染调用组件之后，React会修改DOM<ul id="1d8694d5-ea46-805a-b75e-e72e9965ccbd" class="bulleted-list"><li style="list-style-type:square">对于初次渲染，React会使用appendChild（）DOMAPI将其创建的所有DOM节点放在屏幕上</li></ul><ul id="1d8694d5-ea46-80d4-915b-c1fa51af0b64" class="bulleted-list"><li style="list-style-type:square">对于重渲染，React将应用最少的必要操作（渲染时计算），这是DOM与最新的渲染输出相互匹配。</li></ul></li></ul><ul id="1d8694d5-ea46-80a1-a0d3-d1006c055c8d" class="bulleted-list"><li style="list-style-type:circle"><strong>React尽在渲染之间存在差异是才会更改DOM节点</strong><ul id="1d8694d5-ea46-806d-97e6-da73096ab643" class="bulleted-list"><li style="list-style-type:square">例如，一个组件，每秒使用从父组件组件传递下来的不同属性重新渲染一次。添加一些文本到&lt;input&gt;标签，更新他的value，但是文本不会再组件重渲染时消失<blockquote id="1d8694d5-ea46-8075-9a1f-d3280b0c04c2" class="">export default function Clock({ time }) {<br/>  return (<br/>    &lt;&gt;<br/>      &lt;h1&gt;{time}&lt;/h1&gt;<br/>      &lt;input /&gt;<br/>    &lt;/&gt;<br/>  );<br/>}<br/></blockquote><ul id="1d8694d5-ea46-802a-a8bf-d6598a012afa" class="bulleted-list"><li style="list-style-type:disc">这个例子会正常运行，因为React在最后会使用最新的time更新h1标签的内容，他看到&lt;input&gt;标签出现在JSX中与上次相同的位置，因此React不会修改&lt;input&gt;标签或者他的value。</li></ul></li></ul></li></ul></li></ul><p id="1d8694d5-ea46-80dd-a41d-e10957b8968a" class=""><strong><span style="border-bottom:0.05em solid">结尾：浏览器绘制：</span></strong></p><ul id="1d8694d5-ea46-80b9-9f2a-d05edea2a761" class="bulleted-list"><li style="list-style-type:disc">在渲染完成并且React更新DOM之后，浏览器会重新绘制屏幕。尽管这个过程被称为‘浏览器渲染’，我们将其称为‘绘制’，以避免在这些文档的其余部分中出现混淆。</li></ul><p id="1d9694d5-ea46-8054-938e-daa686854d1a" class=""><mark class="highlight-red"><strong><span style="border-bottom:0.05em solid">state：快照一般性质：</span></strong></mark></p><p id="1d9694d5-ea46-805f-9e09-ee589fe875fc" class=""><strong>state表现出的特性象是一张快照，设置state不会更改已有的state变量，但是会触发重新渲染。</strong></p><p id="1d9694d5-ea46-803b-87ba-d24b460df5e2" class=""><strong><span style="border-bottom:0.05em solid">设置state后会触发渲染：</span></strong></p><ul id="1d9694d5-ea46-80cf-ad63-c1bf104fe4b9" class="bulleted-list"><li style="list-style-type:disc">在React中，用户界面不会对点击之类的用户输入做出响应并更新界面。</li></ul><ul id="1d9694d5-ea46-80e1-9947-ca351e62edee" class="bulleted-list"><li style="list-style-type:disc">要使界面对输出作出反应，需要设置state的状态<ul id="1d9694d5-ea46-800a-bcf7-d317d2bfdeeb" class="bulleted-list"><li style="list-style-type:circle">下例，摁下send，setIsSent（true）会通知React重新渲染UI<blockquote id="1d9694d5-ea46-8055-b913-d3c8c8332319" class="">import { useState } from &#x27;react&#x27;;<br/><br/>export default function Form() {<br/>  const [isSent, setIsSent] = useState(false);<br/>  const [message, setMessage] = useState(&#x27;Hi!&#x27;);<br/>  if (isSent) {<br/>    return &lt;h1&gt;Your message is on its way!&lt;/h1&gt;<br/>  }<br/>  return (<br/>    &lt;form onSubmit={(e) =&gt; {<br/>      e.preventDefault();         <br/><strong>阻止浏览器默认行为</strong><br/>      setIsSent(true);<br/>      sendMessage(message);<br/>    }}&gt;<br/>      &lt;textarea<br/>        placeholder=&quot;Message&quot;<br/>        value={message}<br/>        onChange={e =&gt; setMessage(e.target.value)}<br/>      /&gt;<br/>      &lt;button type=&quot;submit&quot;&gt;Send&lt;/button&gt;<br/>    &lt;/form&gt;<br/>  );<br/>}<br/><br/>function sendMessage(message) {<br/>  // ...<br/>}<br/></blockquote><ul id="1d9694d5-ea46-8047-9b18-d48b9bfd3ff5" class="bulleted-list"><li style="list-style-type:square">点击提交按钮发生如下情况<ul id="1d9694d5-ea46-8035-a81e-c3f2ba552d0c" class="bulleted-list"><li style="list-style-type:disc">执行onSubmit事件处理函数</li></ul><ul id="1d9694d5-ea46-80f1-943c-ed716325bfae" class="bulleted-list"><li style="list-style-type:disc">setIsSent（true）将isSent设置为true并排列一个新的渲染</li></ul><ul id="1d9694d5-ea46-8083-b8e7-f091cb4dba12" class="bulleted-list"><li style="list-style-type:disc">R二act根据新的isSent值重新渲染组件</li></ul></li></ul></li></ul></li></ul><p id="1d9694d5-ea46-807f-9c92-d97c241d07f0" class=""><strong><span style="border-bottom:0.05em solid">渲染时会及时生成一个快照，记录当前的状态：</span></strong></p><ul id="1d9694d5-ea46-80ec-8e3a-df04055313ad" class="bulleted-list"><li style="list-style-type:disc">‘正在渲染’意味着React正在调用组件，从该函数返回的JSX像是某个时间点上UI的快照，它的props、事件处理函数和内部变量都是<strong>根据当前渲染时的state</strong>被计算出来。</li></ul><ul id="1d9694d5-ea46-807b-8f59-cbedddf518b5" class="bulleted-list"><li style="list-style-type:disc">返回的UI快照是可以交互的，其中包括类似事件处理函数的逻辑，这些逻辑指定如何对输入做出响应，React会更新屏幕来匹配这张快照，并绑定事件处理函数，</li></ul><ul id="1d9694d5-ea46-8057-ade6-cf2c834bbb00" class="bulleted-list"><li style="list-style-type:disc">按下按钮会触发你JSX中的点击事件处理函数<ul id="1d9694d5-ea46-801f-aca1-c92965b7d835" class="bulleted-list"><li style="list-style-type:circle">当React重新渲染一个组件时，会发生一下步骤<ul id="1d9694d5-ea46-80dc-8a84-cbd0e0939588" class="bulleted-list"><li style="list-style-type:square">Reaact会再次调用组件函数</li></ul><ul id="1d9694d5-ea46-8004-a677-ecc0a2c46260" class="bulleted-list"><li style="list-style-type:square">函数会返回新的JSX快照</li></ul><ul id="1d9694d5-ea46-8037-91ec-d57d379cfab4" class="bulleted-list"><li style="list-style-type:square">React会更新界面来匹配返回的快照</li></ul></li></ul></li></ul><ul id="1d9694d5-ea46-80df-8367-c22c6597a008" class="bulleted-list"><li style="list-style-type:disc">作为一个组件的state状态记忆，state不同于在函数返回之后就小时的普通变量，state实际存储与函数之外某个特定地点。</li></ul><ul id="1d9694d5-ea46-8081-8e9e-efbdb4a5d5cf" class="bulleted-list"><li style="list-style-type:disc">当React调用你的组件时，他会为特定的那一次渲染提供一张state快照，组件会在JSX中返回一张包含一整套新的props和事件处理函数的UI快照，其中所有的值都是根据那一次渲染中state的值被计算出来<ul id="1d9694d5-ea46-80ee-871f-fa99db523c8a" class="bulleted-list"><li style="list-style-type:circle">例子展示原理：点击+3按钮会调用setNumber（number + 1）三次，从而使计数器递增三次<blockquote id="1d9694d5-ea46-80de-9b15-d6d01050cd33" class="">import { useState } from &#x27;react&#x27;;<br/><br/>export default function Counter() {<br/>  const [number, setNumber] = useState(0);<br/><br/>  return (<br/>    &lt;&gt;<br/>      &lt;h1&gt;{number}&lt;/h1&gt;<br/>      &lt;button onClick={() =&gt; {<br/>        setNumber(number + 1);<br/>        setNumber(number + 1);<br/>        setNumber(number + 1);<br/>      }}&gt;+3&lt;/button&gt;<br/>    &lt;/&gt;<br/>  )<br/>}<br/></blockquote><ul id="1d9694d5-ea46-8074-a8bb-ced9dbc3147d" class="bulleted-list"><li style="list-style-type:square">实际上并不是如预料+3，而是+1</li></ul><ul id="1d9694d5-ea46-800f-b430-e500eb4e94e3" class="bulleted-list"><li style="list-style-type:square">就好比在点击按钮时，此时的number为0，记录一张快照</li></ul><ul id="1d9694d5-ea46-80e9-aa7a-e685b655cd06" class="bulleted-list"><li style="list-style-type:square">这个组件在运行的所有函数，都是基于这张快照，number=0</li></ul><ul id="1d9694d5-ea46-802a-8fcf-daef85542e98" class="bulleted-list"><li style="list-style-type:square">在第一个+1函数过后，number的值变为1</li></ul><ul id="1d9694d5-ea46-80f5-9e72-c3a4b81b1e86" class="bulleted-list"><li style="list-style-type:square">第二个+1函数的number也是0，结果也为1</li></ul></li></ul><ul id="1d9694d5-ea46-8024-95c5-e56abdc071ca" class="bulleted-list"><li style="list-style-type:circle"><strong>设置state只会为下一次渲染变更state的值</strong></li></ul></li></ul><p id="1d9694d5-ea46-8070-84ec-ec465232c2aa" class=""><strong><span style="border-bottom:0.05em solid">随时间变化的state：</span></strong></p><ul id="1d9694d5-ea46-8001-89e4-c16a4e3fec87" class="bulleted-list"><li style="list-style-type:disc">用上述的理论解释下例<blockquote id="1d9694d5-ea46-80d4-b8a6-f2fd4945e25c" class=""> &lt;button onClick={() =&gt; {<br/>        setNumber(number + 5);<br/>        alert(number);<br/>      }}&gt;+5&lt;/button&gt;<br/></blockquote><ul id="1d9694d5-ea46-80e8-a09b-c191e7a23bb8" class="bulleted-list"><li style="list-style-type:circle">点击按钮，数字+5，提示0</li></ul></li></ul><ul id="1d9694d5-ea46-802f-ac64-edfb5be3213c" class="bulleted-list"><li style="list-style-type:disc">如果为提示框加上一个定时器，是的组件重新渲染之后再触发，仍然会提0，<strong>延迟触发提示</strong><ul id="1d9694d5-ea46-809f-8acd-ecf4d76eaff7" class="bulleted-list"><li style="list-style-type:circle">实际上触发的效果仍然，基于上一张快照<blockquote id="1d9694d5-ea46-8065-bc59-d876e761f3a4" class="">setNumber(0 + 5);<br/>setTimeout(() =&gt; {<br/>  alert(0);<br/>}, 3000);<br/></blockquote><p id="1d9694d5-ea46-807a-8d8e-c97507bec835" class="">到提示框运行时，React存储的state已经发生了改变，但是它使用的是交互之前的快照进行调度。</p></li></ul></li></ul><ul id="1d9694d5-ea46-8080-8ce6-f72edefc7fc3" class="bulleted-list"><li style="list-style-type:disc"><strong>一个state变量的值永远不会在一次渲染的内部发生变化，即使事件处理函数的代码是异步的。</strong></li></ul><ul id="1d9694d5-ea46-80a4-a72f-c694479f5106" class="bulleted-list"><li style="list-style-type:disc">React会使state的值始终固定在一次渲染的各个事件处理函数内部。无需担心代码运行时state是否发生变化</li></ul><p id="1d9694d5-ea46-803b-9d38-eb182b20ada1" class=""><mark class="highlight-red"><strong><span style="border-bottom:0.05em solid">把一系列state更新加入队列：</span></strong></mark></p><p id="1d9694d5-ea46-8015-85dc-dfff58503111" class="">设置组件state会把一次重新渲染加入对列，但是有事希望下次渲染加入队列之前，对state的值进行多次操作。</p><p id="1d9694d5-ea46-8073-b802-c288bfe7fb08" class=""><strong><span style="border-bottom:0.05em solid">React会对state更新进行批处理</span></strong></p><ul id="1d9694d5-ea46-80be-85b4-f188f0b6b995" class="bulleted-list"><li style="list-style-type:disc">上述的+3示例，每一次渲染的state值都是固定的，无论调用多少次+1，在第一次渲染的组件内部number总是0</li></ul><ul id="1d9694d5-ea46-80f8-ba2e-cc3156aaa289" class="bulleted-list"><li style="list-style-type:disc"><strong>React会等到事件处理函数中的所有代码都运行完毕之后在处理你的state更新。这就是重新渲染为什么只发生在所有的setNumber（）调用之后</strong><ul id="1d9694d5-ea46-80c6-abfa-c2a989fdc407" class="bulleted-list"><li style="list-style-type:circle">类似于餐厅点菜的服务员，不会再你说完第一道菜就跑去厨房，相反会让你点完所有菜，你修改菜品，设置会帮桌上其他客人点菜</li></ul><ul id="1d9694d5-ea46-802c-939a-da20285e517c" class="bulleted-list"><li style="list-style-type:circle">这就可以设置多个state变量，设置来自不同组件的state变量，而不会触发太多的重新渲染</li></ul><ul id="1d9694d5-ea46-80c9-9500-f21dcbef9288" class="bulleted-list"><li style="list-style-type:circle">也意味着只有在你的事件处理函数以及其中的所有代码执行完后，UI才会更新。这种特性就是批量处理</li></ul></li></ul><ul id="1d9694d5-ea46-8031-98b1-deaa23d22a2e" class="bulleted-list"><li style="list-style-type:disc">批量处理会使你的React应用运行更快，会避免处理只更新一部分的state变量的半成品渲染</li></ul><ul id="1d9694d5-ea46-8049-a61c-d33767a06d9e" class="bulleted-list"><li style="list-style-type:disc"><strong>React不会跨越多个需要可以触发的事件（如点击）在进行批量处理，每次点击都是单独处理。</strong></li></ul><p id="1d9694d5-ea46-8086-8473-f79fff35d270" class=""><strong><span style="border-bottom:0.05em solid">在下次渲染前多次更新同一个state</span></strong></p><ul id="1d9694d5-ea46-80c3-93a2-f595ceae10e7" class="bulleted-list"><li style="list-style-type:disc">这是一个不常见的例子，想在下一次渲染前，对同一个state进行多次更新，就可以像<strong>setNumber（n⇒n+1）</strong>传入一个根据队列中前一个state计算下一个state的函数，而不是<strong>setNumber（n+1）</strong>这样传入下一个state值。</li></ul><ul id="1d9694d5-ea46-80cb-9665-c97f3adc2f60" class="bulleted-list"><li style="list-style-type:disc">这样就是让React理解‘state’变量去做某事，而不是仅仅去替换state<blockquote id="1d9694d5-ea46-80cc-b7ed-f6c0080ef660" class=""> return (<br/>    &lt;&gt;<br/>      &lt;h1&gt;{number}&lt;/h1&gt;<br/>      &lt;button onClick={() =&gt; {<br/>        setNumber(n =&gt; n + 1);<br/>        setNumber(n =&gt; n + 1);<br/>        setNumber(n =&gt; n + 1);<br/>      }}&gt;+3&lt;/button&gt;<br/>    &lt;/&gt;<br/>  )<br/></blockquote><ul id="1d9694d5-ea46-8010-b4cd-ec4e70bff4fa" class="bulleted-list"><li style="list-style-type:circle">这里n⇒n+1，被称为更新函数，当你把它传递给下一个state设置函数时<ul id="1d9694d5-ea46-80f1-9ccd-f10ecce71d0d" class="bulleted-list"><li style="list-style-type:square">React会将此函数加入队列，以便在事件处理函数中所有其他代码运行后在进行处理</li></ul><ul id="1d9694d5-ea46-80c4-bb95-e1f53eff5703" class="bulleted-list"><li style="list-style-type:square">在下一次渲染期间，React会遍历队列并给你更新之后的最终state<ol type="1" id="1d9694d5-ea46-8037-b913-ed9b81148703" class="numbered-list" start="1"><li><code>setNumber(n =&gt; n + 1)</code>：<code>n =&gt; n + 1</code> 是一个函数。React 将它加入队列。</li></ol><ol type="1" id="1d9694d5-ea46-80ee-8cd9-ef2daced58a8" class="numbered-list" start="2"><li><code>setNumber(n =&gt; n + 1)</code>：<code>n =&gt; n + 1</code> 是一个函数。React 将它加入队列。</li></ol><ol type="1" id="1d9694d5-ea46-8056-ba75-f62126a83a34" class="numbered-list" start="3"><li><code>setNumber(n =&gt; n + 1)</code>：<code>n =&gt; n + 1</code> 是一个函数。React 将它加入队列。</li></ol></li></ul><ul id="1d9694d5-ea46-808e-aa35-c44091f2d16c" class="bulleted-list"><li style="list-style-type:square">在下次渲染期间调用useState，React会遍历队列，之前的number state为0，这就是React作为参数n传递给第一个更新函数得值，之后React会获取上一个更新函数的返回值，并传递给下一个更新函数，以此类推</li></ul><table id="1d9694d5-ea46-8091-8087-d438cf01dc4c" class="simple-table"><tbody><tr id="1d9694d5-ea46-8082-a9da-d3e8e5e64bfa"><td id="aYTP" class="">更新队列</td><td id="Ub[r" class=""><code>n</code></td><td id="wxDb" class="">返回值</td></tr><tr id="1d9694d5-ea46-800e-b54e-c12e8edf5c3f"><td id="aYTP" class=""><code>n =&gt; n + 1</code></td><td id="Ub[r" class=""><code>0</code></td><td id="wxDb" class=""><code>0 + 1 = 1</code></td></tr><tr id="1d9694d5-ea46-8045-99ef-dedd24ff9fa0"><td id="aYTP" class=""><code>n =&gt; n + 1</code></td><td id="Ub[r" class=""><code>1</code></td><td id="wxDb" class=""><code>1 + 1 = 2</code></td></tr><tr id="1d9694d5-ea46-8075-8969-dfe1d6fa25a2"><td id="aYTP" class=""><code>n =&gt; n + 1</code></td><td id="Ub[r" class=""><code>2</code></td><td id="wxDb" class=""><code>2 + 1 = 3</code></td></tr></tbody></table></li></ul></li></ul><p id="1d9694d5-ea46-8029-afd6-eb55c56b25df" class=""><strong><span style="border-bottom:0.05em solid">在替换state之后更新：</span></strong></p><ul id="1d9694d5-ea46-80ec-9b6b-fdd925030c7e" class="bulleted-list"><li style="list-style-type:disc">示例：点击过后，number最终为6<blockquote id="1d9694d5-ea46-8075-8b42-fdf7a72781c9" class="">&lt;button onClick={() =&gt; {<br/>  setNumber(number + 5);<br/>  setNumber(n =&gt; n + 1);  <br/><strong>替换state</strong><br/>}}&gt;<br/></blockquote><ul id="1d9694d5-ea46-805f-917a-f1a85180e2e9" class="bulleted-list"><li style="list-style-type:circle"><strong>事件发生流程  const [number, setNumber] = useState(0);</strong><ul id="1d9694d5-ea46-8001-a94e-ceea798c65da" class="bulleted-list"><li style="list-style-type:square">setNumber（number+5）：number为0，React将number替换为5加入队列</li></ul><ul id="1d9694d5-ea46-808c-bae8-dc0db734461e" class="bulleted-list"><li style="list-style-type:square">setNumber（n⇒n+1）：n⇒n+1是一个更新函数，React将函数添加到队列中</li></ul><ul id="1d9694d5-ea46-803d-83da-e5fc616f5025" class="bulleted-list"><li style="list-style-type:square">在下一次渲染期间，React会遍历state队列<p id="1d9694d5-ea46-80ee-b908-d36b33145263" class="">更新队列	n	返回值<br/>“替换为 5”	0（未使用）	5<br/>n =&gt; n + 1	5	5 + 1 = 6<br/></p></li></ul><ul id="1d9694d5-ea46-80cc-9e30-c7ab72fd5eea" class="bulleted-list"><li style="list-style-type:square">最终React会保存6为最终结果，并从useState中返回<figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1d9694d5-ea46-8097-a144-f3d712934fb8"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><p id="1d9694d5-ea46-8079-8b1f-e27b607cf6f3" class="">setState（x）会像setState（n⇒x）一样运行</p></div></figure></li></ul></li></ul></li></ul><p id="1d9694d5-ea46-80d4-9c44-da9ecec07bd1" class=""><strong><span style="border-bottom:0.05em solid">更新state后在替换state</span></strong></p><ul id="1d9694d5-ea46-8056-8652-fdca8faae9a8" class="bulleted-list"><li style="list-style-type:disc">示例：点击过后，number值为42<blockquote id="1d9694d5-ea46-808f-b2b0-d1eb9c0cf16b" class="">&lt;button onClick={() =&gt; {<br/>  setNumber(number + 5);<br/>  setNumber(n =&gt; n + 1);<br/>  setNumber(42);<br/>}}&gt;<br/></blockquote><ul id="1d9694d5-ea46-80e6-942d-e945c1c589c1" class="bulleted-list"><li style="list-style-type:circle">事件发生流程：<ul id="1d9694d5-ea46-80b8-b6df-e74cf6423253" class="bulleted-list"><li style="list-style-type:square">setNumber（number + 5），number为0，React将“替换为5”加入队列</li></ul><ul id="1d9694d5-ea46-80b0-b0ae-e46553515013" class="bulleted-list"><li style="list-style-type:square">setNumber（n⇒n+1），n⇒n+1为更新函数，React将其添加到队列</li></ul><ul id="1d9694d5-ea46-80db-8788-df9d05308326" class="bulleted-list"><li style="list-style-type:square">setNumber（42），将“替换为42”加入对列</li></ul><ul id="1d9694d5-ea46-8001-9f2f-d88d19e38abb" class="bulleted-list"><li style="list-style-type:square">更新队列	n	返回值<br/>“替换为 5”	0（未使用）	5<br/>n =&gt; n + 1	5	5 + 1 = 6<br/>“替换为 42”	6（未使用）	42<br/></li></ul><ul id="1d9694d5-ea46-80c5-a938-f4b2376356ea" class="bulleted-list"><li style="list-style-type:square">React会保存42为最终结构并从useState中返回。</li></ul></li></ul></li></ul><ul id="1d9694d5-ea46-80b1-833c-fe20b7c2f798" class="bulleted-list"><li style="list-style-type:disc">总而言之，传递给setNumber state设置函数的内容情况如下<ul id="1d9694d5-ea46-8029-af47-cc97de81ecaf" class="bulleted-list"><li style="list-style-type:circle">一个更新函数：例如n⇒n+1，被添加到队列</li></ul><ul id="1d9694d5-ea46-80ad-9a2a-e90140e3c818" class="bulleted-list"><li style="list-style-type:circle">任何其他的值：例如数字5，“替换为5”添加到队列，已经在队列中的内容会被覆盖</li></ul></li></ul><ul id="1d9694d5-ea46-8081-92ac-f75a60030fc5" class="bulleted-list"><li style="list-style-type:disc">事件处理函数执行完成后，React会重新渲染，重新渲染期间React将处理对列，更新函数在渲染期间执行，因此<strong>更新函数必须为纯函数，并且只返回结果</strong></li></ul><ul id="1d9694d5-ea46-80ee-854d-c1b47a0157c5" class="bulleted-list"><li style="list-style-type:disc">不要再内部设置state或执行其他副作用。</li></ul><p id="1d9694d5-ea46-8091-a0a1-c88832ce813d" class=""><strong><span style="border-bottom:0.05em solid">命名惯例：</span></strong></p><ul id="1d9694d5-ea46-8044-95a0-db804efb1fa4" class="bulleted-list"><li style="list-style-type:disc">通常通过响应的state变量的第一个字母来命名更新函数的参数<blockquote id="1d9694d5-ea46-80fb-a415-ed1dbfc90521" class="">setEnabled(e =&gt; !e);<br/>setLastName(ln =&gt; ln.reverse());<br/>setFriendCount(fc =&gt; fc * 2);<br/></blockquote></li></ul><ul id="1d9694d5-ea46-8063-a540-efb2d932b86d" class="bulleted-list"><li style="list-style-type:disc">也可以重复使用完整的state变量名，如setEnabled（enabled⇒!enabled），或者使用前缀，如setEnabled（prevEnabled⇒！prevEnabled）。</li></ul><p id="1d9694d5-ea46-8044-aa50-fee51882adaa" class=""><mark class="highlight-red"><strong><span style="border-bottom:0.05em solid">更新state中的对象</span></strong></mark></p><p id="1d9694d5-ea46-809f-babe-d7544297bac1" class="">state中可以保存任意类型的JS值，包括对象、数组等。但是不可以直接修改存放在React state中的对象，相反，如果更新一个对象时，需要创建一个新的对象，或者拷贝一个副本，然后将state更新为此对象</p><p id="1d9694d5-ea46-80b2-bc5a-e19b75e2dafd" class=""><strong><span style="border-bottom:0.05em solid">mutation（突变）：</span></strong></p><ul id="1d9694d5-ea46-8071-8da1-f14cfbbb4c66" class="bulleted-list"><li style="list-style-type:disc">可以在state中存放任意类型的JS值<ul id="1d9694d5-ea46-803a-8813-dcfa46a1d4b2" class="bulleted-list"><li style="list-style-type:circle">const【x，setX】=useState（0）；</li></ul></li></ul><ul id="1d9694d5-ea46-8089-b04e-cb30c341e737" class="bulleted-list"><li style="list-style-type:disc">目前为止，尝试过在state中存放数字、字符串、布尔值，这些类型的值在JS中是不可变的immutable。这意味着他们不能被改变或是只读的，可以替换他们的值，来触发重新渲染<ul id="1d9694d5-ea46-8086-bc1d-c79cd37b8c99" class="bulleted-list"><li style="list-style-type:circle">setX（5）</li></ul></li></ul><ul id="1d9694d5-ea46-8007-87d1-e9471be4e032" class="bulleted-list"><li style="list-style-type:disc">state x从0被覆盖为5，但是数字0本身并没有改变，在JS中，无法对内置的原始值，数字、字符串、布尔值进行任何改变</li></ul><ul id="1d9694d5-ea46-80f0-9ed0-e40ab2084860" class="bulleted-list"><li style="list-style-type:disc">如果在state中存放对象数据类型<ul id="1d9694d5-ea46-80b1-a450-ffc9445bf882" class="bulleted-list"><li style="list-style-type:circle">const【position，setPosition】=useState（{x：0，y：0}）；</li></ul></li></ul><ul id="1d9694d5-ea46-80c5-9613-ee32472f7b53" class="bulleted-list"><li style="list-style-type:disc">从技术上讲，可以改变对象自身的内容，如果改变之后，就制造了一个mutation（突变）<ul id="1d9694d5-ea46-8080-9da2-d8c860722bc6" class="bulleted-list"><li style="list-style-type:circle">position.x=5；</li></ul></li></ul><ul id="1d9694d5-ea46-8001-a7d9-d0894784c7bb" class="bulleted-list"><li style="list-style-type:disc">然而严格来说React state中存放的对象是可变的，但你应该像处理数字、布尔值、字符串一样视为不可变。因此应该替换他们的之，而不是对他们进行修改</li></ul><p id="1d9694d5-ea46-800a-902f-ddbd7a8703f8" class=""><strong><span style="border-bottom:0.05em solid">将state视为只读：</span></strong></p><ul id="1d9694d5-ea46-803f-a99a-fdfb1ffdb79a" class="bulleted-list"><li style="list-style-type:disc"><strong>把所有存放在state中的JS对象都视为只读</strong><ul id="1d9694d5-ea46-8017-8b4c-ee6e6f93b425" class="bulleted-list"><li style="list-style-type:circle">示例，存放在state中的对象来表示指针当前的位置，预览去触摸活移动时，红点移动。但实际上红点仍然停留在远处<blockquote id="1d9694d5-ea46-8040-a7ec-c1aab412bd6a" class="">import { useState } from &#x27;react&#x27;;<br/><br/>export default function MovingDot() {<br/>  const [position, setPosition] = useState({<br/>    x: 0,<br/>    y: 0<br/>  });<br/>  return (<br/>    &lt;div<br/>   <br/><strong>   onPointerMove={e =&gt; {    直接改变对象不可取<br/>        position.x = e.clientX;     应该使用set函数重设对象属性<br/>        position.y = e.clientY;<br/>      }}<br/></strong><br/>      style={{<br/>        position: &#x27;relative&#x27;,<br/>        width: &#x27;100vw&#x27;,<br/>        height: &#x27;100vh&#x27;,<br/>      }}&gt;<br/>      &lt;div style={{<br/>        position: &#x27;absolute&#x27;,<br/>        backgroundColor: &#x27;red&#x27;,<br/>        borderRadius: &#x27;50%&#x27;,<br/>        transform: `translate(${position.x}px, ${position.y}px)`,<br/>        left: -10,<br/>        top: -10,<br/>        width: 20,<br/>        height: 20,<br/>      }} /&gt;<br/>    &lt;/div&gt;<br/>  );<br/>}<br/></blockquote></li></ul><ul id="1d9694d5-ea46-8052-b026-c8351ae7b9bf" class="bulleted-list"><li style="list-style-type:circle">这段代码修改了上一次渲染中分配给了position对象。但是没有使用state的设置函数，React并不知道对象更改。React没有做出反应。就还比吃完饭在尝试改变菜单。应该把渲染过程中可以访问到的state视为只读</li></ul><ul id="1d9694d5-ea46-80f4-8faf-fc62f756552e" class="bulleted-list"><li style="list-style-type:circle">为了真正的触发一次渲染，需要创建一个新对象并把它传递给state的设置函数<blockquote id="1d9694d5-ea46-8021-b7fd-edfa53c09a7e" class="">onPointerMove={e =&gt; {<br/>  setPosition({<br/>    x: e.clientX,<br/>    y: e.clientY<br/>  });<br/>}}<br/></blockquote><ul id="1d9694d5-ea46-8001-91f9-de6d3b917abb" class="bulleted-list"><li style="list-style-type:square">通过使用setPosition函数，告诉React<ul id="1d9694d5-ea46-8071-a8c8-eda144140a11" class="bulleted-list"><li style="list-style-type:disc">使用新对象替换position值</li></ul><ul id="1d9694d5-ea46-801e-bc15-efb378457658" class="bulleted-list"><li style="list-style-type:disc">然后重新渲染这个组件</li></ul></li></ul></li></ul></li></ul><p id="1d9694d5-ea46-8036-9e6a-fde0c58dba5c" class=""><strong><span style="border-bottom:0.05em solid">局部使用mutation：</span></strong></p><ul id="1d9694d5-ea46-8058-a435-dd069faea091" class="bulleted-list"><li style="list-style-type:disc">如下问题代码，直接改变了state的对象<blockquote id="1d9694d5-ea46-8092-8ae8-fac64fc6de38" class="">position.x = e.clientX;<br/>position.y = e.clientY;<br/></blockquote></li></ul><ul id="1d9694d5-ea46-80b3-865d-e528b00794b4" class="bulleted-list"><li style="list-style-type:disc">但是创建新对象，为新对象赋值，使用新对象替换旧对象，就没有问题<blockquote id="1d9694d5-ea46-8093-ab44-ccbe1e84b749" class="">const nextPosition = {};<br/>nextPosition.x = e.clientX;<br/>nextPosition.y = e.clientY;<br/>setPosition(nextPosition);<br/></blockquote></li></ul><ul id="1d9694d5-ea46-8040-9f46-ee100eacefea" class="bulleted-list"><li style="list-style-type:disc">这种方法完全等同于如下写法，为旧对象使用setState函数<blockquote id="1d9694d5-ea46-8061-9203-f430788c0751" class="">setPosition({<br/>  x: e.clientX,<br/>  y: e.clientY<br/>});<br/></blockquote></li></ul><ul id="1d9694d5-ea46-809d-bcfb-dff8c3d9ea41" class="bulleted-list"><li style="list-style-type:disc">只有改变了已经处于state中的现有对象，mutation会报错，而<strong>修改了一个刚刚创建的对象就不会报错。因为其他代码没有引用他</strong>。</li></ul><ul id="1d9694d5-ea46-80b5-85f4-ddc2b55fe15c" class="bulleted-list"><li style="list-style-type:disc">改变它不会影响到其他依赖他的东西。这个叫做局部mutation，可以在渲染过程中进行局部mutation操作，</li></ul><p id="1d9694d5-ea46-8090-bb13-c49b29d1c7f9" class=""><strong><span style="border-bottom:0.05em solid">使用展开语法复制对象：</span></strong></p><ul id="1d9694d5-ea46-805f-b1bd-c80cbc4452f0" class="bulleted-list"><li style="list-style-type:disc">如上述例子，始终根据指针位置创建一个新的position对象。通常希望把现有数据作为所创建新对象的一部分。例如只改变表单的一个字段，其他字段仍使用之前的值。<ul id="1d9694d5-ea46-80e2-9ff8-c79dbbe8fad7" class="bulleted-list"><li style="list-style-type:circle">下例，输入框不会正常运行，因为onChange直接修改了原对象的state<blockquote id="1d9694d5-ea46-80ea-965e-c3b72e8e910a" class="">import { useState } from &#x27;react&#x27;;<br/><br/>export default function Form() {<br/>  const [person, setPerson] = useState({<br/>    firstName: &#x27;Barbara&#x27;,<br/>    lastName: &#x27;Hepworth&#x27;,<br/>    email: &#x27;bhepworth@sculpture.com&#x27;<br/>  });<br/><br/><strong><br/>  function handleFirstNameChange(e) {<br/>    person.firstName = e.target.value;<br/>  }<br/><br/>  function handleLastNameChange(e) {<br/>    person.lastName = e.target.value;<br/>  }<br/><br/>  function handleEmailChange(e) { 三个函数直接修改原对象的值<br/>    person.email = e.target.value;<br/>  }<br/><br/></strong><br/>  return (<br/>    &lt;&gt;<br/>      &lt;label&gt;<br/>        First name:<br/>        &lt;input<br/>          value={person.firstName}<br/>          onChange={handleFirstNameChange}<br/>        /&gt;<br/>      &lt;/label&gt;<br/>      &lt;label&gt;<br/>        Last name:<br/>        &lt;input<br/>          value={person.lastName}<br/>          onChange={handleLastNameChange}<br/>        /&gt;<br/>      &lt;/label&gt;<br/>      &lt;label&gt;<br/>        Email:<br/>        &lt;input<br/>          value={person.email}<br/>          onChange={handleEmailChange}<br/>        /&gt;<br/>      &lt;/label&gt;<br/>      &lt;p&gt;<br/>        {person.firstName}{&#x27; &#x27;}<br/>        {person.lastName}{&#x27; &#x27;}<br/>        ({person.email})<br/>      &lt;/p&gt;<br/>    &lt;/&gt;<br/>  );<br/>}<br/></blockquote></li></ul></li></ul><ul id="1d9694d5-ea46-80a6-93d3-ecbfaeee25a6" class="bulleted-list"><li style="list-style-type:disc">想要实现表单内容随输入改变，最可靠的办法就是创建新对象，并将它传递给setPerson。在这里还需要把未修改的数据复制到新对象中，因为值改变了一个字段。<blockquote id="1d9694d5-ea46-80c2-8eb7-c2630b194938" class="">setPerson({<br/>  firstName: e.target.value, // 从 input 中获取新的 first name<br/>  lastName: person.lastName,<br/>  email: person.email<br/>});<br/></blockquote></li></ul><ul id="1d9694d5-ea46-80f8-8368-e18f9b802df4" class="bulleted-list"><li style="list-style-type:disc">可以使用…对象 展开语法，这样就可以不单独复制每个值<blockquote id="1d9694d5-ea46-8011-9ce9-c5cc299843e9" class="">setPerson({<br/>  ...person, // 复制上一个 person 中的所有字段<br/>  firstName: e.target.value // 但是覆盖 firstName 字段 <br/>});<br/></blockquote></li></ul><ul id="1d9694d5-ea46-8084-8223-ffc2690209ca" class="bulleted-list"><li style="list-style-type:disc">并没有为每个输入框单独声明一个state。对于大型表单，将所有数据都存放在同一个对象中，是非常方便的—前提是可以正确更新它。<ul id="1d9694d5-ea46-8085-b755-e0c0d6edca2a" class="bulleted-list"><li style="list-style-type:circle">完整代码如下<blockquote id="1d9694d5-ea46-807c-8399-ef02bd69451b" class="">import { useState } from &#x27;react&#x27;;<br/><br/>export default function Form() {<br/>  const [person, setPerson] = useState({<br/>    firstName: &#x27;Barbara&#x27;,<br/>    lastName: &#x27;Hepworth&#x27;,<br/>    email: &#x27;bhepworth@sculpture.com&#x27;<br/>  });<br/><br/> <br/><strong> function handleFirstNameChange(e) {<br/>    setPerson({<br/>      ...person,<br/>      firstName: e.target.value<br/>    });<br/>  }<br/><br/>  function handleLastNameChange(e) {<br/>    setPerson({                                  这三个条件函数可以凝缩为一个<br/>      ...person,<br/>      lastName: e.target.value<br/>    });<br/>  }<br/><br/>  function handleEmailChange(e) {<br/>    setPerson({<br/>      ...person,<br/>      email: e.target.value<br/>    });<br/>  }<br/></strong><br/>【替换代码如下】<br/>  return (<br/>    &lt;&gt;<br/>      &lt;label&gt;<br/>        First name:<br/>        &lt;input<br/>          value={person.firstName}<br/>          onChange={handleFirstNameChange}<br/>        /&gt;<br/>      &lt;/label&gt;<br/>      &lt;label&gt;<br/>        Last name:<br/>        &lt;input<br/>          value={person.lastName}<br/>          onChange={handleLastNameChange}<br/>        /&gt;<br/>      &lt;/label&gt;<br/>      &lt;label&gt;<br/>        Email:<br/>        &lt;input<br/>          value={person.email}<br/>          onChange={handleEmailChange}<br/>        /&gt;<br/>      &lt;/label&gt;<br/>      &lt;p&gt;<br/>        {person.firstName}{&#x27; &#x27;}<br/>        {person.lastName}{&#x27; &#x27;}<br/>        ({person.email})<br/>      &lt;/p&gt;<br/>    &lt;/&gt;<br/>  );<br/>}<br/><p id="1d9694d5-ea46-8008-b2c0-e080fc205d6d" class=""><strong>【function handleChange(e) {<br/>setPerson({<br/>...person,<br/>[<br/></strong><strong><a href="http://e.target.name/">e.target.name</a></strong><strong>]: e.target.value<br/>});<br/>}】  用于代替上述三个条件函数<br/></strong></p></blockquote></li></ul></li></ul><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1d9694d5-ea46-80b6-8c9a-f8fb1032f2a1"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><p id="1d9694d5-ea46-80d0-a439-f26555a6a3b4" class="">…展开语法本质时，浅拷贝，只会复制一层，这就使它执行速度很快，也意味着当你想要更新一个嵌套属性时，就必须多次使用展开语法</p></div></figure><p id="1d9694d5-ea46-8048-b980-c7bee75fd8f9" class=""><strong><span style="border-bottom:0.05em solid">更新一个嵌套对象：</span></strong></p><ul id="1d9694d5-ea46-8033-b48e-e515b5a02cb9" class="bulleted-list"><li style="list-style-type:disc">思考下列结构的嵌套对象<blockquote id="1d9694d5-ea46-807a-b478-e0794ab44938" class="">const [person, setPerson] = useState({<br/>  name: &#x27;Niki de Saint Phalle&#x27;,<br/>  artwork: {<br/>    title: &#x27;Blue Nana&#x27;,<br/>    city: &#x27;Hamburg&#x27;,<br/>    image: &#x27;https://i.imgur.com/Sd1AgUOm.jpg&#x27;,<br/>  }<br/>});<br/></blockquote></li></ul><ul id="1d9694d5-ea46-8028-8a7a-c15917b46ee0" class="bulleted-list"><li style="list-style-type:disc">如果要更新person.artwork.city的值，使用mutation的方法很容易实现<ul id="1d9694d5-ea46-805e-bdd5-f8b7e4091c04" class="bulleted-list"><li style="list-style-type:circle">person.artwork.city=‘new city’</li></ul></li></ul><ul id="1d9694d5-ea46-80c0-8ca5-e3f00ebcf86e" class="bulleted-list"><li style="list-style-type:disc">但是在React中，需要将state视为不可变，为了修改city的值，就必须创建一个新的artwork对象（其中预先填充了上一个artwork对象中的数据），然后创建一个新的person对象，是其中的artwork属性指向新创建的artwork对象：<blockquote id="1d9694d5-ea46-8054-bcdb-f866d941397b" class="">const nextArtwork = { ...person.artwork, city: &#x27;New Delhi&#x27; };<br/>const nextPerson = { ...person, artwork: nextArtwork };<br/>setPerson(nextPerson);<br/></blockquote></li></ul><p id="1d9694d5-ea46-80d1-9c54-ff91ed89e43e" class="">或者写成函数调用<div class="indented"><blockquote id="1d9694d5-ea46-80d5-9395-f5498d18055c" class="">setPerson({<br/>  ...person, // 复制其它字段的数据 <br/>  artwork: { // 替换 artwork 字段 <br/>    ...person.artwork, // 复制之前 person.artwork 中的数据<br/>    city: &#x27;New Delhi&#x27; // 但是将 city 的值替换为 New Delhi！<br/>  }<br/>});<br/></blockquote></div></p><ul id="1d9694d5-ea46-8010-ac6f-e8f7eea14acd" class="bulleted-list"><li style="list-style-type:disc">代码虽然冗长，但是对于很多情况都能有效解决问题。</li></ul><p id="1d9694d5-ea46-80a1-9fc9-da569d969bc7" class=""><strong><span style="border-bottom:0.05em solid">对象并非是嵌套的：</span></strong></p><ul id="1d9694d5-ea46-80bf-b97d-ea9f3056434b" class="bulleted-list"><li style="list-style-type:disc">下面这个对象从代码上看，是属于嵌套<blockquote id="1d9694d5-ea46-8019-bf8c-e22168ddfd91" class="">let obj = {<br/>  name: &#x27;Niki de Saint Phalle&#x27;,<br/>  artwork: {<br/>    title: &#x27;Blue Nana&#x27;,<br/>    city: &#x27;Hamburg&#x27;,<br/>    image: &#x27;https://i.imgur.com/Sd1AgUOm.jpg&#x27;,<br/>  }<br/>};<br/></blockquote></li></ul><ul id="1d9694d5-ea46-80aa-b675-e1613c453b21" class="bulleted-list"><li style="list-style-type:disc">当我们思考对象的特性，嵌套不是一个准确的描述，当这段代码运行时，不存在嵌套的对象，实际上时两个不同的对象<blockquote id="1d9694d5-ea46-809f-b5f8-f7475882ff1b" class="">let obj1 = {<br/>  title: &#x27;Blue Nana&#x27;,<br/>  city: &#x27;Hamburg&#x27;,<br/>  image: &#x27;https://i.imgur.com/Sd1AgUOm.jpg&#x27;,<br/>};<br/><br/>let obj2 = {<br/>  name: &#x27;Niki de Saint Phalle&#x27;,<br/>  artwork: obj1<br/>};<br/></blockquote></li></ul><ul id="1d9694d5-ea46-805e-9aa7-eccf3c4043ba" class="bulleted-list"><li style="list-style-type:disc">对象1并不处于对象2的内部。如果直接修改obj2.artwork.city，就会影响到obj1.city。因为obj2.artwork和obj1指向同一个对象。他们不是嵌套关系，相反是相互独立的对象，只是使用属性指向彼此。</li></ul><p id="1d9694d5-ea46-80e1-a91b-f672da2c387b" class=""><strong><span style="border-bottom:0.05em solid">使用immer编写简洁的更新逻辑：</span></strong></p><ul id="1d9694d5-ea46-8066-b36f-d7a639df6573" class="bulleted-list"><li style="list-style-type:disc">如果你的state有多层的嵌套，你或许应该考虑将其扁平化。但是如果不想改变state的数据结构，immer是一个流行的库，可以使用简便但是可以和直接修改的语法编写代码，并会帮你处理好复制的过程，通过immer，写出来的代码像是不合规则，直接修改了对象<blockquote id="1d9694d5-ea46-808a-8e98-ffcd9ca94671" class="">updatePerson(draft =&gt; {<br/>  draft.artwork.city = &#x27;Lagos&#x27;;<br/>});<br/></blockquote><p id="1d9694d5-ea46-80fd-bde1-edd4e4942d87" class="">这样不同于一般的mutation，他不会覆盖之前的state</p></li></ul><ul id="1d9694d5-ea46-80e7-a8c3-f31f91201832" class="bulleted-list"><li style="list-style-type:disc">immer提供的draft是一种特殊类型的对象，被称为Proxy，他会记录你用它所进行的操作，这就是你能够随心所欲地直接修改对象的原因所在。从原理上，immer会弄清楚draft对象的哪些部分改变，并会依照你的修改创建出一个全新的新对象。</li></ul><ul id="1d9694d5-ea46-80db-999a-ff5bbef1dfc8" class="bulleted-list"><li style="list-style-type:disc">尝试使用immer<ul id="1d9694d5-ea46-8036-bc91-fb4b492058d6" class="bulleted-list"><li style="list-style-type:circle">npm install use-immer添加immer依赖</li></ul><ul id="1d9694d5-ea46-80dd-bc53-c41ec549952e" class="bulleted-list"><li style="list-style-type:circle">import{useImmer} from ‘use-immer’替换掉import{useState}from ‘react’</li></ul></li></ul><ul id="1d9694d5-ea46-80c0-8955-c16a1b920a82" class="bulleted-list"><li style="list-style-type:disc">上述例子，使用immer实现：<blockquote id="1d9694d5-ea46-8059-ac1d-cb13a3660950" class=""><strong>package.json文件</strong><br/>{<br/>  &quot;dependencies&quot;: {<br/>    &quot;immer&quot;: &quot;1.7.3&quot;,<br/>    &quot;react&quot;: &quot;latest&quot;,<br/>    &quot;react-dom&quot;: &quot;latest&quot;,<br/>    &quot;react-scripts&quot;: &quot;latest&quot;,<br/>    &quot;use-immer&quot;: &quot;0.5.1&quot;<br/>  },<br/>  &quot;scripts&quot;: {<br/>    &quot;start&quot;: &quot;react-scripts start&quot;,<br/>    &quot;build&quot;: &quot;react-scripts build&quot;,<br/>    &quot;test&quot;: &quot;react-scripts test --env=jsdom&quot;,<br/>    &quot;eject&quot;: &quot;react-scripts eject&quot;<br/>  },<br/>  &quot;devDependencies&quot;: {}<br/>}<br/></blockquote><blockquote id="1d9694d5-ea46-8059-bc13-df5d795419b5" class=""><strong>App.js文件</strong><br/>import { useImmer } from &#x27;use-immer&#x27;;<br/><br/>export default function Form() {<br/>  const [person, updatePerson] = useImmer({<br/>    name: &#x27;Niki de Saint Phalle&#x27;,<br/>    artwork: {<br/>      title: &#x27;Blue Nana&#x27;,<br/>      city: &#x27;Hamburg&#x27;,<br/>      image: &#x27;https://i.imgur.com/Sd1AgUOm.jpg&#x27;,<br/>    }<br/>  });<br/><br/>  function handleNameChange(e) {<br/>    updatePerson(draft =&gt; {<br/>      draft.name = e.target.value;<br/>    });<br/>  }<br/><br/>  function handleTitleChange(e) {<br/>    updatePerson(draft =&gt; {<br/>      draft.artwork.title = e.target.value;<br/>    });<br/>  }<br/><br/>  function handleCityChange(e) {<br/>    updatePerson(draft =&gt; {<br/>      draft.artwork.city = e.target.value;<br/>    });<br/>  }<br/><br/>  function handleImageChange(e) {<br/>    updatePerson(draft =&gt; {<br/>      draft.artwork.image = e.target.value;<br/>    });<br/>  }<br/><br/>  return (<br/>    &lt;&gt;<br/>      &lt;label&gt;<br/>        Name:<br/>        &lt;input<br/>          value={person.name}<br/>          onChange={handleNameChange}<br/>        /&gt;<br/>      &lt;/label&gt;<br/>      &lt;label&gt;<br/>        Title:<br/>        &lt;input<br/>          value={person.artwork.title}<br/>          onChange={handleTitleChange}<br/>        /&gt;<br/>      &lt;/label&gt;<br/>      &lt;label&gt;<br/>        City:<br/>        &lt;input<br/>          value={person.artwork.city}<br/>          onChange={handleCityChange}<br/>        /&gt;<br/>      &lt;/label&gt;<br/>      &lt;label&gt;<br/>        Image:<br/>        &lt;input<br/>          value={person.artwork.image}<br/>          onChange={handleImageChange}<br/>        /&gt;<br/>      &lt;/label&gt;<br/>      &lt;p&gt;<br/>        &lt;i&gt;{person.artwork.title}&lt;/i&gt;<br/>        {&#x27; by &#x27;}<br/>        {person.name}<br/>        &lt;br /&gt;<br/>        (located in {person.artwork.city})<br/>      &lt;/p&gt;<br/>      &lt;img <br/>        src={person.artwork.image} <br/>        alt={person.artwork.title}<br/>      /&gt;<br/>    &lt;/&gt;<br/>  );<br/>}<br/></blockquote></li></ul><p id="1d9694d5-ea46-8046-85ea-d35244883490" class=""><strong><span style="border-bottom:0.05em solid">为什么在React中不推荐直接修改state：</span></strong></p><ul id="1d9694d5-ea46-80e6-b158-d09d34e08da0" class="bulleted-list"><li style="list-style-type:disc">调试：如果使用console.log并且不直接修改state，你之前日志中的state值就不会被新的state变化所影响，你就可以清楚的看到两次渲染之间的state的值是什么变化。</li></ul><ul id="1d9694d5-ea46-80e3-bd1d-dfeda6f52742" class="bulleted-list"><li style="list-style-type:disc">优化：React常见的优化策略，依赖于如果之前的props或者state的值和下一次相同就跳过渲染，如果你从未直接修改state，那么就可以看到state是否发生了变化，如果prevObj===obj，那么你就可以肯定这个对象内部并没有发生变化</li></ul><ul id="1d9694d5-ea46-802f-b021-d84f9f1aeee0" class="bulleted-list"><li style="list-style-type:disc">新功能：正构建的React新功能依赖于state被像快照一样看待。如果直接修改state的历史版本，可能会影响你使用这些新功能</li></ul><ul id="1d9694d5-ea46-8027-9448-f4db5aff317d" class="bulleted-list"><li style="list-style-type:disc">需求变更：有些功能在不出现任何修改的情况下会更容易实现，比如实现撤销/恢复、展示修改历史，或是允许用户把表单重置成某个之前的值，这是因为可以把state之前的拷贝保存到内存中，那么后面要实现这样的功能就会变得很困难。</li></ul><ul id="1d9694d5-ea46-8067-a402-f2fc8bd0036f" class="bulleted-list"><li style="list-style-type:disc">更简单的实现：React并不依赖于mutation，所以你不需要对对象进行任何的特殊操作，它不需要像很多‘响应式’的解决方案一样去劫持对象的属性。总是使用代理把对象包裹起来，或者在初始化时做其他工作，这也是Reacy允许你把任何对象存放在state中。不会造成有任何额外的性能或者正确性问题的原因。</li></ul><p id="1d9694d5-ea46-80ff-8fa2-ee72c7c8000c" class=""><mark class="highlight-red"><strong><span style="border-bottom:0.05em solid">更新state中的数组：</span></strong></mark></p><p id="1d9694d5-ea46-801f-9c51-d20c11d36611" class="">数组是另一种可以存储在state中的JS对象，他虽然是可变的，但是却应该视为不可变，同对象一样，当你想要更新存储与state中的数组时，你需要创建一个新的数组（或者创建一份已有数组的拷贝），并使用新数组设置state</p><p id="1d9694d5-ea46-8037-b235-cc31e93b1002" class=""><strong><span style="border-bottom:0.05em solid">在没有mutation的前提下更新数组：</span></strong></p><ul id="1d9694d5-ea46-80b5-9e92-c7d2d8a19bf0" class="bulleted-list"><li style="list-style-type:disc">在JS中数组是另一种对象，同对象一样，你需要React state中的数组视为只读。这意味着不应该使用类似于【arr【0】=‘bird’】这样的方式来重新分配数组中的元素，也不应该使用会直接修改原数组的方法，例如push（）或者pop（）</li></ul><ul id="1d9694d5-ea46-80ac-818b-ff283fa6cf47" class="bulleted-list"><li style="list-style-type:disc">相反每次要更新一个数组时，你需要把一个新的数组传入state的setting方法中，为此你可以通过使用filter（）和map（）这样不会直接修改原始值的方法，从原始数组生成新的数组，然后就可以将state设置为这个新生成的数组</li></ul><ul id="1d9694d5-ea46-80f0-8be5-e8c16a411428" class="bulleted-list"><li style="list-style-type:disc">下面是常见数组操作的参考表，当你操作React state中的数组时，使用右列方法，或者使用immer就可以使用所有方法</li></ul><blockquote id="1d9694d5-ea46-80aa-a461-edcf54aaa08e" class=""><br/>避免使用 (会改变原始数组)	                  推荐使用 (会返回一个新数组）<br/>添加元素	push，unshift	          concat，[...arr] 展开语法（例子）<br/>删除元素	pop，shift，splice	  filter，slice（例子）<br/>替换元素	splice，arr[i] = ... 赋值	  map（例子）<br/>排序	reverse，sort	                   先将数组复制一份（例子）<br/></blockquote><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1d9694d5-ea46-808c-b4fb-cad76a0a142d"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><p id="1d9694d5-ea46-801a-a782-f6c6b87c31f3" class="">虽然slice和splice名字相似，但是作用相差很远<div class="indented"><p id="1d9694d5-ea46-8010-b749-fe939cf97e15" class=""><strong>slice让你拷贝数组或者数组一部分</strong></p><p id="1d9694d5-ea46-80d5-b3bc-c0cde20cf36e" class=""><strong>splice会直接修改原始数组，插入或删除元素</strong></p></div></p><p id="1d9694d5-ea46-80d1-b1f4-d487b94d0ffb" class="">在React中，更多情况使用slice，因为这样不会改变原始数组和对象。</p></div></figure><p id="1d9694d5-ea46-80fc-b0f4-f0a2945ecf22" class=""><strong><span style="border-bottom:0.05em solid">向数组中添加元素：</span></strong></p><ul id="1d9694d5-ea46-80b4-a6a8-dde042cdaad2" class="bulleted-list"><li style="list-style-type:disc">使用push（）会修改原始数组，使用按钮并不会重新渲染<blockquote id="1d9694d5-ea46-80ee-b73c-fdbcf2b88e29" class="">import { useState } from &#x27;react&#x27;;<br/><br/>let nextId = 0;<br/><br/>export default function List() {<br/>  const [name, setName] = useState(&#x27;&#x27;);<br/>  const [artists, setArtists] = useState([]);<br/><br/>  return (<br/>    &lt;&gt;<br/>      &lt;h1&gt;振奋人心的雕塑家们：&lt;/h1&gt;<br/>      &lt;input<br/>        value={name}<br/>        onChange={e =&gt; setName(e.target.value)}<br/>      /&gt;<br/>      &lt;button onClick={() =&gt; {<br/>        artists.push({<br/>          id: nextId++,<br/>          name: name,<br/>        });<br/>      }}&gt;添加&lt;/button&gt;<br/>      &lt;ul&gt;<br/>        {artists.map(artist =&gt; (<br/>          &lt;li key={artist.id}&gt;{artist.name}&lt;/li&gt;<br/>        ))}<br/>      &lt;/ul&gt;<br/>    &lt;/&gt;<br/>  );<br/>}<br/></blockquote></li></ul><ul id="1d9694d5-ea46-804a-b50d-ec48194993b0" class="bulleted-list"><li style="list-style-type:disc">相反你应该创建一个先数组，其中包含可原始数组的所有元素以及一个在末尾的新元素，这可以通过很多方法实现，最常见的就是…数组展开语法<blockquote id="1d9694d5-ea46-8057-9539-c75ea45355d0" class="">setArtists( // 替换 state<br/>  [ // 是通过传入一个新数组实现的<br/>    ...artists, // 新数组包含原数组的所有元素<br/>    { id: nextId++, name: name } // 并在末尾添加了一个新的元素<br/>  ]<br/>);<br/></blockquote><ul id="1d9694d5-ea46-80fb-99ae-fd102116dc10" class="bulleted-list"><li style="list-style-type:circle">这样就可以正常运行</li></ul><blockquote id="1d9694d5-ea46-8085-a45d-e4ebd402e552" class="">import { useState } from &#x27;react&#x27;;<br/><br/>let nextId = 0;<br/><br/>export default function List() {<br/>  const [name, setName] = useState(&#x27;&#x27;);<br/>  const [artists, setArtists] = useState([]);<br/><br/>  return (<br/>    &lt;&gt;<br/>      &lt;h1&gt;振奋人心的雕塑家们：&lt;/h1&gt;<br/>      &lt;input<br/>        value={name}<br/>        onChange={e =&gt; setName(e.target.value)}<br/>      /&gt;<br/>      &lt;button onClick={() =&gt; {<br/>        setArtists([<br/>          ...artists,<br/>          { id: nextId++, name: name }<br/>        ]);<br/>      }}&gt;添加&lt;/button&gt;<br/>      &lt;ul&gt;<br/>        {artists.map(artist =&gt; (<br/>          &lt;li key={artist.id}&gt;{artist.name}&lt;/li&gt;<br/>        ))}<br/>      &lt;/ul&gt;<br/>    &lt;/&gt;<br/>  );<br/>}<br/></blockquote></li></ul><ul id="1d9694d5-ea46-8053-8239-ffe08cf8b466" class="bulleted-list"><li style="list-style-type:disc">数组展开运算符允许把新添加的元素放在原始的…artists之前<blockquote id="1d9694d5-ea46-8064-80f9-d4c08f73bb2c" class="">setArtists([<br/>  { id: nextId++, name: name },<br/>  ...artists // 将原数组中的元素放在末尾<br/>]);<br/></blockquote><ul id="1d9694d5-ea46-8058-998b-f3f5e660db38" class="bulleted-list"><li style="list-style-type:circle">这样展开操作可以替代push（）和unshift（）的工作，将新元素添加到数组的末尾和开头</li></ul></li></ul><p id="1d9694d5-ea46-80f7-ab44-cbc8f714be29" class=""><strong><span style="border-bottom:0.05em solid">从数组中删除元素：</span></strong></p><ul id="1d9694d5-ea46-8036-b3c2-f943bba6a375" class="bulleted-list"><li style="list-style-type:disc">从数组中删除一个元素最简单的方法就是将它过滤除去，换句话说，你需要生成一个不包含该元素的新数组。这可以通过filter方法实现。<ul id="1d9694d5-ea46-8085-b409-f79cf236f268" class="bulleted-list"><li style="list-style-type:circle">示例如下，filter<blockquote id="1d9694d5-ea46-8030-8932-e1896af9c734" class="">import { useState } from &#x27;react&#x27;;<br/><br/>let initialArtists = [<br/>  { id: 0, name: &#x27;Marta Colvin Andrade&#x27; },<br/>  { id: 1, name: &#x27;Lamidi Olonade Fakeye&#x27;},<br/>  { id: 2, name: &#x27;Louise Nevelson&#x27;},<br/>];<br/><br/>export default function List() {<br/>  const [artists, setArtists] = useState(<br/>    initialArtists<br/>  );<br/><br/>  return (<br/>    &lt;&gt;<br/>      &lt;h1&gt;振奋人心的雕塑家们：&lt;/h1&gt;<br/>      &lt;ul&gt;<br/>        {artists.map(artist =&gt; (<br/>          &lt;li key={artist.id}&gt;<br/>            {artist.name}{&#x27; &#x27;}<br/>            &lt;button onClick={() =&gt; {<br/>              <br/><strong>setArtists(<br/>                artists.filter(a =&gt;<br/>                  a.id !== artist.id<br/>                )<br/></strong><br/>              );<br/>            }}&gt;<br/>              删除<br/>            &lt;/button&gt;<br/>          &lt;/li&gt;<br/>        ))}<br/>      &lt;/ul&gt;<br/>    &lt;/&gt;<br/>  );<br/>}<br/></blockquote></li></ul></li></ul><ul id="1d9694d5-ea46-8019-b934-ec9611fe4e36" class="bulleted-list"><li style="list-style-type:disc">这里标重的代码，表示‘创建一个新数组，该数组由哪些ID于artists.id不同的artists组成。’换句话说，每个artist的删除按钮，会把哪一个artist从原始数组中过滤掉，并使用过滤后的数组再次进行渲染，注意，filter并不会改变原始数组。它会根据条件筛选，并将符合条件的构建为新的对象</li></ul><p id="1d9694d5-ea46-8045-8ab6-df9f8cf9e0bb" class=""><strong><span style="border-bottom:0.05em solid">转换数组：</span></strong></p><ul id="1d9694d5-ea46-8003-80fd-c545ad65a51a" class="bulleted-list"><li style="list-style-type:disc">如果你想改变数组中的某些或全部元素，你可以使用map（）创建一个新数组，你传入的map的函数决定了要根据每个元素的值或者索引（或者全部），对元素进行如何处理。</li></ul><ul id="1d9694d5-ea46-80be-aa4a-c1fda1ca574e" class="bulleted-list"><li style="list-style-type:disc">下例：一个数组记录了两个院校和一个正方形的坐标，点击按钮，有两个院校会向下移动100像素，这是通过数组map（）方法生成新数组实现<blockquote id="1d9694d5-ea46-804c-9c97-f2d6a2def88b" class="">import { useState } from &#x27;react&#x27;;<br/><br/>let initialShapes = [<br/>  { id: 0, type: &#x27;circle&#x27;, x: 50, y: 100 },<br/>  { id: 1, type: &#x27;square&#x27;, x: 150, y: 100 },<br/>  { id: 2, type: &#x27;circle&#x27;, x: 250, y: 100 },<br/>];<br/><br/>export default function ShapeEditor() {<br/>  const [shapes, setShapes] = useState(<br/>    initialShapes<br/>  );<br/><br/>  function handleClick() {<br/>    const nextShapes = shapes.map(shape =&gt; {<br/>      if (shape.type === &#x27;square&#x27;) {<br/>        // 不作改变<br/>        return shape;<br/>      } else {<br/>        // 返回一个新的圆形，位置在下方 50px 处<br/>        return {<br/>          ...shape,<br/>          y: shape.y + 50,<br/>        };<br/>      }<br/>    });<br/>    // 使用新的数组进行重渲染<br/>    setShapes(nextShapes);<br/>  }<br/><br/>  return (<br/>    &lt;&gt;<br/>      &lt;button onClick={handleClick}&gt;<br/>        所有圆形向下移动！<br/>      &lt;/button&gt;<br/>      {shapes.map(shape =&gt; (<br/>        &lt;div<br/>          key={shape.id}<br/>          style={{<br/>          background: &#x27;purple&#x27;,<br/>          position: &#x27;absolute&#x27;,<br/>          left: shape.x,<br/>          top: shape.y,<br/>          borderRadius:<br/>            shape.type === &#x27;circle&#x27;<br/>              ? &#x27;50%&#x27; : &#x27;&#x27;,<br/>          width: 20,<br/>          height: 20,<br/>        }} /&gt;<br/>      ))}<br/>    &lt;/&gt;<br/>  );<br/>}<br/></blockquote></li></ul><p id="1d9694d5-ea46-8064-bf98-fa649d16552c" class=""><strong><span style="border-bottom:0.05em solid">替换数组中的元素：</span></strong></p><ul id="1d9694d5-ea46-80a2-9947-f4b161a903df" class="bulleted-list"><li style="list-style-type:disc">替换数组中的一个或多个元素是常见的，类似arr【0】=‘bird’这样的赋值语句会直接修改数组，所以应该使用map。</li></ul><ul id="1d9694d5-ea46-80c2-94df-d2e913e25c17" class="bulleted-list"><li style="list-style-type:disc">要替换一个元素，请使用map创建一个新数组，在map回调中，第二个参数是元素的索引。使用索引来判断最终是返回原始的元素，还是替换成其他的值<blockquote id="1d9694d5-ea46-8069-84b8-ed19499c755b" class="">import { useState } from &#x27;react&#x27;;<br/><br/>let initialCounters = [<br/>  0, 0, 0<br/>];<br/><br/>export default function CounterList() {<br/>  const [counters, setCounters] = useState(<br/>    initialCounters<br/>  );<br/><br/>  function handleIncrementClick(index) {<br/>    const nextCounters = counters.map((c, i) =&gt; {<br/>      if (i === index) {<br/>        // 递增被点击的计数器数值<br/>        return c + 1;<br/>      } else {<br/>        // 其余部分不发生变化<br/>        return c;<br/>      }<br/>    });<br/>    setCounters(nextCounters);<br/>  }<br/><br/>  return (<br/>    &lt;ul&gt;<br/>      {counters.map((counter, i) =&gt; (<br/>        &lt;li key={i}&gt;<br/>          {counter}<br/>          &lt;button onClick={() =&gt; {<br/>            handleIncrementClick(i);<br/>          }}&gt;+1&lt;/button&gt;<br/>        &lt;/li&gt;<br/>      ))}<br/>    &lt;/ul&gt;<br/>  );<br/>}<br/></blockquote><ul id="1d9694d5-ea46-80de-af3f-e29d8105e107" class="bulleted-list"><li style="list-style-type:circle"><code>c</code>: 在每一次迭代中，<code>c</code> 会被赋值为 <code>counters</code> 数组中<strong>当前正在被处理的元素的值</strong>。例如，在第一次迭代中，<code>c</code> 是 <code>0</code>（<code>initialCounters</code> 的第一个元素）；在第二次迭代中，<code>c</code> 是 <code>0</code>（<code>initialCounters</code> 的第二个元素），以此类推。</li></ul><ul id="1d9694d5-ea46-8011-bf05-d0ca7ea1fa46" class="bulleted-list"><li style="list-style-type:circle"><code>i</code>: 在每一次迭代中，<code>i</code> 会被赋值为 <code>counters</code> 数组中<strong>当前正在被处理的元素的索引</strong>（位置）。例如，在第一次迭代中，<code>i</code> 是 <code>0</code>；在第二次迭代中，<code>i</code> 是 <code>1</code>，以此类推。</li></ul></li></ul><p id="1d9694d5-ea46-80ed-a8de-cecdb8479736" class=""><strong><span style="border-bottom:0.05em solid">向数组中插入元素：</span></strong></p><ul id="1d9694d5-ea46-80ef-b120-f1e6a13339d0" class="bulleted-list"><li style="list-style-type:disc">有时会像数组特定位置插入一个元素，这个位置不在数组头尾。可以将数组展开运算符…和slice（）方法一起使用。slice方法让你从数组中切除一篇，为了将元素插入数组，你需要展开原数组在插入点之前的切片，然后插入新元素，最后展开原数组中剩下的部分</li></ul><ul id="1d9694d5-ea46-80f2-83d3-efa9acf33335" class="bulleted-list"><li style="list-style-type:disc">示例，插入按钮会将元素插入到数组中索引为1的位置<blockquote id="1d9694d5-ea46-80e7-b181-d5ae6444a1b9" class="">import { useState } from &#x27;react&#x27;;<br/><br/>let nextId = 3;<br/>const initialArtists = [<br/>  { id: 0, name: &#x27;Marta Colvin Andrade&#x27; },<br/>  { id: 1, name: &#x27;Lamidi Olonade Fakeye&#x27;},<br/>  { id: 2, name: &#x27;Louise Nevelson&#x27;},<br/>];<br/><br/>export default function List() {<br/>  const [name, setName] = useState(&#x27;&#x27;);<br/>  const [artists, setArtists] = useState(<br/>    initialArtists<br/>  );<br/><br/>  function handleClick() {<br/>    const insertAt = 1; // 可能是任何索引<br/>    const nextArtists = [<br/>      // 插入点之前的元素：<br/>      ...artists.slice(0, insertAt),<br/>      // 新的元素：<br/>      { id: nextId++, name: name },<br/>      // 插入点之后的元素：<br/>      ...artists.slice(insertAt)<br/>    ];<br/>    setArtists(nextArtists);<br/>    setName(&#x27;&#x27;);<br/>  }<br/><br/>  return (<br/>    &lt;&gt;<br/>      &lt;h1&gt;振奋人心的雕塑家们：&lt;/h1&gt;<br/>      &lt;input<br/>        value={name}<br/>        onChange={e =&gt; setName(e.target.value)}<br/>      /&gt;<br/>      &lt;button onClick={handleClick}&gt;<br/>        插入<br/>      &lt;/button&gt;<br/>      &lt;ul&gt;<br/>        {artists.map(artist =&gt; (<br/>          &lt;li key={artist.id}&gt;{artist.name}&lt;/li&gt;<br/>        ))}<br/>      &lt;/ul&gt;<br/>    &lt;/&gt;<br/>  );<br/>}<br/></blockquote><ul id="1d9694d5-ea46-80fc-9d8f-e3abc523b7f2" class="bulleted-list"><li style="list-style-type:circle"><code>input</code> 中的 <code>setName(e.target.value)</code> <strong>响应用户的输入，实时更新 </strong><code><strong>name</strong></code><strong> state</strong>。</li></ul><ul id="1d9694d5-ea46-80d7-96f0-dddc922edaaa" class="bulleted-list"><li style="list-style-type:circle"><code>handleClick</code> 中的 <code>setName(&#x27;&#x27;)</code> <strong>在添加完新的艺术家后，清空 </strong><code><strong>name</strong></code><strong> state，从而清空输入框</strong>。</li></ul></li></ul><p id="1d9694d5-ea46-8004-b8ac-efa4852fbab9" class=""><strong><span style="border-bottom:0.05em solid">其他改变数组的情况：</span></strong></p><ul id="1d9694d5-ea46-808f-8f19-cce7a89c2f60" class="bulleted-list"><li style="list-style-type:disc">有的情况，仅依靠展开运算符和map（）或filter（）等不会直接修改原值的方法是做不到的，比如反转数组、数组排序。而JS中的reverse和sort方法会改变原数组，不能直接使用。</li></ul><ul id="1d9694d5-ea46-80f2-969a-ee8f0f4cb229" class="bulleted-list"><li style="list-style-type:disc"><strong>可以先拷贝这个数组，在改变拷贝后的数组</strong><ul id="1d9694d5-ea46-8075-b8b0-c5a8cfeabe85" class="bulleted-list"><li style="list-style-type:circle">反转数组<blockquote id="1d9694d5-ea46-8087-b3d9-f460a5dbce36" class="">import { useState } from &#x27;react&#x27;;<br/><br/>const initialList = [<br/>  { id: 0, title: &#x27;Big Bellies&#x27; },<br/>  { id: 1, title: &#x27;Lunar Landscape&#x27; },<br/>  { id: 2, title: &#x27;Terracotta Army&#x27; },<br/>];<br/><br/>export default function List() {<br/>  const [list, setList] = useState(initialList);<br/><br/>  function handleClick() {<br/>    const nextList = [...list];<br/>    nextList.reverse();<br/>    setList(nextList);<br/>  }<br/><br/>  return (<br/>    &lt;&gt;<br/>      &lt;button onClick={handleClick}&gt;<br/>        翻转<br/>      &lt;/button&gt;<br/>      &lt;ul&gt;<br/>        {list.map(artwork =&gt; (<br/>          &lt;li key={artwork.id}&gt;{artwork.title}&lt;/li&gt;<br/>        ))}<br/>      &lt;/ul&gt;<br/>    &lt;/&gt;<br/>  );<br/>}<br/></blockquote></li></ul></li></ul><ul id="1d9694d5-ea46-80a4-9553-d98361733e34" class="bulleted-list"><li style="list-style-type:disc">上述代码，使用了【…list】展开运算符创建了一份数组的拷贝。对这个拷贝使用直接修改原数组的方法。甚至使用nextlist【0】 = ‘nb’的赋值方法</li></ul><ul id="1d9694d5-ea46-80f2-b8c6-d397cbacd4fa" class="bulleted-list"><li style="list-style-type:disc">即使拷贝了数组，还是不能直接修改其内部的元素，因为数组的拷贝是浅拷贝，新的数组中依然保留了于原始数组相同的元素，因此如果修改了拷贝数组内的某个对象，其实你正在修改当前的state。<blockquote id="1d9694d5-ea46-80e3-9dd5-d0455dc0dcec" class="">const nextList = [...list];<br/>nextList[0].seen = true; // 问题：直接修改了 list[0] 的值<br/>setList(nextList);<br/></blockquote><ul id="1d9694d5-ea46-80fa-8fb7-eac1297f2ceb" class="bulleted-list"><li style="list-style-type:circle"><strong>虽然nextlist和list是两个不同的数组，但是nextlist【0】和list【0】指向了同一个对象</strong></li></ul><ul id="1d9694d5-ea46-8010-bb6c-c46a6b4925fa" class="bulleted-list"><li style="list-style-type:circle">因此改变nextlist【0】.seen，list【0】.seen的值也被改编了，这是一种state的mutation操作，应该避免这么做</li></ul><ul id="1d9694d5-ea46-800d-af63-e7fd02daa329" class="bulleted-list"><li style="list-style-type:circle">可以使用类似于更新嵌套的JS对象方式来解决这个问题。拷贝想要特定修改的元素，而不是直接修改它。</li></ul></li></ul><p id="1d9694d5-ea46-80dd-abe8-c349ef16189c" class=""><strong><span style="border-bottom:0.05em solid">接上，更新数组内部的对象：</span></strong></p><ul id="1d9694d5-ea46-8043-b1b8-e18b4c1e7a36" class="bulleted-list"><li style="list-style-type:disc">对象并不是真的位于数组内不。而是数组的位置指向对象。这就是处理list【0】这样的嵌套字段要额外小心。可能其他位置也指向了同一个元素</li></ul><ul id="1d9694d5-ea46-802f-8437-ec2c3759c187" class="bulleted-list"><li style="list-style-type:disc"><strong>更新一个嵌套的state时，需要从想要更新的地方创建拷贝值，一致这样，知道顶层</strong><ul id="1d9694d5-ea46-80ad-9704-dcc25537b614" class="bulleted-list"><li style="list-style-type:circle">下例中，两个不同的艺术品清单，有相同的初始state，他们本应该会不影响，因为一次mutation，他们的state被意外的共享了，勾选一个清单的事项，会影响另一个清单<blockquote id="1d9694d5-ea46-803c-a7cf-d042e1ca5103" class="">import { useState } from &#x27;react&#x27;;<br/><br/>let nextId = 3;<br/>const initialList = [<br/>  { id: 0, title: &#x27;Big Bellies&#x27;, seen: false },<br/>  { id: 1, title: &#x27;Lunar Landscape&#x27;, seen: false },<br/>  { id: 2, title: &#x27;Terracotta Army&#x27;, seen: true },<br/>];<br/><br/>export default function BucketList() {<br/>  const [myList, setMyList] = useState(initialList);<br/>  const [yourList, setYourList] = useState(<br/>    initialList<br/>  );<br/><br/>  function handleToggleMyList(artworkId, nextSeen) {<br/>  <br/><strong>  const myNextList = [...myList];<br/>    const artwork = myNextList.find(<br/>      a =&gt; a.id === artworkId<br/>    );                                       <br/></strong><mark class="highlight-default"><strong>      </strong></mark><mark class="highlight-default"><mark class="highlight-red_background"><strong> 问题所在</strong></mark></mark><strong><br/>    artwork.seen = nextSeen;    直接修改了已有元素<br/>    setMyList(myNextList);<br/>  }<br/><br/></strong><br/>  function handleToggleYourList(artworkId, nextSeen) {<br/>    const yourNextList = [...yourList];<br/>    const artwork = yourNextList.find(<br/>      a =&gt; a.id === artworkId<br/>    );<br/>    artwork.seen = nextSeen;<br/>    setYourList(yourNextList);<br/>  }<br/><br/>  return (<br/>    &lt;&gt;<br/>      &lt;h1&gt;艺术愿望清单&lt;/h1&gt;<br/>      &lt;h2&gt;我想看的艺术清单：&lt;/h2&gt;<br/>      &lt;ItemList<br/>        artworks={myList}<br/>        onToggle={handleToggleMyList} /&gt;<br/>      &lt;h2&gt;你想看的艺术清单：&lt;/h2&gt;<br/>      &lt;ItemList<br/>        artworks={yourList}<br/>        onToggle={handleToggleYourList} /&gt;<br/>    &lt;/&gt;<br/>  );<br/>}<br/><br/>function ItemList({ artworks, onToggle }) {<br/>  return (<br/>    &lt;ul&gt;<br/>      {artworks.map(artwork =&gt; (<br/>        &lt;li key={artwork.id}&gt;<br/>          &lt;label&gt;<br/>            &lt;input<br/>              type=&quot;checkbox&quot;<br/>              checked={artwork.seen}<br/>              onChange={e =&gt; {<br/>                onToggle(<br/>                  artwork.id,<br/>                  e.target.checked<br/>                );<br/>              }}<br/>            /&gt;<br/>            {artwork.title}<br/>          &lt;/label&gt;<br/>        &lt;/li&gt;<br/>      ))}<br/>    &lt;/ul&gt;<br/>  );<br/>}<br/></blockquote><ul id="1d9694d5-ea46-8028-a02d-f9534e72a211" class="bulleted-list"><li style="list-style-type:square">虽然myNextList数组时新的，但是内部的元素本身于原数组myList是相同的。实际修改artwork.seen就是在修改原始的artwork对象。而这个对象也没yourList使用。<strong>多个数组指向了同一位置的元素变一个数组，都跟这变</strong></li></ul></li></ul><ul id="1d9694d5-ea46-8078-bb58-ff4c65e74c31" class="bulleted-list"><li style="list-style-type:circle"><strong>可以使用map在没有mutation的前提下将一个旧的元素替换成更新的版本</strong><blockquote id="1d9694d5-ea46-8033-8fce-c5eddf98a7ca" class="">setMyList(myList.map(artwork =&gt; {<br/>  if (artwork.id === artworkId) {<br/>    // 创建包含变更的*新*对象<br/>    return { ...artwork, seen: nextSeen };<br/>  } else {<br/>    // 没有变更<br/>    return artwork;<br/>  }<br/>}));<br/></blockquote><ul id="1d9694d5-ea46-8089-8e4c-e2fb62feb7c5" class="bulleted-list"><li style="list-style-type:square">此处的…对象展开语法，用于创建一个对象的拷贝，以这种方式，没有任何现有的state元素被改变<blockquote id="1d9694d5-ea46-8021-9797-e851bfab5766" class="">import { useState } from &#x27;react&#x27;;<br/><br/>let nextId = 3;<br/>const initialList = [<br/>  { id: 0, title: &#x27;Big Bellies&#x27;, seen: false },<br/>  { id: 1, title: &#x27;Lunar Landscape&#x27;, seen: false },<br/>  { id: 2, title: &#x27;Terracotta Army&#x27;, seen: true },<br/>];<br/><br/>export default function BucketList() {<br/>  const [myList, setMyList] = useState(initialList);<br/>  const [yourList, setYourList] = useState(<br/>    initialList<br/>  );<br/><br/>  function handleToggleMyList(artworkId, nextSeen) {<br/>    setMyList(myList.map(artwork =&gt; {<br/>      if (artwork.id === artworkId) {<br/>        // 创建包含变更的*新*对象<br/>        return { ...artwork, seen: nextSeen };<br/>      } else {<br/>        // 没有变更<br/>        return artwork;<br/>      }<br/>    }));<br/>  }<br/><br/>  function handleToggleYourList(artworkId, nextSeen) {<br/>    setYourList(yourList.map(artwork =&gt; {<br/>      if (artwork.id === artworkId) {<br/>        // 创建包含变更的*新*对象<br/>        return { ...artwork, seen: nextSeen };<br/>      } else {<br/>        // 没有变更<br/>        return artwork;<br/>      }<br/>    }));<br/>  }<br/><br/>  return (<br/>    &lt;&gt;<br/>      &lt;h1&gt;艺术愿望清单&lt;/h1&gt;<br/>      &lt;h2&gt;我想看的艺术清单：&lt;/h2&gt;<br/>      &lt;ItemList<br/>        artworks={myList}<br/>        onToggle={handleToggleMyList} /&gt;<br/>      &lt;h2&gt;你想看的艺术清单：&lt;/h2&gt;<br/>      &lt;ItemList<br/>        artworks={yourList}<br/>        onToggle={handleToggleYourList} /&gt;<br/>    &lt;/&gt;<br/>  );<br/>}<br/><br/>function ItemList({ artworks, onToggle }) {<br/>  return (<br/>    &lt;ul&gt;<br/>      {artworks.map(artwork =&gt; (<br/>        &lt;li key={artwork.id}&gt;<br/>          &lt;label&gt;<br/>            &lt;input<br/>              type=&quot;checkbox&quot;<br/>              checked={artwork.seen}<br/>              onChange={e =&gt; {<br/>                onToggle(<br/>                  artwork.id,<br/>                  e.target.checked<br/>                );<br/>              }}<br/>            /&gt;<br/>            {artwork.title}<br/>          &lt;/label&gt;<br/>        &lt;/li&gt;<br/>      ))}<br/>    &lt;/ul&gt;<br/>  );<br/>}<br/></blockquote></li></ul></li></ul><ul id="1d9694d5-ea46-809c-ab36-c714843257d6" class="bulleted-list"><li style="list-style-type:circle">通常来讲，应该只修改刚刚创建的对象，如果你正在插入一个新的artwork，你可以修改他，但是如果想改变state中已经存在的东西，就需要先拷贝一份</li></ul></li></ul></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
