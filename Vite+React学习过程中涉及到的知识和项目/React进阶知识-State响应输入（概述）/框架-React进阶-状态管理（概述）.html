@@ -1,0 +1,684 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>框架-React进阶-状态管理（概述）</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-default_background {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.highlight-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.block-color-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: undefined; }
+.select-value-color-pink { background-color: rgba(225, 136, 179, 0.27); }
+.select-value-color-purple { background-color: rgba(168, 129, 197, 0.27); }
+.select-value-color-green { background-color: rgba(123, 183, 129, 0.27); }
+.select-value-color-gray { background-color: rgba(84, 72, 49, 0.15); }
+.select-value-color-transparentGray { background-color: undefined; }
+.select-value-color-translucentGray { background-color: undefined; }
+.select-value-color-orange { background-color: rgba(224, 124, 57, 0.27); }
+.select-value-color-brown { background-color: rgba(210, 162, 141, 0.35); }
+.select-value-color-red { background-color: rgba(244, 171, 159, 0.4); }
+.select-value-color-yellow { background-color: rgba(236, 191, 66, 0.39); }
+.select-value-color-blue { background-color: rgba(93, 165, 206, 0.27); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="1da694d5-ea46-8009-99a5-f848df47147c" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">🤔</span></div><h1 class="page-title">框架-React进阶-状态管理（概述）</h1><p class="page-description"></p></header><div class="page-body"><p id="1da694d5-ea46-803c-904c-ead2fd0d9419" class=""><mark class="highlight-red"><strong><span style="border-bottom:0.05em solid">状态管理：</span></strong></mark></p><p id="1da694d5-ea46-80c5-926b-d68f638976e3" class="">随着应用规模不断变大，要有意识的去关注应用状态如何组织，以及数据之间如何在组件之间流动。<strong>冗余和重复的状态是缺陷的根源</strong></p><p id="1da694d5-ea46-809a-8f21-c721ed26ab6c" class=""><strong>组织好状态、保持状态更新逻辑的可维护性，以及跨组件共享状态。</strong></p><p id="1da694d5-ea46-801f-978c-d8fb1402ba3c" class=""><strong><span style="border-bottom:0.05em solid">用React响应输入：</span></strong></p><ul id="1da694d5-ea46-80ac-a9b8-c54f822060e4" class="bulleted-list"><li style="list-style-type:disc">通过使用React，可以不从代码层面来修改UI，例如不用编写禁用按钮、启动按钮、显示成功消息等命令。相反只需要描述组件在不同状态下希望展示的UI，例如初始状态、输入状态、成功状态等。根据不同的用户输入，触发不同的状态更改。<ul id="1da694d5-ea46-8084-b1b3-e5d9b7dea246" class="bulleted-list"><li style="list-style-type:circle">下例是一个React编写的反馈表单，理解如何使用status这个状态变量，来决定启动或禁用提交按钮，以及是否显示成功消息<blockquote id="1da694d5-ea46-8061-a4cc-dd294e654585" class="">import { useState } from &#x27;react&#x27;;<br/><br/>export default function Form() {<br/>  const [answer, setAnswer] = useState(&#x27;&#x27;);<br/>  const [error, setError] = useState(null);<br/>  const [status, setStatus] = useState(&#x27;typing&#x27;);<br/><br/>  if (status === &#x27;success&#x27;) {<br/>    return &lt;h1&gt;答对了！&lt;/h1&gt;<br/>  }<br/><br/>  async function handleSubmit(e) {<br/>    e.preventDefault();<br/>    setStatus(&#x27;submitting&#x27;);<br/>    try {<br/>      await submitForm(answer);<br/>      setStatus(&#x27;success&#x27;);<br/>    } catch (err) {<br/>      setStatus(&#x27;typing&#x27;);<br/>      setError(err);<br/>    }<br/>  }<br/><br/>  function handleTextareaChange(e) {<br/>    setAnswer(e.target.value);<br/>  }<br/><br/>  return (<br/>    &lt;&gt;<br/>      &lt;h2&gt;城市测验&lt;/h2&gt;<br/>      &lt;p&gt;<br/>        哪个城市有把空气变成饮用水的广告牌？<br/>      &lt;/p&gt;<br/>      &lt;form onSubmit={handleSubmit}&gt;<br/>        &lt;textarea<br/>          value={answer}<br/>          onChange={handleTextareaChange}<br/>          disabled={status === &#x27;submitting&#x27;}<br/>        /&gt;<br/>        &lt;br /&gt;<br/>        &lt;button disabled={<br/>          answer.length === 0 ||<br/>          status === &#x27;submitting&#x27;<br/>        }&gt;<br/>          提交<br/>        &lt;/button&gt;<br/>        {error !== null &amp;&amp;<br/>          &lt;p className=&quot;Error&quot;&gt;<br/>            {error.message}<br/>          &lt;/p&gt;<br/>        }<br/>      &lt;/form&gt;<br/>    &lt;/&gt;<br/>  );<br/>}<br/><br/>function submitForm(answer) {<br/>  // 模拟接口请求<br/>  return new Promise((resolve, reject) =&gt; {<br/>    setTimeout(() =&gt; {<br/>      let shouldError = answer.toLowerCase() !== &#x27;lima&#x27;<br/>      if (shouldError) {<br/>        reject(new Error(&#x27;猜的不错，但答案不对。再试试看吧！&#x27;));<br/>      } else {<br/>        resolve();<br/>      }<br/>    }, 1500);<br/>  });<br/>}<br/></blockquote></li></ul></li></ul><figure id="1da694d5-ea46-80bc-af10-ec14a1e6628b" class="image"><a href="image.png"><img style="width:561.1749877929688px" src="image.png"/></a></figure><p id="1da694d5-ea46-8050-a3ee-e758e2f33ff2" class=""><strong><span style="border-bottom:0.05em solid">选择state结构：</span></strong></p><ul id="1da694d5-ea46-80a7-b775-e7fa1edb56da" class="bulleted-list"><li style="list-style-type:disc">良好的状态组织，可以区分开易于修改和调试的组件，频繁出问题的组件。</li></ul><ul id="1da694d5-ea46-805d-a287-cba9af29d877" class="bulleted-list"><li style="list-style-type:disc">谨记：状态不应该包含冗余或重复的信息，因为多于状态会影响更新，进而导致bug<ul id="1da694d5-ea46-80b9-9f4b-fc35cb001478" class="bulleted-list"><li style="list-style-type:circle">示例，这个表单中有一个多余的fullName状态变量。<blockquote id="1da694d5-ea46-802c-b344-e0990e53a096" class="">import { useState } from &#x27;react&#x27;;<br/><br/>export default function Form() {<br/>  const [firstName, setFirstName] = useState(&#x27;&#x27;);<br/>  const [lastName, setLastName] = useState(&#x27;&#x27;);<br/>  const [fullName, setFullName] = useState(&#x27;&#x27;);<br/><br/>  function handleFirstNameChange(e) {<br/>    setFirstName(e.target.value);<br/>    setFullName(e.target.value + &#x27; &#x27; + lastName);<br/>  }<br/><br/>  function handleLastNameChange(e) {<br/>    setLastName(e.target.value);<br/>    setFullName(firstName + &#x27; &#x27; + e.target.value);<br/>  }<br/><br/>  return (<br/>    &lt;&gt;<br/>      &lt;h2&gt;让我们帮你登记&lt;/h2&gt;<br/>      &lt;label&gt;<br/>        名：{&#x27; &#x27;}<br/>        &lt;input<br/>          value={firstName}<br/>          onChange={handleFirstNameChange}<br/>        /&gt;<br/>      &lt;/label&gt;<br/>      &lt;label&gt;<br/>        姓：{&#x27; &#x27;}<br/>        &lt;input<br/>          value={lastName}<br/>          onChange={handleLastNameChange}<br/>        /&gt;<br/>      &lt;/label&gt;<br/>      &lt;p&gt;<br/>        你的票据将签发给：&lt;b&gt;{fullName}&lt;/b&gt;<br/>      &lt;/p&gt;<br/>    &lt;/&gt;<br/>  );<br/>}<br/></blockquote></li></ul><ul id="1da694d5-ea46-8071-ae2d-e14bd0e81f5d" class="bulleted-list"><li style="list-style-type:circle">就运行而言，这个fullName是可以省略，由firstNane+lastName组合，进而减少潜在的麻烦</li></ul></li></ul><p id="1da694d5-ea46-8066-902a-f17c2620b10d" class=""><strong><span style="border-bottom:0.05em solid">在组件之间共享状态：</span></strong></p><ul id="1da694d5-ea46-8027-9a03-c67dabce6e24" class="bulleted-list"><li style="list-style-type:disc">有时会多个组件的状态同步更改，实现如此，可以将相关状态从这两个组件上移除，并添加到最近的父级组件，然后通过props将状态传递给这两个组件。<strong>这被称为状态提升。</strong><ul id="1da694d5-ea46-800e-b066-ea0630173631" class="bulleted-list"><li style="list-style-type:circle">示例：要求每次只能激活一个面板，使用“父组件将管理激活状态并为子组件指定prop，而不是将激活状态保留在各自的子组件中”来实现要求。<blockquote id="1da694d5-ea46-803e-9689-cbabc2e992e7" class="">import { useState } from &#x27;react&#x27;;<br/><br/>export default function Accordion() {<br/>  const [activeIndex, setActiveIndex] = useState(0);<br/>  return (<br/>    &lt;&gt;<br/>      &lt;h2&gt;Almaty, Kazakhstan&lt;/h2&gt;<br/>      &lt;Panel<br/>        title=&quot;关于&quot;<br/>        isActive={activeIndex === 0}<br/>        onShow={() =&gt; setActiveIndex(0)}<br/>      &gt;<br/>        阿拉木图人口约200万，是哈萨克斯坦最大的城市。在1929年至1997年之间，它是该国首都。<br/>      &lt;/Panel&gt;<br/>      &lt;Panel<br/>        title=&quot;词源&quot;<br/>        isActive={activeIndex === 1}<br/>        onShow={() =&gt; setActiveIndex(1)}<br/>      &gt;<br/>        这个名字源于哈萨克语 &lt;span lang=&quot;kk-KZ&quot;&gt;алма&lt;/span&gt;，是“苹果”的意思，通常被翻译成“满是苹果”。事实上，阿拉木图周围的地区被认为是苹果的祖籍，&lt;i lang=&quot;la&quot;&gt;Malus sieversii&lt;/i&gt; 被认为是目前本土苹果的祖先。<br/>      &lt;/Panel&gt;<br/>    &lt;/&gt;<br/>  );<br/>}<br/><br/>function Panel({<br/>  title,<br/>  children,<br/>  isActive,<br/>  onShow<br/>}) {<br/>  return (<br/>    &lt;section className=&quot;panel&quot;&gt;<br/>      &lt;h3&gt;{title}&lt;/h3&gt;<br/>      {isActive ? (<br/>        &lt;p&gt;{children}&lt;/p&gt;<br/>      ) : (<br/>        &lt;button onClick={onShow}&gt;<br/>          显示<br/>        &lt;/button&gt;<br/>      )}<br/>    &lt;/section&gt;<br/>  );<br/>}<br/></blockquote></li></ul></li></ul><p id="1da694d5-ea46-8070-b392-c6c5de644616" class=""><strong><span style="border-bottom:0.05em solid">对State进行保留和重置：</span></strong></p><ul id="1da694d5-ea46-80df-a67d-f4f51c670ab9" class="bulleted-list"><li style="list-style-type:disc">当重新渲染一个组件时，React会自己决定组件树中，哪些部分要保留更新、丢弃重建。</li></ul><ul id="1da694d5-ea46-8017-b86b-ee3c11d83305" class="bulleted-list"><li style="list-style-type:disc">React的自动处理机制较为完善，默认情况下React会保留书中与先前渲染的组件树匹配的部分。<ul id="1da694d5-ea46-804e-951b-c215ce4e50e8" class="bulleted-list"><li style="list-style-type:circle">示例，有时自动处理机制会错误处理，下面程序，输入内容后在切换收件人，并不会情况输入框，这可能导致用户不小心发错消息。<ul id="1da694d5-ea46-8018-bd50-d9dd9c4a7b38" class="bulleted-list"><li style="list-style-type:square">chat.js用于导出Chat组件，返回一个输入textarea和提交button<blockquote id="1da694d5-ea46-80d2-8a3c-e5b340996c07" class="">import { useState } from &#x27;react&#x27;;<br/><br/>export default function Chat({ contact }) {<br/>  const [text, setText] = useState(&#x27;&#x27;);<br/>  return (<br/>    &lt;section className=&quot;chat&quot;&gt;<br/>      &lt;textarea<br/>        value={text}<br/>        placeholder={&#x27;Chat to &#x27; + contact.name}<br/>        onChange={e =&gt; setText(e.target.value)}<br/>      /&gt;<br/>      &lt;br /&gt;<br/>      &lt;button&gt;发送给 {contact.email}&lt;/button&gt;<br/>    &lt;/section&gt;<br/>  );<br/>}<br/></blockquote></li></ul><ul id="1da694d5-ea46-80ad-9e52-e9d6c409af8a" class="bulleted-list"><li style="list-style-type:square">ContactList.js用于导出ContactList组件，接收selectedContact、contacts、onSelect三个参数，返回一个一个ul列表，三个li标签的button。<blockquote id="1da694d5-ea46-8010-899b-e27b160820c8" class="">export default function ContactList({<br/>  selectedContact,<br/>  contacts,<br/>  onSelect<br/>}) {<br/>  return (<br/>    &lt;section className=&quot;contact-list&quot;&gt;<br/>      &lt;ul&gt;<br/>        {contacts.map(contact =&gt;<br/>          &lt;li key={contact.email}&gt;<br/>            &lt;button onClick={() =&gt; {<br/>              onSelect(contact);<br/>            }}&gt;<br/>              {contact.name}<br/>            &lt;/button&gt;<br/>          &lt;/li&gt;<br/>        )}<br/>      &lt;/ul&gt;<br/>    &lt;/section&gt;<br/>  );<br/>}<br/></blockquote></li></ul><ul id="1da694d5-ea46-80e1-9460-d58fce8d980d" class="bulleted-list"><li style="list-style-type:square">App.js展示Messenger组件，聚合之前的组件<blockquote id="1da694d5-ea46-808c-99cb-c96c6748fa13" class="">import { useState } from &#x27;react&#x27;;<br/>import Chat from &#x27;./Chat.js&#x27;;<br/>import ContactList from &#x27;./ContactList.js&#x27;;<br/><br/>export default function Messenger() {<br/>  const [to, setTo] = useState(contacts[0]);<br/>  return (<br/>    &lt;div&gt;<br/>      &lt;ContactList<br/>        contacts={contacts}<br/>        selectedContact={to}<br/>        onSelect={contact =&gt; setTo(contact)}<br/>      /&gt;<br/>      &lt;Chat contact={to} /&gt;<br/>    &lt;/div&gt;<br/>  )<br/>}<br/><br/>const contacts = [<br/>  { name: &#x27;Taylor&#x27;, email: &#x27;taylor@mail.com&#x27; },<br/>  { name: &#x27;Alice&#x27;, email: &#x27;alice@mail.com&#x27; },<br/>  { name: &#x27;Bob&#x27;, email: &#x27;bob@mail.com&#x27; }<br/>];<br/></blockquote></li></ul></li></ul><ul id="1da694d5-ea46-8058-bed6-f3d776d7a1fe" class="bulleted-list"><li style="list-style-type:circle">React允许覆盖默认行为，可以向组件传递一个唯一的key，如&lt;chat key={email} /&gt;来强制重置状态，这会告诉React，如果收件人不同，应将其作为一个不同的Chat组件，需要使用新数据和UI，比如输入框，来重新创建该组件，现在接收者之间切换，就会重置输入框，即使渲染的是同一个组件<ul id="1da694d5-ea46-8017-a12b-c5a7daac11d1" class="bulleted-list"><li style="list-style-type:square">App.js中为Chat组件添加特有的key，用于重新渲染chat组件<blockquote id="1da694d5-ea46-805b-95fa-c6e6f23fc426" class="">import { useState } from &#x27;react&#x27;;<br/>import Chat from &#x27;./Chat.js&#x27;;<br/>import ContactList from &#x27;./ContactList.js&#x27;;<br/><br/>export default function Messenger() {<br/>  const [to, setTo] = useState(contacts[0]);<br/>  return (<br/>    &lt;div&gt;<br/>      &lt;ContactList<br/>        contacts={contacts}<br/>        selectedContact={to}<br/>        onSelect={contact =&gt; setTo(contact)}<br/>      /&gt;<br/>      &lt;Chat key={to.email} contact={to} /&gt;<br/>    &lt;/div&gt;<br/>  )<br/>}<br/><br/>const contacts = [<br/>  { name: &#x27;Taylor&#x27;, email: &#x27;taylor@mail.com&#x27; },<br/>  { name: &#x27;Alice&#x27;, email: &#x27;alice@mail.com&#x27; },<br/>  { name: &#x27;Bob&#x27;, email: &#x27;bob@mail.com&#x27; }<br/>];<br/></blockquote></li></ul></li></ul></li></ul><p id="1da694d5-ea46-802c-a543-cb226100165f" class=""><strong><span style="border-bottom:0.05em solid">迁移状态逻辑到Reducer中：</span></strong></p><ul id="1da694d5-ea46-80b4-bacf-f899f293da91" class="bulleted-list"><li style="list-style-type:disc">对于那些需要更新多个状态的组件而言，分散的事件处理程序会难以处理。</li></ul><ul id="1da694d5-ea46-8069-a723-da4627ca5432" class="bulleted-list"><li style="list-style-type:disc">需要在组件外部将所有状态更新逻辑合并到一个称为reducer的函数中，这样事件处理程序就会变得简介，</li></ul><ul id="1da694d5-ea46-80e0-b313-c3b5a9e1a6a1" class="bulleted-list"><li style="list-style-type:disc">只需要指定用户的actions。在文件的底部，reducer函数指定状态应该如何更新响应每个action<ul id="1da694d5-ea46-8049-ae08-ff598c7a9a4f" class="bulleted-list"><li style="list-style-type:circle">理解示例App.js<blockquote id="1da694d5-ea46-80cd-9806-f3b002acefe4" class="">import { useReducer } from &#x27;react&#x27;;<br/>import AddTask from &#x27;./AddTask.js&#x27;;<br/>import TaskList from &#x27;./TaskList.js&#x27;;<br/><br/>export default function TaskApp() {<br/>  const [tasks, dispatch] = useReducer(<br/>    tasksReducer,<br/>    initialTasks<br/>  );<br/><br/>  function handleAddTask(text) {<br/>    dispatch({<br/>      type: &#x27;added&#x27;,<br/>      id: nextId++,<br/>      text: text,<br/>    });<br/>  }<br/><br/>  function handleChangeTask(task) {<br/>    dispatch({<br/>      type: &#x27;changed&#x27;,<br/>      task: task<br/>    });<br/>  }<br/><br/>  function handleDeleteTask(taskId) {<br/>    dispatch({<br/>      type: &#x27;deleted&#x27;,<br/>      id: taskId<br/>    });<br/>  }<br/><br/>  return (<br/>    &lt;&gt;<br/>      &lt;h1&gt;布拉格行程&lt;/h1&gt;<br/>      &lt;AddTask<br/>        onAddTask={handleAddTask}<br/>      /&gt;<br/>      &lt;TaskList<br/>        tasks={tasks}<br/>        onChangeTask={handleChangeTask}<br/>        onDeleteTask={handleDeleteTask}<br/>      /&gt;<br/>    &lt;/&gt;<br/>  );<br/>}<br/><br/>function tasksReducer(tasks, action) {<br/>  switch (action.type) {<br/>    case &#x27;added&#x27;: {<br/>      return [...tasks, {<br/>        id: action.id,<br/>        text: action.text,<br/>        done: false<br/>      }];<br/>    }<br/>    case &#x27;changed&#x27;: {<br/>      return tasks.map(t =&gt; {<br/>        if (t.id === action.task.id) {<br/>          return action.task;<br/>        } else {<br/>          return t;<br/>        }<br/>      });<br/>    }<br/>    case &#x27;deleted&#x27;: {<br/>      return tasks.filter(t =&gt; t.id !== action.id);<br/>    }<br/>    default: {<br/>      throw Error(&#x27;未知操作：&#x27; + action.type);<br/>    }<br/>  }<br/>}<br/><br/>let nextId = 3;<br/>const initialTasks = [<br/>  { id: 0, text: &#x27;参观卡夫卡博物馆&#x27;, done: true },<br/>  { id: 1, text: &#x27;看木偶戏&#x27;, done: false },<br/>  { id: 2, text: &#x27;列侬墙图片&#x27;, done: false }<br/>];<br/></blockquote></li></ul></li></ul><p id="1da694d5-ea46-8092-8a29-f7a3f331a0c6" class=""><strong><span style="border-bottom:0.05em solid">使用Context深层传递参数：</span></strong></p><ul id="1da694d5-ea46-80b8-b9b0-f8b34925c40b" class="bulleted-list"><li style="list-style-type:disc">通常使用props将信息从父组件传递给子组件，但是如果要在组件树中深入传递一些prop，或者树里的许多组件都需要相同的prop，那么传递prop会变得很麻烦</li></ul><ul id="1da694d5-ea46-80ad-9ef8-e4b3cf6e9f04" class="bulleted-list"><li style="list-style-type:disc">Context允许父组件将一些信息，提供给下层的任何组件，不管组件多深层也无需通过props逐层透传。<ul id="1da694d5-ea46-80bc-8d23-c1c471505bd5" class="bulleted-list"><li style="list-style-type:circle">示例，Heading组件通过访问最近的sSection组件来确定其标题级别，每个Section的级别是通过给父组件Section添加的级别确定。每个Section都向它下层的所有组件提供信息，不需要逐层传递props，而是通过Context来实现。<ul id="1da694d5-ea46-8047-af7b-cb4d5f21b261" class="bulleted-list"><li style="list-style-type:square">LecelContext.js文件，默认导出LevelContext=createContext（0）<blockquote id="1da694d5-ea46-8075-a62b-d72efcb57a8c" class="">import { createContext } from &#x27;react&#x27;;<br/><br/>export const LevelContext = createContext(0);<br/></blockquote></li></ul><ul id="1da694d5-ea46-8020-b261-fd7ddb639a6f" class="bulleted-list"><li style="list-style-type:square">Heading.js文件，导出Heading组件，返回switch筛选标题等级<blockquote id="1da694d5-ea46-80bc-a55b-ccf92843e7ca" class="">import { useContext } from &#x27;react&#x27;;<br/>import { LevelContext } from &#x27;./LevelContext.js&#x27;;<br/><br/>export default function Heading({ children }) {<br/>  const level = useContext(LevelContext);<br/>  switch (level) {<br/>    case 0:<br/>      throw Error(&#x27;标题必须在 Section 内！&#x27;);<br/>    case 1:<br/>      return &lt;h1&gt;{children}&lt;/h1&gt;;<br/>    case 2:<br/>      return &lt;h2&gt;{children}&lt;/h2&gt;;<br/>    case 3:<br/>      return &lt;h3&gt;{children}&lt;/h3&gt;;<br/>    case 4:<br/>      return &lt;h4&gt;{children}&lt;/h4&gt;;<br/>    case 5:<br/>      return &lt;h5&gt;{children}&lt;/h5&gt;;<br/>    case 6:<br/>      return &lt;h6&gt;{children}&lt;/h6&gt;;<br/>    default:<br/>      throw Error(&#x27;未知级别：&#x27; + level);<br/>  }<br/>}<br/></blockquote></li></ul><ul id="1da694d5-ea46-8056-ba37-ca04a8ad0bf3" class="bulleted-list"><li style="list-style-type:square">Section.js文件，导出Section组件，返回一个section用于整理同一个级别LevelContext的内容<blockquote id="1da694d5-ea46-8074-88b3-f8610eca4321" class="">import { useContext } from &#x27;react&#x27;;<br/>import { LevelContext } from &#x27;./LevelContext.js&#x27;;<br/><br/>export default function Section({ children }) {<br/>  const level = useContext(LevelContext);<br/>  return (<br/>    &lt;section className=&quot;section&quot;&gt;<br/>      &lt;LevelContext.Provider value={level + 1}&gt;<br/>        {children}<br/>      &lt;/LevelContext.Provider&gt;<br/>    &lt;/section&gt;<br/>  );<br/>}<br/></blockquote></li></ul><ul id="1da694d5-ea46-80ae-a0dd-f6fe0c21b4b5" class="bulleted-list"><li style="list-style-type:square">App.js文件，最终到处展示Page组件页面。<blockquote id="1da694d5-ea46-806f-a64b-cea6f780cc61" class="">import Heading from &#x27;./Heading.js&#x27;;<br/>import Section from &#x27;./Section.js&#x27;;<br/><br/>export default function Page() {<br/>  return (<br/>    &lt;Section&gt;<br/>      &lt;Heading&gt;大标题&lt;/Heading&gt;<br/>      &lt;Section&gt;<br/>        &lt;Heading&gt;一级标题&lt;/Heading&gt;<br/>        &lt;Heading&gt;一级标题&lt;/Heading&gt;<br/>        &lt;Heading&gt;一级标题&lt;/Heading&gt;<br/>        &lt;Section&gt;<br/>          &lt;Heading&gt;二级标题&lt;/Heading&gt;<br/>          &lt;Heading&gt;二级标题&lt;/Heading&gt;<br/>          &lt;Heading&gt;二级标题&lt;/Heading&gt;<br/>          &lt;Section&gt;<br/>            &lt;Heading&gt;三级标题&lt;/Heading&gt;<br/>            &lt;Heading&gt;三级标题&lt;/Heading&gt;<br/>            &lt;Heading&gt;三级标题&lt;/Heading&gt;<br/>          &lt;/Section&gt;<br/>        &lt;/Section&gt;<br/>      &lt;/Section&gt;<br/>    &lt;/Section&gt;<br/>  );<br/>}<br/></blockquote></li></ul></li></ul></li></ul><p id="1da694d5-ea46-8084-a4e6-f83e832cb4db" class=""><strong><span style="border-bottom:0.05em solid">使用Reducer和Context拓展应用：</span></strong></p><ul id="1da694d5-ea46-809f-aad9-d72e967fedb2" class="bulleted-list"><li style="list-style-type:disc">Reducer帮助合并组件的状态更新逻辑，Context帮助将信息深入传递给其他组件，而这可以合并使用，管理复杂应用的状态。<ul id="1da694d5-ea46-809d-a727-d5060338f654" class="bulleted-list"><li style="list-style-type:circle">使用reducer来管理一个有复杂状态的父组件，组件树中任何深度的其他组件都可以通过context来读取状态，还可以dispatch一些action来更新状态。<ul id="1da694d5-ea46-80a6-b928-eafc5f8796bd" class="bulleted-list"><li style="list-style-type:square">TasksContext.js文件，导出TaskProvider组件、useTasks函数等等<blockquote id="1da694d5-ea46-80d8-a830-fca69093ba0e" class="">import { createContext, useContext, useReducer } from &#x27;react&#x27;;<br/><br/>const TasksContext = createContext(null);<br/>const TasksDispatchContext = createContext(null);<br/><br/>export function TasksProvider({ children }) {<br/>  const [tasks, dispatch] = useReducer(<br/>    tasksReducer,<br/>    initialTasks<br/>  );<br/><br/>  return (<br/>    &lt;TasksContext.Provider value={tasks}&gt;<br/>      &lt;TasksDispatchContext.Provider<br/>        value={dispatch}<br/>      &gt;<br/>        {children}<br/>      &lt;/TasksDispatchContext.Provider&gt;<br/>    &lt;/TasksContext.Provider&gt;<br/>  );<br/>}<br/><br/>export function useTasks() {<br/>  return useContext(TasksContext);<br/>}<br/><br/>export function useTasksDispatch() {<br/>  return useContext(TasksDispatchContext);<br/>}<br/><br/>function tasksReducer(tasks, action) {<br/>  switch (action.type) {<br/>    case &#x27;added&#x27;: {<br/>      return [...tasks, {<br/>        id: action.id,<br/>        text: action.text,<br/>        done: false<br/>      }];<br/>    }<br/>    case &#x27;changed&#x27;: {<br/>      return tasks.map(t =&gt; {<br/>        if (t.id === action.task.id) {<br/>          return action.task;<br/>        } else {<br/>          return t;<br/>        }<br/>      });<br/>    }<br/>    case &#x27;deleted&#x27;: {<br/>      return tasks.filter(t =&gt; t.id !== action.id);<br/>    }<br/>    default: {<br/>      throw Error(&#x27;未知操作：&#x27; + action.type);<br/>    }<br/>  }<br/>}<br/><br/>const initialTasks = [<br/>  { id: 0, text: &#x27;哲学家之路&#x27;, done: true },<br/>  { id: 1, text: &#x27;参观寺庙&#x27;, done: false },<br/>  { id: 2, text: &#x27;喝抹茶&#x27;, done: false }<br/>];<br/></blockquote></li></ul><ul id="1da694d5-ea46-8012-8bbe-ceb5e962f978" class="bulleted-list"><li style="list-style-type:square">AddTask.js文件，导出AddTask组件，返回一个input+button<blockquote id="1da694d5-ea46-8097-9fb6-c426083e79ee" class="">import { useState, useContext } from &#x27;react&#x27;;<br/>import { useTasksDispatch } from &#x27;./TasksContext.js&#x27;;<br/><br/>export default function AddTask({ onAddTask }) {<br/>  const [text, setText] = useState(&#x27;&#x27;);<br/>  const dispatch = useTasksDispatch();<br/>  return (<br/>    &lt;&gt;<br/>      &lt;input<br/>        placeholder=&quot;添加任务&quot;<br/>        value={text}<br/>        onChange={e =&gt; setText(e.target.value)}<br/>      /&gt;<br/>      &lt;button onClick={() =&gt; {<br/>        setText(&#x27;&#x27;);<br/>        dispatch({<br/>          type: &#x27;added&#x27;,<br/>          id: nextId++,<br/>          text: text,<br/>        });<br/>      }}&gt;添加&lt;/button&gt;<br/>    &lt;/&gt;<br/>  );<br/>}<br/><br/>let nextId = 3;<br/></blockquote></li></ul><ul id="1da694d5-ea46-8041-9bb6-fffc91d61d66" class="bulleted-list"><li style="list-style-type:square">TaskList.js文件导出TaskList组件，返回一个列表ul<blockquote id="1da694d5-ea46-80c9-b6a1-cecb0998f702" class="">import { useState, useContext } from &#x27;react&#x27;;<br/>import { useTasks, useTasksDispatch } from &#x27;./TasksContext.js&#x27;;<br/><br/>export default function TaskList() {<br/>  const tasks = useTasks();<br/>  return (<br/>    &lt;ul&gt;<br/>      {tasks.map(task =&gt; (<br/>        &lt;li key={task.id}&gt;<br/>          &lt;Task task={task} /&gt;<br/>        &lt;/li&gt;<br/>      ))}<br/>    &lt;/ul&gt;<br/>  );<br/>}<br/><br/>function Task({ task }) {<br/>  const [isEditing, setIsEditing] = useState(false);<br/>  const dispatch = useTasksDispatch();<br/>  let taskContent;<br/>  if (isEditing) {<br/>    taskContent = (<br/>      &lt;&gt;<br/>        &lt;input<br/>          value={task.text}<br/>          onChange={e =&gt; {<br/>            dispatch({<br/>              type: &#x27;changed&#x27;,<br/>              task: {<br/>                ...task,<br/>                text: e.target.value<br/>              }<br/>            });<br/>          }} /&gt;<br/>        &lt;button onClick={() =&gt; setIsEditing(false)}&gt;<br/>          保存<br/>        &lt;/button&gt;<br/>      &lt;/&gt;<br/>    );<br/>  } else {<br/>    taskContent = (<br/>      &lt;&gt;<br/>        {task.text}<br/>        &lt;button onClick={() =&gt; setIsEditing(true)}&gt;<br/>          编辑<br/>        &lt;/button&gt;<br/>      &lt;/&gt;<br/>    );<br/>  }<br/>  return (<br/>    &lt;label&gt;<br/>      &lt;input<br/>        type=&quot;checkbox&quot;<br/>        checked={task.done}<br/>        onChange={e =&gt; {<br/>          dispatch({<br/>            type: &#x27;changed&#x27;,<br/>            task: {<br/>              ...task,<br/>              done: e.target.checked<br/>            }<br/>          });<br/>        }}<br/>      /&gt;<br/>      {taskContent}<br/>      &lt;button onClick={() =&gt; {<br/>        dispatch({<br/>          type: &#x27;deleted&#x27;,<br/>          id: task.id<br/>        });<br/>      }}&gt;<br/>        删除<br/>      &lt;/button&gt;<br/>    &lt;/label&gt;<br/>  );<br/>}<br/></blockquote></li></ul><ul id="1da694d5-ea46-80ed-839d-c5445b5563e6" class="bulleted-list"><li style="list-style-type:square">App.js文件，展示标题，整体构建<blockquote id="1da694d5-ea46-802c-8698-ebc1c6e1b9e4" class="">import AddTask from &#x27;./AddTask.js&#x27;;<br/>import TaskList from &#x27;./TaskList.js&#x27;;<br/>import { TasksProvider } from &#x27;./TasksContext.js&#x27;;<br/><br/>export default function TaskApp() {<br/>  return (<br/>    &lt;TasksProvider&gt;<br/>      &lt;h1&gt;在京都休息一天&lt;/h1&gt;<br/>      &lt;AddTask /&gt;<br/>      &lt;TaskList /&gt;<br/>    &lt;/TasksProvider&gt;<br/>  );<br/>}<br/></blockquote></li></ul></li></ul></li></ul></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
