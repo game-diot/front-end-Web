@@ -1,0 +1,684 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>框架-React进阶-脱围机制（概述）</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-default_background {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.highlight-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.block-color-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: undefined; }
+.select-value-color-pink { background-color: rgba(225, 136, 179, 0.27); }
+.select-value-color-purple { background-color: rgba(168, 129, 197, 0.27); }
+.select-value-color-green { background-color: rgba(123, 183, 129, 0.27); }
+.select-value-color-gray { background-color: rgba(84, 72, 49, 0.15); }
+.select-value-color-transparentGray { background-color: undefined; }
+.select-value-color-translucentGray { background-color: undefined; }
+.select-value-color-orange { background-color: rgba(224, 124, 57, 0.27); }
+.select-value-color-brown { background-color: rgba(210, 162, 141, 0.35); }
+.select-value-color-red { background-color: rgba(244, 171, 159, 0.4); }
+.select-value-color-yellow { background-color: rgba(236, 191, 66, 0.39); }
+.select-value-color-blue { background-color: rgba(93, 165, 206, 0.27); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="1de694d5-ea46-808a-9acd-c0ffab3243ca" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">🤔</span></div><h1 class="page-title">框架-React进阶-脱围机制（概述）</h1><p class="page-description"></p></header><div class="page-body"><p id="1de694d5-ea46-80f4-979d-e4ac73a9f2b5" class="">有些组件需要控制和同步React之外的系统，例如使用浏览器API聚焦输入框，或者在没有React的情况下实现视频播放器，或者链接并监听远程服务器的消息。</p><p id="1de694d5-ea46-808e-a778-f1bf237bd807" class="">脱围机制可以走出React并连接到外部系统，大多数应用逻辑和数据流不该依赖这些功能。</p><p id="1de694d5-ea46-8043-b3c0-cde863bc1460" class=""><strong><span style="border-bottom:0.05em solid">使用ref引用值：</span></strong></p><ul id="1de694d5-ea46-8044-8ab7-eff0e06600c1" class="bulleted-list"><li style="list-style-type:disc">希望组件记住某些信息，但是又不想让这些信息触发新的渲染，可以使用ref<ul id="1de694d5-ea46-8011-9bba-ff29bfb42d66" class="bulleted-list"><li style="list-style-type:circle">const ref = useRef（0）；</li></ul></li></ul><ul id="1de694d5-ea46-80f4-a384-cf916d2b4525" class="bulleted-list"><li style="list-style-type:disc">与state一样，ref再重新渲染之间由React保留，但是设置state会重新渲染组件，但是更改ref就不会重新渲染，可以通过ref.current属性来访问该ref的当前值。<ul id="1de694d5-ea46-80d2-bb9a-e62934d55b83" class="bulleted-list"><li style="list-style-type:circle">App.js<blockquote id="1de694d5-ea46-80df-828a-d2f0f157f1e6" class=""><strong>import { useRef } from &#x27;react&#x27;;</strong><br/><br/>export default function Counter() {<br/>  <br/><strong>let ref = useRef(0);</strong><br/><br/>  function handleClick() {<br/>   <br/><strong> ref.current = ref.current + 1;<br/>    alert(&#x27;你点击了 &#x27; + ref.current + &#x27; 次!&#x27;);<br/></strong><br/>  }<br/><br/>  return (<br/>    &lt;button onClick={handleClick}&gt;<br/>      点我！<br/>    &lt;/button&gt;<br/>  );<br/>}<br/></blockquote></li></ul></li></ul><ul id="1de694d5-ea46-8039-aae6-d38b40704bf3" class="bulleted-list"><li style="list-style-type:disc"><strong>ref是一个不会被React追踪的隐藏空间，可以使用ref来存储timeout、ID、DOM元素和其他不影响组件渲染输出的对象</strong></li></ul><p id="1de694d5-ea46-8098-a0ae-da19ea9b0024" class=""><strong><span style="border-bottom:0.05em solid">使用ref操作DOM：</span></strong></p><ul id="1de694d5-ea46-803b-944d-cfd0e3028712" class="bulleted-list"><li style="list-style-type:disc">由于React会自动更新DOM以匹配渲染输出，因此组件通常不需要操作DOM，但是有事需要访问由React管理的DOM元素，例如聚焦节点、滚动到此节点、测量它的尺寸和位置等。</li></ul><ul id="1de694d5-ea46-8091-b0ab-f0068ca852e6" class="bulleted-list"><li style="list-style-type:disc">React没有内置的方法来执行此类操作，所以需要指向DOM节点的ref来实现。<ul id="1de694d5-ea46-8047-8e4b-ef8f344593a9" class="bulleted-list"><li style="list-style-type:circle">实例：点击按钮将使用ref聚焦输入框<blockquote id="1de694d5-ea46-8052-9cbc-df78d0437c39" class=""><strong>import { useRef } from &#x27;react&#x27;;</strong><br/><br/>export default function Form() {<br/><br/><strong>  const inputRef = useRef(null);</strong><br/><br/>  function handleClick() {<br/>    <br/><strong>inputRef.current.focus();</strong><br/>  }<br/><br/>  return (<br/>    &lt;&gt;<br/>     <br/><strong> &lt;input ref={inputRef} /&gt;</strong><br/>      &lt;button onClick={handleClick}&gt;<br/>        聚焦输入框<br/>      &lt;/button&gt;<br/>    &lt;/&gt;<br/>  );<br/>}<br/></blockquote></li></ul></li></ul><p id="1de694d5-ea46-80ab-afd2-d459b6a24ab1" class=""><strong><span style="border-bottom:0.05em solid">使用Effect进行同步：</span></strong></p><ul id="1de694d5-ea46-80b6-b756-f36cd3eb2bdf" class="bulleted-list"><li style="list-style-type:disc">有些组件需要与外部系统同步，例如根据React状态控制非React组件、设置服务器连接或在组建出现在屏幕上时发送分析日志。</li></ul><ul id="1de694d5-ea46-80ce-a7ba-d31ea3d2fbbc" class="bulleted-list"><li style="list-style-type:disc">这些操作与处理特定事件的事件处理程序不同，Effect在渲染后运行一些代码，使用它会将组件与React之外的系统同步。<ul id="1de694d5-ea46-8092-b5dd-d883cc538c4a" class="bulleted-list"><li style="list-style-type:circle">实例：视频播放器<blockquote id="1de694d5-ea46-8084-9b66-dc3a7b9bbd27" class=""><strong>import { useState, useRef, useEffect } from &#x27;react&#x27;;</strong><br/><br/>function VideoPlayer({ src, isPlaying }) {<br/> <br/><strong> const ref = useRef(null);</strong><br/><br/> <br/><strong> useEffect(() =&gt; {<br/>    if (isPlaying) {<br/>      ref.current.play();<br/>    } else {<br/>      ref.current.pause();<br/>    }<br/>  }, [isPlaying]);<br/></strong><br/><br/>  return &lt;video <br/><strong>ref={ref} </strong>src={src} loop playsInline /&gt;;<br/>}<br/><br/>export default function App() {<br/><br/><strong>  const [isPlaying, setIsPlaying] = useState(false);</strong><br/>  return (<br/>    &lt;&gt;<br/>      <br/><strong>&lt;button onClick={() =&gt; setIsPlaying(!isPlaying)}&gt;</strong><br/>        {isPlaying ? &#x27;暂停&#x27; : &#x27;播放&#x27;}<br/>      &lt;/button&gt;<br/>      &lt;VideoPlayer<br/>        isPlaying={isPlaying}<br/>        src=&quot;https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4&quot;<br/>      /&gt;<br/>    &lt;/&gt;<br/>  );<br/>}<br/></blockquote></li></ul></li></ul><ul id="1de694d5-ea46-80d2-93ad-f0eee49b35ee" class="bulleted-list"><li style="list-style-type:disc">许多Effect也会自行清理，例如与聊天服务器建立连接的Effect应该返回一个cleanup函数，告诉React如何断开组件与服务器的连接<ul id="1de694d5-ea46-8008-9209-fe3c7f5bbdf5" class="bulleted-list"><li style="list-style-type:circle">chat.js<blockquote id="1de694d5-ea46-8001-9bac-d27c260ba9e1" class="">export function createConnection() {<br/>  // 真正的实现实际上会连接到服务器<br/>  return {<br/>    connect() {<br/>      console.log(&#x27;✅ 连接中...&#x27;);<br/>    },<br/>    disconnect() {<br/>      console.log(&#x27;❌ 断开连接。&#x27;);<br/>    }<br/>  };<br/>}<br/></blockquote></li></ul><ul id="1de694d5-ea46-8025-806c-ef7bb30dfd73" class="bulleted-list"><li style="list-style-type:circle">App.js<blockquote id="1de694d5-ea46-8094-ae95-c0eb0433acfc" class="">import { useState, useEffect } from &#x27;react&#x27;;<br/>import { createConnection } from &#x27;./chat.js&#x27;;<br/><br/>export default function ChatRoom() {<br/>  useEffect(() =&gt; {<br/>    const connection = createConnection();<br/>    connection.connect();<br/>    return () =&gt; connection.disconnect();<br/>  }, []);<br/>  return &lt;h1&gt;欢迎前来聊天！&lt;/h1&gt;;<br/>}<br/></blockquote></li></ul></li></ul><p id="1de694d5-ea46-80a5-a989-fb300e25e06f" class=""><strong><span style="border-bottom:0.05em solid">不需要使用Effect：</span></strong></p><ul id="1de694d5-ea46-8060-9b3b-fdcaa7debc70" class="bulleted-list"><li style="list-style-type:disc">Effect是React范式中的一个脱围机制。可以逃出React并使组件和一些外部系统同步，</li></ul><ul id="1de694d5-ea46-804e-b0ae-f094f9a70e0d" class="bulleted-list"><li style="list-style-type:disc">如果没有涉及到外部系统，例如，根据一些props或state的变化来更新一个组件的state，不应该使用Effect。移除不必要的Effect可以让代码更容易理解，运行得更快</li></ul><ul id="1de694d5-ea46-80b0-b665-d50edba49a6f" class="bulleted-list"><li style="list-style-type:disc">下面是常见的，不必使用Effect的情况。<ul id="1de694d5-ea46-807f-84f7-ede83eef647b" class="bulleted-list"><li style="list-style-type:circle">不必为了渲染而使用Effect来转换数据</li></ul><ul id="1de694d5-ea46-80a1-a819-dd1d0ad2b13c" class="bulleted-list"><li style="list-style-type:circle">不必使用Effect来处理用户事件<ul id="1de694d5-ea46-808a-96b5-eda39023c76e" class="bulleted-list"><li style="list-style-type:square">例如，不需要Effect来根据其他状态来调整某些状态<blockquote id="1de694d5-ea46-80c3-8e5b-e4e8b0d1c689" class="">function Form() {<br/>  const [firstName, setFirstName] = useState(&#x27;泰勒&#x27;);<br/>  const [lastName, setLastName] = useState(&#x27;斯威夫特&#x27;);<br/><br/><br/><mark class="highlight-red_background"><strong>  // 🔴 避免：多余的 state 和不必要的 Effect<br/>  const [fullName, setFullName] = useState(&#x27;&#x27;);<br/>  useEffect(() =&gt; {<br/>    setFullName(firstName + &#x27; &#x27; + lastName);<br/>  }, [firstName, lastName]);<br/></strong></mark><br/>  // ...<br/>}<br/></blockquote></li></ul><ul id="1de694d5-ea46-8036-96e8-ebb77dff326a" class="bulleted-list"><li style="list-style-type:square">相反，在渲染时进行尽可能多的计算来代替变量<blockquote id="1de694d5-ea46-8092-95f5-f1007eebadc0" class="">function Form() {<br/>  const [firstName, setFirstName] = useState(&#x27;泰勒&#x27;);<br/>  const [lastName, setLastName] = useState(&#x27;斯威夫特&#x27;);<br/><br/><mark class="highlight-teal_background"><strong>  // ✅ 非常好：在渲染期间进行计算<br/>  const fullName = firstName + &#x27; &#x27; + lastName;<br/>  // ...<br/></strong></mark><br/>}<br/></blockquote></li></ul><ul id="1de694d5-ea46-80a5-8a7a-e733057dc519" class="bulleted-list"><li style="list-style-type:square"><strong>同样也可以使用Effect来和外部系统同步</strong></li></ul></li></ul></li></ul><p id="1de694d5-ea46-8029-be2f-ef1b5d2d3862" class=""><strong><span style="border-bottom:0.05em solid">响应式Effect的生命周期</span></strong></p><ul id="1de694d5-ea46-8089-8793-fa48b27ee359" class="bulleted-list"><li style="list-style-type:disc"><strong>Effect的生命周期不同于组件，组件可以挂载、更新、卸载。Effect只能开始同步某些东西，然后停止同步它。</strong></li></ul><ul id="1de694d5-ea46-8077-9add-e8f7a51f40d2" class="bulleted-list"><li style="list-style-type:disc">如果Effect依赖于随时间变化的props和state，这个循环可能会发生很多次</li></ul><ul id="1de694d5-ea46-8075-b592-e8d615266f87" class="bulleted-list"><li style="list-style-type:disc"><strong>Effect依赖于 roomId props的值，props是响应值，意味着他们可以在重新渲染改变。如果roomId改变，Effect将会重新同步（并重新连接服务器）</strong><ul id="1de694d5-ea46-807e-b80c-d6f46f06ac6c" class="bulleted-list"><li style="list-style-type:circle">实例<ul id="1de694d5-ea46-80dd-896e-f74e25ea93b3" class="bulleted-list"><li style="list-style-type:square">chat.js<blockquote id="1de694d5-ea46-800e-b0ea-ec54a16d3e17" class="">export function createConnection(serverUrl, roomId) {<br/>  // 真正的实现实际上会连接到服务器<br/>  return {<br/>    connect() {<br/>      console.log(&#x27;✅ 连接到 &quot;&#x27; + roomId + &#x27;&quot; 房间，在&#x27; + serverUrl + &#x27;...&#x27;);<br/>    },<br/>    disconnect() {<br/>      console.log(&#x27;❌ 断开 &quot;&#x27; + roomId + &#x27;&quot; 房间，在&#x27; + serverUrl);<br/>    }<br/>  };<br/>}<br/></blockquote></li></ul><ul id="1de694d5-ea46-809c-a427-d6934cc80566" class="bulleted-list"><li style="list-style-type:square">App.js<blockquote id="1de694d5-ea46-80f0-a76f-f5500f796a99" class=""><strong>import { useState, useEffect } from &#x27;react&#x27;;<br/>import { createConnection } from &#x27;./chat.js&#x27;;<br/></strong><br/><br/>const serverUrl = &#x27;https://localhost:1234&#x27;;<br/><br/>function ChatRoom({ roomId }) {<br/> <br/><strong> useEffect(() =&gt; {<br/>    const connection = createConnection(serverUrl, roomId);<br/>    connection.connect();<br/>    return () =&gt; connection.disconnect();<br/>  }, [roomId]);<br/></strong><br/><br/>  return &lt;h1&gt;欢迎来到 {roomId} 房间！&lt;/h1&gt;;<br/>}<br/><br/>export default function App() {<br/>  <br/><strong>const [roomId, setRoomId] = useState(&#x27;general&#x27;);</strong><br/>  return (<br/>    &lt;&gt;<br/>      &lt;label&gt;<br/>        选择聊天室：{&#x27; &#x27;}<br/>        &lt;select<br/>          value={roomId}<br/>          onChange={e =&gt; setRoomId(e.target.value)}<br/>        &gt;<br/>          &lt;option value=&quot;general&quot;&gt;所有&lt;/option&gt;<br/>          &lt;option value=&quot;travel&quot;&gt;旅游&lt;/option&gt;<br/>          &lt;option value=&quot;music&quot;&gt;音乐&lt;/option&gt;<br/>        &lt;/select&gt;<br/>      &lt;/label&gt;<br/>      &lt;hr /&gt;<br/>      &lt;ChatRoom roomId={roomId} /&gt;<br/>    &lt;/&gt;<br/>  );<br/>}<br/></blockquote></li></ul></li></ul></li></ul><ul id="1de694d5-ea46-80c9-9949-cc4bd5fbd0cf" class="bulleted-list"><li style="list-style-type:disc">React提供了检查工具规则来检查是否正确的制定了Effect的依赖项。如果忘记在上述示例的依赖项列表中指定roomId，检查工具会自动找到该错误</li></ul><p id="1de694d5-ea46-8014-b49b-df4953cc0429" class=""><strong><span style="border-bottom:0.05em solid">将事件从Effect中分开：</span></strong></p><ul id="1de694d5-ea46-8047-a976-fa9b6dbe252d" class="bulleted-list"><li style="list-style-type:disc">事件处理程序仅在再次执行相同的交互时重新运行。与事件处理程序不同，<strong>如果Effect读取的任何值，props或state，与上次渲染期间不同，就会重新同步</strong>，有时需要混合两种行为：<strong>Effect重新运行以响应某些值而不是其他值</strong></li></ul><ul id="1de694d5-ea46-8034-bf3b-e3dc9e9a96f1" class="bulleted-list"><li style="list-style-type:disc">Effect中的所有代码都是响应式的。如果读取的某些响应式的值由于重新渲染而发生变化，他将再次运行。<ul id="1de694d5-ea46-80c0-9f35-cc9d15117312" class="bulleted-list"><li style="list-style-type:circle">例如roomId或theme发生变化，这个Effect将重新连接到聊天频道<ul id="1de694d5-ea46-807d-8b0e-c820cc61111b" class="bulleted-list"><li style="list-style-type:square">chat.js<blockquote id="1de694d5-ea46-80e6-9ab2-cabbcda65f96" class="">export function createConnection(serverUrl, roomId) {<br/>  // 真正的实现实际上会连接到服务器<br/>  let connectedCallback;<br/>  let timeout;<br/>  return {<br/>    connect() {<br/>      timeout = setTimeout(() =&gt; {<br/>        if (connectedCallback) {<br/>          connectedCallback();<br/>        }<br/>      }, 100);<br/>    },<br/>    on(event, callback) {<br/>      if (connectedCallback) {<br/>        throw Error(&#x27;不能添加处理程序两次。&#x27;);<br/>      }<br/>      if (event !== &#x27;connected&#x27;) {<br/>        throw Error(&#x27;仅支持“已连接”事件。&#x27;);<br/>      }<br/>      connectedCallback = callback;<br/>    },<br/>    disconnect() {<br/>      clearTimeout(timeout);<br/>    }<br/>  };<br/>}<br/></blockquote></li></ul><ul id="1de694d5-ea46-8049-8c5b-d385903b19c0" class="bulleted-list"><li style="list-style-type:square">notifications.js<blockquote id="1de694d5-ea46-8039-96ab-f7fed637f0cf" class="">import Toastify from &#x27;toastify-js&#x27;;<br/>import &#x27;toastify-js/src/toastify.css&#x27;;<br/><br/>export function showNotification(message, theme) {<br/>  Toastify({<br/>    text: message,<br/>    duration: 2000,<br/>    gravity: &#x27;top&#x27;,<br/>    position: &#x27;right&#x27;,<br/>    style: {<br/>      background: theme === &#x27;dark&#x27; ? &#x27;black&#x27; : &#x27;white&#x27;,<br/>      color: theme === &#x27;dark&#x27; ? &#x27;white&#x27; : &#x27;black&#x27;,<br/>    },<br/>  }).showToast();<br/>}<br/></blockquote></li></ul><ul id="1de694d5-ea46-801d-9592-f6fe8bc75607" class="bulleted-list"><li style="list-style-type:square">App.js<blockquote id="1de694d5-ea46-801a-a691-e3df7aee4cf0" class="">i<strong>mport { useState, useEffect } from &#x27;react&#x27;;<br/>import { createConnection, sendMessage } from &#x27;./chat.js&#x27;;<br/>import { showNotification } from &#x27;./notifications.js&#x27;;<br/><br/></strong><br/>const serverUrl = &#x27;https://localhost:1234&#x27;;<br/><br/>function ChatRoom({ roomId, theme }) {<br/>  <br/><strong>useEffect(() =&gt; {<br/>    const connection = createConnection(serverUrl, roomId);<br/>  <br/></strong><mark class="highlight-blue"><strong>  connection.on(&#x27;connected&#x27;, () =&gt; {<br/>      showNotification(&#x27;已连接！&#x27;, theme);<br/>    });<br/></strong></mark><br/>    <br/><strong>connection.connect();<br/>    return () =&gt; connection.disconnect();<br/>  },<br/></strong><mark class="highlight-blue"><strong> [roomId, theme]);</strong></mark><br/><br/>  return &lt;h1&gt;欢迎来到 {roomId} 房间！&lt;/h1&gt;<br/>}<br/><br/>export default function App() {<br/><br/><strong>  const [roomId, setRoomId] = useState(&#x27;所有&#x27;);<br/>  const [isDark, setIsDark] = useState(false);<br/></strong><br/>  return (<br/>    &lt;&gt;<br/>      &lt;label&gt;<br/>        选择聊天室：{&#x27; &#x27;}<br/>        <br/><strong>&lt;select<br/>          value={roomId}<br/>          onChange={e =&gt; setRoomId(e.target.value)}<br/>        &gt;<br/></strong><br/>          &lt;option value=&quot;general&quot;&gt;所有&lt;/option&gt;<br/>          &lt;option value=&quot;travel&quot;&gt;旅游&lt;/option&gt;<br/>          &lt;option value=&quot;music&quot;&gt;音乐&lt;/option&gt;<br/>        &lt;/select&gt;<br/>      &lt;/label&gt;<br/>      &lt;label&gt;<br/>       <br/><strong> &lt;input<br/>          type=&quot;checkbox&quot;<br/>          checked={isDark}<br/>          onChange={e =&gt; setIsDark(e.target.checked)}<br/>        /&gt;<br/></strong><br/>        使用深色主题<br/>      &lt;/label&gt;<br/>      &lt;hr /&gt;<br/>     <br/><strong> &lt;ChatRoom<br/>        roomId={roomId}<br/>        theme={isDark ? &#x27;dark&#x27; : &#x27;light&#x27;} <br/>      /&gt;<br/></strong><br/>    &lt;/&gt;<br/>  );<br/>}<br/></blockquote><ul id="1de694d5-ea46-8009-8ea7-f582d86de0e1" class="bulleted-list"><li style="list-style-type:disc"><strong>这并不理想，因为仅当roomId更改时，才会重新连接聊天，所以切换theme不应该重新连接到聊天。将读取theme的代码从Effect移动到EffectEvent中</strong></li></ul></li></ul><ul id="1de694d5-ea46-8014-a810-f872fd73fcf0" class="bulleted-list"><li style="list-style-type:square">chat.js<blockquote id="1de694d5-ea46-800e-af93-d929b0281af1" class="">export function createConnection(serverUrl, roomId) {<br/>  // 真正的实现实际上会连接到服务器<br/>  let connectedCallback;<br/>  let timeout;<br/>  return {<br/>    connect() {<br/>      timeout = setTimeout(() =&gt; {<br/>        if (connectedCallback) {<br/>          connectedCallback();<br/>        }<br/>      }, 100);<br/>    },<br/>    on(event, callback) {<br/>      if (connectedCallback) {<br/>        throw Error(&#x27;不能添加处理程序两次。&#x27;);<br/>      }<br/>      if (event !== &#x27;connected&#x27;) {<br/>        throw Error(&#x27;仅支持“已连接”事件。&#x27;);<br/>      }<br/>      connectedCallback = callback;<br/>    },<br/>    disconnect() {<br/>      clearTimeout(timeout);<br/>    }<br/>  };<br/>}<br/></blockquote></li></ul><ul id="1de694d5-ea46-8050-9530-d90ed59d634a" class="bulleted-list"><li style="list-style-type:square">App.js<blockquote id="1de694d5-ea46-8011-92b3-d73b58cb554c" class="">import { useState, useEffect } from &#x27;react&#x27;;<br/>import { experimental_useEffectEvent as useEffectEvent } from &#x27;react&#x27;;<br/>import { createConnection, sendMessage } from &#x27;./chat.js&#x27;;<br/>import { showNotification } from &#x27;./notifications.js&#x27;;<br/><br/>const serverUrl = &#x27;https://localhost:1234&#x27;;<br/><br/>function ChatRoom({ roomId, theme }) {<br/>  <br/><strong>const onConnected = useEffectEvent(() =&gt; {<br/>    showNotification(&#x27;已连接！&#x27;, theme);<br/>  });<br/><br/>  useEffect(() =&gt; {<br/>    <br/></strong><mark class="highlight-blue"><strong>const connection = createConnection(serverUrl, roomId);<br/>    connection.on(&#x27;connected&#x27;, () =&gt; {<br/>      onConnected();<br/></strong></mark><strong><br/>    });<br/>    connection.connect();<br/>    return () =&gt; connection.disconnect();<br/>  },<br/></strong><mark class="highlight-blue"><strong> [roomId]);</strong></mark><br/><br/>  return &lt;h1&gt;欢迎来到 {roomId} 房间！&lt;/h1&gt;<br/>}<br/><br/>export default function App() {<br/>  const [roomId, setRoomId] = useState(&#x27;所有&#x27;);<br/>  const [isDark, setIsDark] = useState(false);<br/>  return (<br/>    &lt;&gt;<br/>      &lt;label&gt;<br/>        选择聊天室：{&#x27; &#x27;}<br/>        &lt;select<br/>          value={roomId}<br/>          onChange={e =&gt; setRoomId(e.target.value)}<br/>        &gt;<br/>          &lt;option value=&quot;general&quot;&gt;所有&lt;/option&gt;<br/>          &lt;option value=&quot;travel&quot;&gt;旅游&lt;/option&gt;<br/>          &lt;option value=&quot;music&quot;&gt;音乐&lt;/option&gt;<br/>        &lt;/select&gt;<br/>      &lt;/label&gt;<br/>      &lt;label&gt;<br/>        &lt;input<br/>          type=&quot;checkbox&quot;<br/>          checked={isDark}<br/>          onChange={e =&gt; setIsDark(e.target.checked)}<br/>        /&gt;<br/>        使用深色主题<br/>      &lt;/label&gt;<br/>      &lt;hr /&gt;<br/>      &lt;ChatRoom<br/>        roomId={roomId}<br/>        theme={isDark ? &#x27;dark&#x27; : &#x27;light&#x27;} <br/>      /&gt;<br/>    &lt;/&gt;<br/>  );<br/>}<br/></blockquote></li></ul></li></ul></li></ul><p id="1de694d5-ea46-80c3-97ae-f75d57516f3e" class=""><strong><span style="border-bottom:0.05em solid">移除Effect依赖：</span></strong></p><ul id="1de694d5-ea46-80be-9bf0-d8ce650a7f02" class="bulleted-list"><li style="list-style-type:disc">当你写Effect时，代码检查其会验证是否已经将Effect读取的每一个响应式值（如props和state）包含在Effect的依赖列表中。这确保Effect与组件的props和state保持同步。</li></ul><ul id="1de694d5-ea46-80c8-9c83-d4b9b26f1cf7" class="bulleted-list"><li style="list-style-type:disc">不必要的依赖关系可能会导致Effect运行过于频繁，甚至产生无限循环，删除他们的方式取决于具体情况<ul id="1de694d5-ea46-805f-81b5-e624391abd24" class="bulleted-list"><li style="list-style-type:circle">实例：这个Efect依赖于每次编辑输入时店铺会创建新的options对象<ul id="1de694d5-ea46-8023-b1d8-e698e96bdb20" class="bulleted-list"><li style="list-style-type:square">chat.js<blockquote id="1de694d5-ea46-8011-88c0-ef5749cca535" class="">export function createConnection({ serverUrl, roomId }) {<br/>  // 真正的实现实际上会连接到服务器<br/>  return {<br/>    connect() {<br/>      console.log(&#x27;✅ 连接到 &quot;&#x27; + roomId + &#x27;&quot; 房间，在&#x27; + serverUrl + &#x27;...&#x27;);<br/>    },<br/>    disconnect() {<br/>      console.log(&#x27;❌ 断开 &quot;&#x27; + roomId + &#x27;&quot; 房间，在&#x27; + serverUrl);<br/>    }<br/>  };<br/>}<br/></blockquote></li></ul><ul id="1de694d5-ea46-80b3-83ea-cd7cec00bed8" class="bulleted-list"><li style="list-style-type:square">App.js<blockquote id="1de694d5-ea46-802a-b707-e8d82a8ec682" class=""><strong>import { useState, useEffect } from &#x27;react&#x27;;<br/>import { createConnection } from &#x27;./chat.js&#x27;;<br/></strong><br/><br/>const serverUrl = &#x27;https://localhost:1234&#x27;;<br/><br/>function ChatRoom({ roomId }) {<br/><br/><strong>  const [message, setMessage] = useState(&#x27;&#x27;);<br/><br/><br/></strong><mark class="highlight-blue"><strong>  const options = {<br/>    serverUrl: serverUrl,<br/>    roomId: roomId<br/>  };<br/></strong></mark><mark class="highlight-blue"><br/><br/> <br/></mark><mark class="highlight-blue"><strong> useEffect(() =&gt; {<br/>    const connection = createConnection(options);<br/>    connection.connect();<br/>    return () =&gt; connection.disconnect();<br/>  }, [options]);<br/></strong></mark><strong><br/><br/></strong><br/>  return (<br/>    &lt;&gt;<br/>      &lt;h1&gt;欢迎来到 {roomId} 房间！&lt;/h1&gt;<br/>      <br/><strong>&lt;input value={message} onChange={e =&gt; setMessage(e.target.value)} /&gt;</strong><br/>    &lt;/&gt;<br/>  );<br/>}<br/><br/>export default function App() {<br/>  const [roomId, setRoomId] = useState(&#x27;所有&#x27;);<br/>  return (<br/>    &lt;&gt;<br/>      &lt;label&gt;<br/>        选择聊天室：{&#x27; &#x27;}<br/>        &lt;select<br/>          value={roomId}<br/>          onChange={e =&gt; setRoomId(e.target.value)}<br/>        &gt;<br/>          &lt;option value=&quot;general&quot;&gt;general&lt;/option&gt;<br/>          &lt;option value=&quot;travel&quot;&gt;travel&lt;/option&gt;<br/>          &lt;option value=&quot;music&quot;&gt;music&lt;/option&gt;<br/>        &lt;/select&gt;<br/>      &lt;/label&gt;<br/>      &lt;hr /&gt;<br/>      &lt;ChatRoom roomId={roomId} /&gt;<br/>    &lt;/&gt;<br/>  );<br/>}<br/></blockquote></li></ul><ul id="1de694d5-ea46-8062-ad4d-ccb8c1c6c6b9" class="bulleted-list"><li style="list-style-type:square">不希望每次在聊天中输入消息时都重新连接，</li></ul></li></ul><ul id="1de694d5-ea46-8053-bf49-df062ec8a394" class="bulleted-list"><li style="list-style-type:circle">解决此问题，通过在Effect中创建options对象，使得Effect仅依赖于roomId字符串<ul id="1de694d5-ea46-80e1-9755-ddd6c3f3f43a" class="bulleted-list"><li style="list-style-type:square">chat.js<blockquote id="1de694d5-ea46-800b-8f7f-cd8bba0acf1e" class="">export function createConnection({ serverUrl, roomId }) {<br/>  // 真正的实现实际上会连接到服务器<br/>  return {<br/>    connect() {<br/>      console.log(&#x27;✅ 连接到 &quot;&#x27; + roomId + &#x27;&quot; 房间，在&#x27; + serverUrl + &#x27;...&#x27;);<br/>    },<br/>    disconnect() {<br/>      console.log(&#x27;❌ 断开 &quot;&#x27; + roomId + &#x27;&quot; 房间，在&#x27; + serverUrl);<br/>    }<br/>  };<br/>}<br/></blockquote></li></ul><ul id="1de694d5-ea46-8035-bab6-d9649841477c" class="bulleted-list"><li style="list-style-type:square">App.js<blockquote id="1de694d5-ea46-80a4-8c77-c485d96393c2" class="">import { useState, useEffect } from &#x27;react&#x27;;<br/>import { createConnection } from &#x27;./chat.js&#x27;;<br/><br/>const serverUrl = &#x27;https://localhost:1234&#x27;;<br/><br/>function ChatRoom({ roomId }) {<br/>  <br/><strong>const [message, setMessage] = useState(&#x27;&#x27;);</strong><br/><br/><br/><mark class="highlight-blue"><strong>  useEffect(() =&gt; {<br/>    const options = {<br/>      serverUrl: serverUrl,<br/>      roomId: roomId<br/>    };<br/>    const connection = createConnection(options);<br/>    connection.connect();<br/>    return () =&gt; connection.disconnect();<br/>  }, [roomId]);<br/></strong></mark><strong><br/><br/></strong><br/>  return (<br/>    &lt;&gt;<br/>      &lt;h1&gt;欢迎来到 {roomId} 房间！&lt;/h1&gt;<br/>    <br/><strong>  &lt;input value={message} onChange={e =&gt; setMessage(e.target.value)} /&gt;</strong><br/>    &lt;/&gt;<br/>  );<br/>}<br/><br/>export default function App() {<br/>  const [roomId, setRoomId] = useState(&#x27;所有&#x27;);<br/>  return (<br/>    &lt;&gt;<br/>      &lt;label&gt;<br/>        选择聊天室：{&#x27; &#x27;}<br/>        &lt;select<br/>          value={roomId}<br/>          onChange={e =&gt; setRoomId(e.target.value)}<br/>        &gt;<br/>          &lt;option value=&quot;general&quot;&gt;所有&lt;/option&gt;<br/>          &lt;option value=&quot;travel&quot;&gt;旅游&lt;/option&gt;<br/>          &lt;option value=&quot;music&quot;&gt;音乐&lt;/option&gt;<br/>        &lt;/select&gt;<br/>      &lt;/label&gt;<br/>      &lt;hr /&gt;<br/>      &lt;ChatRoom roomId={roomId} /&gt;<br/>    &lt;/&gt;<br/>  );<br/>}<br/></blockquote></li></ul></li></ul><ul id="1de694d5-ea46-800b-a994-e0111237f616" class="bulleted-list"><li style="list-style-type:circle">注意，并没有通过编辑依赖项来删除options依赖性，那是错误的</li></ul><ul id="1de694d5-ea46-802f-9203-f6e0846d6308" class="bulleted-list"><li style="list-style-type:circle"><strong>相反更改周围的代码，使依赖关系变得不必要，将依赖关系列表视为Effect代码使用的所有响应值列表。</strong></li></ul><ul id="1de694d5-ea46-809c-a678-ca1e70d32d2e" class="bulleted-list"><li style="list-style-type:circle">不必刻意把什么内容放到列表中，该列表描述了代码，要改变依赖性列表，改变代码即可</li></ul></li></ul><p id="1de694d5-ea46-803e-a309-e0153b111aea" class=""><strong><span style="border-bottom:0.05em solid">使用自定义Hook重复使用逻辑</span></strong></p><ul id="1de694d5-ea46-80e6-9cf2-f09352637e25" class="bulleted-list"><li style="list-style-type:disc">React中有一些内置的Hook，例如useState、useContext、useEffect等等，有时需要用途特殊的Hook：例如获取数据，记录用户是否在线或者链接聊天室，为了实现效果，可以跟及应用需求创建自己的Hook<ul id="1de694d5-ea46-80fb-9446-f82a2fa29f57" class="bulleted-list"><li style="list-style-type:circle">实例：自定义Hook usePointerPosition追踪当前指针位置，而自定义Hook useDelayedValue返回一个滞后传递的毫秒数值，将光标移动到沙盒预览区域上查看光标移动的点轨迹<ul id="1de694d5-ea46-80bf-b7d2-d6a85dd6a8a2" class="bulleted-list"><li style="list-style-type:square">usePointerPosition.js<blockquote id="1de694d5-ea46-8078-b693-f35f4afe4e0c" class="">import { useState, useEffect } from &#x27;react&#x27;;<br/><br/>export function usePointerPosition() {<br/>  const [position, setPosition] = useState({ x: 0, y: 0 });<br/>  useEffect(() =&gt; {<br/>    function handleMove(e) {<br/>      setPosition({ x: e.clientX, y: e.clientY });<br/>    }<br/>    window.addEventListener(&#x27;pointermove&#x27;, handleMove);<br/>    return () =&gt; window.removeEventListener(&#x27;pointermove&#x27;, handleMove);<br/>  }, []);<br/>  return position;<br/>}<br/></blockquote></li></ul><ul id="1de694d5-ea46-80bc-b36c-d8200ec276a8" class="bulleted-list"><li style="list-style-type:square">useDelayedValue.js<blockquote id="1de694d5-ea46-8048-bc8c-d1957431e04f" class="">import { useState, useEffect } from &#x27;react&#x27;;<br/><br/>export function useDelayedValue(value, delay) {<br/>  const [delayedValue, setDelayedValue] = useState(value);<br/><br/>  useEffect(() =&gt; {<br/>    setTimeout(() =&gt; {<br/>      setDelayedValue(value);<br/>    }, delay);<br/>  }, [value, delay]);<br/><br/>  return delayedValue;<br/>}<br/></blockquote></li></ul><ul id="1de694d5-ea46-803c-b824-c3238209ecd1" class="bulleted-list"><li style="list-style-type:square">App.js<blockquote id="1de694d5-ea46-80b1-90ce-e1d6401299a2" class="">import { usePointerPosition } from &#x27;./usePointerPosition.js&#x27;;<br/>import { useDelayedValue } from &#x27;./useDelayedValue.js&#x27;;<br/><br/>export default function Canvas() {<br/>  const pos1 = usePointerPosition();<br/>  const pos2 = useDelayedValue(pos1, 100);<br/>  const pos3 = useDelayedValue(pos2, 200);<br/>  const pos4 = useDelayedValue(pos3, 100);<br/>  const pos5 = useDelayedValue(pos4, 50);<br/>  return (<br/>    &lt;&gt;<br/>      &lt;Dot position={pos1} opacity={1} /&gt;<br/>      &lt;Dot position={pos2} opacity={0.8} /&gt;<br/>      &lt;Dot position={pos3} opacity={0.6} /&gt;<br/>      &lt;Dot position={pos4} opacity={0.4} /&gt;<br/>      &lt;Dot position={pos5} opacity={0.2} /&gt;<br/>    &lt;/&gt;<br/>  );<br/>}<br/><br/>function Dot({ position, opacity }) {<br/>  return (<br/>    &lt;div style={{<br/>      position: &#x27;absolute&#x27;,<br/>      backgroundColor: &#x27;pink&#x27;,<br/>      borderRadius: &#x27;50%&#x27;,<br/>      opacity,<br/>      transform: `translate(${position.x}px, ${position.y}px)`,<br/>      pointerEvents: &#x27;none&#x27;,<br/>      left: -20,<br/>      top: -20,<br/>      width: 40,<br/>      height: 40,<br/>    }} /&gt;<br/>  );<br/>}<br/></blockquote></li></ul></li></ul></li></ul><ul id="1de694d5-ea46-80b9-bc63-fbc5700d9154" class="bulleted-list"><li style="list-style-type:disc">可以创建自定义Hooks，将它们组合在一起，在他们之间传递数据，并在组件之间重用他们。随着应用不断变大，将减少手动编写的Effect，因为你能够重用已经编写的自定义Hooks。React社区</li></ul></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
