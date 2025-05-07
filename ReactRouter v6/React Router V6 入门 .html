@@ -1,0 +1,696 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>React Router V6 入门</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-default_background {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.highlight-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.block-color-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: undefined; }
+.select-value-color-pink { background-color: rgba(225, 136, 179, 0.27); }
+.select-value-color-purple { background-color: rgba(168, 129, 197, 0.27); }
+.select-value-color-green { background-color: rgba(123, 183, 129, 0.27); }
+.select-value-color-gray { background-color: rgba(84, 72, 49, 0.15); }
+.select-value-color-transparentGray { background-color: undefined; }
+.select-value-color-translucentGray { background-color: undefined; }
+.select-value-color-orange { background-color: rgba(224, 124, 57, 0.27); }
+.select-value-color-brown { background-color: rgba(210, 162, 141, 0.35); }
+.select-value-color-red { background-color: rgba(244, 171, 159, 0.4); }
+.select-value-color-yellow { background-color: rgba(236, 191, 66, 0.39); }
+.select-value-color-blue { background-color: rgba(93, 165, 206, 0.27); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="1ec694d5-ea46-8059-9fea-d651707fecfd" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">🥴</span></div><h1 class="page-title">React Router V6 入门</h1><p class="page-description"></p></header><div class="page-body"><p id="1ec694d5-ea46-80c8-8dec-f3b2c7d8d853" class="">React Router，简单来说就是一个帮助处理React应用程序中导航和路由的库，用于管理React中路由的路由工具。</p><p id="1ec694d5-ea46-8035-bab6-ce130f714c27" class="">常用的连接a标签，在应用程序中导航，当想要在导航是保留应用程序的当前状态时，就会出现问题，普通的连接通常会触发页面刷新来显示组件，进而破坏用户体验</p><p id="1ec694d5-ea46-803a-aa72-f75c637321b2" class=""><strong>React Router允许在应用程序中定义不同的路由，并连接到各自的组件，无需重新加载页面，这个方法使得React Router能轻松更新页面上的内容，使网站更像一个原生应用程序</strong></p><p id="1ec694d5-ea46-805b-8f1a-d3f27caf2509" class="">React Router还有其他特点，比如创建复杂的导航、无缝的页面导航结构、以及对动态URL的支持</p><p id="1ec694d5-ea46-8014-9c52-f10d031dcc0e" class="">
+</p><p id="1ec694d5-ea46-8027-9f58-d9b0b7d964c6" class=""><strong><span style="border-bottom:0.05em solid">设置环境：</span></strong></p><p id="1ec694d5-ea46-8082-afd2-f4e81649fe51" class="">通过构建一个简单的网站，理解React Router的工作原理</p><ul id="1ec694d5-ea46-809c-bba0-d22a929f5711" class="bulleted-list"><li style="list-style-type:disc">安装React，通过终端，选择create-react-app<ul id="1ec694d5-ea46-8095-bc97-c981af2d6dd5" class="bulleted-list"><li style="list-style-type:circle">npx create-react-app history-app</li></ul></li></ul><ul id="1ec694d5-ea46-8008-b1e2-e5aca3db7d85" class="bulleted-list"><li style="list-style-type:disc">移动到项目，安装React Router包<ul id="1ec694d5-ea46-80b4-acfa-dc838c426fcd" class="bulleted-list"><li style="list-style-type:circle">npm install react-router-dom</li></ul></li></ul><ul id="1ec694d5-ea46-80e3-a808-f45ba6667d3b" class="bulleted-list"><li style="list-style-type:disc">完成后运行React应用程序<ul id="1ec694d5-ea46-8043-bd73-c8343863e2d5" class="bulleted-list"><li style="list-style-type:circle">npm start</li></ul></li></ul><ul id="1ec694d5-ea46-8094-be90-f031715a3d87" class="bulleted-list"><li style="list-style-type:disc">准备完成，添加一些React组件，便于在项目中获得一些虚拟内容。<blockquote id="1ec694d5-ea46-80f2-9ce8-f088981fa247" class="">export default function App() {<br/>return (<br/>&lt;&gt;<br/>&lt;Home /&gt;<br/>&lt;/&gt;<br/>);<br/>}<br/><p id="1ec694d5-ea46-80e3-a266-d02292634349" class="">function Home() {<br/>return (<br/>&lt;div&gt;<br/>&lt;h1&gt;The Paradise of History&lt;/h1&gt;<br/>&lt;p&gt;<br/>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil vero<br/>laudantium repella<br/>&lt;/p&gt;<br/>&lt;/div&gt;<br/>);<br/>}<br/></p><p id="1ec694d5-ea46-803f-b044-d5e4ca622d56" class="">function Eras() {<br/>return (<br/>&lt;div&gt;<br/>&lt;h1&gt;The Eras of Time&lt;/h1&gt;<br/>&lt;ul&gt;<br/>&lt;li&gt;<br/>&lt;a href=&quot;/&quot;&gt;Medieval&lt;/a&gt;<br/>&lt;/li&gt;<br/>&lt;li&gt;<br/>&lt;a href=&quot;/&quot;&gt;Digital&lt;/a&gt;<br/>&lt;/li&gt;<br/>&lt;/ul&gt;<br/>&lt;/div&gt;<br/>);<br/>}<br/></p></blockquote></li></ul><ul id="1ec694d5-ea46-809b-81b9-cc0fb4963066" class="bulleted-list"><li style="list-style-type:disc">查看效果图</li></ul><p id="1ec694d5-ea46-809e-9a8d-d7fb26ddc41c" class="">
+</p><p id="1ec694d5-ea46-8062-be98-f32b58ca3b37" class=""><strong><span style="border-bottom:0.05em solid">理解路由概念：</span></strong></p><ul id="1ec694d5-ea46-804d-a4ad-ddd076d09628" class="bulleted-list"><li style="list-style-type:disc">History Stack：React Router只能使用HTML5 History API来跟踪用户的导航历史，当用户访问新的URL时，React Router将该URL推送到历史堆栈中，当用户导航到其他URL时，他们也会被推送到堆栈中，这就是React Router在不刷新页面情况下来回导航路由的方式。</li></ul><ul id="1ec694d5-ea46-802a-8283-c4b6fe2aa5fc" class="bulleted-list"><li style="list-style-type:disc">Location：指的是浏览网址时当前的URL，他是历史堆栈中的顶级URL，以及React Router如何动态更改显示的内容以匹配正确的URL<ul id="1ec694d5-ea46-804a-82f3-d287d6a2896b" class="bulleted-list"><li style="list-style-type:circle">在一些浏览器中，可以长按返回按钮查看历史记录中的所有URL列表</li></ul></li></ul><p id="1ec694d5-ea46-8073-afd7-e1a2553a3e3c" class="">
+</p><p id="1ec694d5-ea46-80ae-b280-ca1b0971286b" class=""><strong><span style="border-bottom:0.05em solid">浏览器路由及其用途：</span></strong></p><ul id="1ec694d5-ea46-80d7-bee3-c0e606350984" class="bulleted-list"><li style="list-style-type:disc">React使用组件和Hook，React Router也是，而<strong>React Router提供的关键组件</strong>就像body元素对于网站一样，<strong>BrowserRouter就是。他为网站内所有可能的路由提供了基础</strong><ul id="1ec694d5-ea46-8085-a437-f0f5f1823749" class="bulleted-list"><li style="list-style-type:circle">注意，BrowserRouter可以放置在应用程序的任何位置，通常将BrowserRouter放置在组件树顶部，来包裹整个应用程序的组件</li></ul></li></ul><ul id="1ec694d5-ea46-800d-968c-ed52c68afbe8" class="bulleted-list"><li style="list-style-type:disc">回到项目的index.js中，实现BrowserRouter，将整个App组件包裹其中，<blockquote id="1ec694d5-ea46-8017-bcd5-d884a84887bf" class="">import { BrowserRouter } from &quot;react-router-dom&quot;;<p id="1ec694d5-ea46-80cb-9d0d-ebadb4bb9b5e" class="">const root = ReactDOM.createRoot(document.getElementById(&quot;root&quot;));<br/>root.render(<br/>&lt;React.StrictMode&gt;<br/>&lt;BrowserRouter&gt;<br/>&lt;App /&gt;<br/>&lt;/BrowserRouter&gt;<br/>&lt;/React.StrictMode&gt;<br/>);<br/></p></blockquote></li></ul><ul id="1ec694d5-ea46-80fa-bc10-e4de47d04787" class="bulleted-list"><li style="list-style-type:disc"><strong>通过&lt;BrowserRouter /&gt; App组件，路由功能在App组件中的所有组件中都可用</strong></li></ul><p id="1ec694d5-ea46-806d-b70e-d9c92c85ba22" class="">
+</p><p id="1ec694d5-ea46-80ad-8c23-fb0fb2fde62b" class=""><strong><span style="border-bottom:0.05em solid">使用Routes和Route：</span></strong></p><ul id="1ec694d5-ea46-800e-a538-e58b710e6658" class="bulleted-list"><li style="list-style-type:disc">完全掌握React Router中的Routes组件的作用，首先了解Route的作用</li></ul><ul id="1ec694d5-ea46-8061-8743-d3a7f9028c52" class="bulleted-list"><li style="list-style-type:disc"><strong>Route组件：</strong><ul id="1ec694d5-ea46-80b8-8d57-ecbee391055a" class="bulleted-list"><li style="list-style-type:circle">该组件定义了一个特定的URL路径，并指向在访问该URL路径时应该渲染的组件</li></ul><ul id="1ec694d5-ea46-80d7-b631-f002a9b69ea6" class="bulleted-list"><li style="list-style-type:circle">该组件由两个主要属性<ul id="1ec694d5-ea46-80ad-ab9e-d918c5b22d21" class="bulleted-list"><li style="list-style-type:square">Path：此属性接受一个字符串，用于指定Route的路径，<ul id="1ec694d5-ea46-807a-b80e-e6ba36b9d87c" class="bulleted-list"><li style="list-style-type:disc">例如，Route，path属性设置为“/eras”，当URL变为“https：//historyApp.com/eras”时，触发该Route组件</li></ul></li></ul><ul id="1ec694d5-ea46-8075-8abc-fa590c1484fa" class="bulleted-list"><li style="list-style-type:square">Element：当path属性中的路径被访问时，该属性被分配给要渲染的React组件，<ul id="1ec694d5-ea46-808d-80a4-c81a1ba6124f" class="bulleted-list"><li style="list-style-type:disc">如果访问/eras路径，则&lt;Eras /&gt;组件将在页面上展示<ul id="1ec694d5-ea46-8019-9701-e480d032ad3c" class="bulleted-list"><li style="list-style-type:circle">&lt;Route path=”/eras” element={&lt;Eras /&gt;}&gt;</li></ul></li></ul></li></ul></li></ul></li></ul><p id="1ec694d5-ea46-80a9-addc-c217108e8d94" class="">
+</p><ul id="1ec694d5-ea46-80c8-a6a8-cd3dc69112d7" class="bulleted-list"><li style="list-style-type:disc"><strong>Routes组件：</strong><ul id="1ec694d5-ea46-8094-9a65-f220a55d20d2" class="bulleted-list"><li style="list-style-type:circle">Routes是Route组件的容器组件，她负责检查当前URL位置，并将其与子Route组件中指定的路径进行比较，找到匹配项</li></ul><ul id="1ec694d5-ea46-8057-9863-e1035fed5f49" class="bulleted-list"><li style="list-style-type:circle">在Routes内，可以嵌套所有的Route组件，然后再浏览网站时，Routes会获取当前的URL，并将其与每个子路由组件进行匹配，已找到与之对应的最佳组件</li></ul></li></ul><ul id="1ec694d5-ea46-8074-b79d-e6612691673b" class="bulleted-list"><li style="list-style-type:disc"><strong>在历史应用项目中设置Routes和Route步骤如下</strong><blockquote id="1ec694d5-ea46-802b-8592-cb7c12882f67" class="">import { Routes, Route } from &#x27;react-router-dom&#x27;;<p id="1ec694d5-ea46-80ce-b663-ee842f3c714c" class="">export default function App() {<br/>return (<br/>&lt;Routes&gt;<br/>&lt;Route path=&quot;/&quot; element={&lt;Home /&gt;} /&gt;<br/>&lt;Route path=&quot;/eras&quot; element={&lt;Eras /&gt;} /&gt;<br/>&lt;/Routes&gt;<br/>);<br/>}<br/></p></blockquote><ul id="1ec694d5-ea46-80a9-9b97-f2c6cbdbe525" class="bulleted-list"><li style="list-style-type:circle">首先从react-route-dom包中导入Routes和Route组件</li></ul><ul id="1ec694d5-ea46-8059-b499-c8134fb8cb34" class="bulleted-list"><li style="list-style-type:circle">然后再App组件内部，Routes组件限制了不同的Route组件</li></ul><ul id="1ec694d5-ea46-80ba-9521-e7409d126e5a" class="bulleted-list"><li style="list-style-type:circle">第一个路由的路径设置为”/“，当访问时将渲染Home组件，这个默认路由将始终在访问根URL时渲染</li></ul><ul id="1ec694d5-ea46-804f-afb1-e1530fe28d42" class="bulleted-list"><li style="list-style-type:circle">该/eras路由与Eras组件相关联，这意味着每当URL路径与/eras匹配时，将显示&lt;Eras /&gt;组件内容</li></ul></li></ul><ul id="1ec694d5-ea46-8094-980b-fc22187c2ba4" class="bulleted-list"><li style="list-style-type:disc">再地址栏中的根URL后添加/eras时，React Router使用Routes组件匹配具有路径设置为/eras的确切Route，一旦找到，将渲染在匹配的Route的element属性中定义的组件，这种情况下，时&lt;Eras /&gt;组件。</li></ul><p id="1ec694d5-ea46-801a-a051-d036dc7fdab6" class="">
+</p><p id="1ec694d5-ea46-8040-b8e2-dc402e0eb523" class=""><strong><span style="border-bottom:0.05em solid">404页面：</span></strong></p><ul id="1ec694d5-ea46-8071-a7cf-cc61e911045a" class="bulleted-list"><li style="list-style-type:disc">404错误时一个HTTP状态码，当请求的资源或页面无法找到时显示出来，可能发生再用户输入了一个不存在的URL时</li></ul><ul id="1ec694d5-ea46-8039-8d52-f8540372dd2e" class="bulleted-list"><li style="list-style-type:disc">React Router包含了一种处理404错误的方式，当访问一个未定义的网站时，会渲染一个自定义组件，要处理React Router中的404错误，请创建一个route，将其path属性设置为*，并将其element属性设置为应该呈现的错误组件。<ul id="1ec694d5-ea46-80c6-8050-eb2593c94fa3" class="bulleted-list"><li style="list-style-type:circle">首先创建一个错误404组件<blockquote id="1ec694d5-ea46-8092-9e87-dcc994d8b134" class="">function Error404() {<br/>return (<br/>&lt;div&gt;<br/>&lt;h1&gt;404 — Page Not Found&lt;/h1&gt;<br/>&lt;a href=&quot;/&quot;&gt;Take me back!&lt;/a&gt;<br/>&lt;/div&gt;<br/>);<br/>}<br/></blockquote></li></ul><ul id="1ec694d5-ea46-801d-bd6a-ebc33a567bb6" class="bulleted-list"><li style="list-style-type:circle">然后创建一个route来渲染&lt;Error404 /&gt;<blockquote id="1ec694d5-ea46-80c9-9918-c2d37723da37" class="">export default function App() {<br/>return (<br/>&lt;Routes&gt;<br/>&lt;Route path=&quot;/&quot; element={&lt;Home /&gt;} /&gt;<br/>&lt;Route path=&quot;/eras&quot; element={&lt;Eras /&gt;} /&gt;<br/>{/* 404 page <br/><em>/}<br/>&lt;Route path=&quot;<br/></em>&quot; element={&lt;Error404 /&gt;} /&gt;<br/>&lt;/Routes&gt;<br/>);<br/>}<br/></blockquote><ul id="1ec694d5-ea46-80b6-8bdf-ec4fe4895a77" class="bulleted-list"><li style="list-style-type:square">可以处理网站中出现的意外</li></ul></li></ul></li></ul><p id="1ec694d5-ea46-8085-ba46-dfc25cb16e87" class="">
+</p><p id="1ec694d5-ea46-80b7-bbac-c9c99a73ad73" class=""><strong><span style="border-bottom:0.05em solid">路由之间的连接：</span></strong></p><ul id="1ec694d5-ea46-8042-95b3-c720e91bf237" class="bulleted-list"><li style="list-style-type:disc">目前为止，只讨论了如何通过手动在地址栏中输入URL来访问路由，但是并不理想，用户不可能记住每个页面的确切URL</li></ul><ul id="1ec694d5-ea46-8091-b049-e6671f2797a6" class="bulleted-list"><li style="list-style-type:disc"><strong>a标签通常用于解决这个问题，但他有限制，比如重渲染页面，为了绕过这些限制React Router使用了Link组件</strong></li></ul><ul id="1ec694d5-ea46-8026-ab7f-d8f988cb2670" class="bulleted-list"><li style="list-style-type:disc">在React Route中,Link时路由导航的主要方式，连接组件在底层使用a标签，但通过阻止默认页面重新加载来增强它，</li></ul><ul id="1ec694d5-ea46-80c1-ac71-e54a81fbd794" class="bulleted-list"><li style="list-style-type:disc">相反Link将to属性中的URL推送到历史堆栈，然后Routes组件找到具有相同URL的匹配route并显示相关插件<ul id="1ec694d5-ea46-8023-bdd4-ff40d260d0ab" class="bulleted-list"><li style="list-style-type:circle">React Route使用Link组件而不是a标签，因为Link被设计用于防止页面重新加载，保留应用程序状态，并在路由之间提供了无缝导航。</li></ul></li></ul><ul id="1ec694d5-ea46-80e5-a059-ff3d9395e3d6" class="bulleted-list"><li style="list-style-type:disc">这是在历史网站中使用Link的方法，在App.js中创建导航组件<blockquote id="1ec694d5-ea46-80ba-94f1-e8306fe71a42" class="">import { Link } from &quot;react-router-dom&quot;;<p id="1ec694d5-ea46-8057-b3d3-da60421b0998" class="">function Nav() {<br/>return (<br/>&lt;ul className=&#x27;nav&#x27;&gt;<br/>&lt;li&gt;<br/>&lt;Link to=&#x27;/&#x27;&gt;Home&lt;/NavLink&gt;<br/>&lt;/li&gt;<br/>&lt;li&gt;<br/>&lt;Link to=&#x27;/eras&#x27;&gt;Eras&lt;/NavLink&gt;<br/>&lt;/li&gt;<br/>&lt;/ul&gt;<br/>);<br/>}<br/></p></blockquote><ul id="1ec694d5-ea46-80c0-9e2c-d753927d1f73" class="bulleted-list"><li style="list-style-type:circle">首先从React-route-dom导入Link组件，然后创建一个功能组件Nav，用作历史网站的导航，这个Nav组件遵循了典型导航菜单的结构，只是使用了Link组件而不是a标签</li></ul><ul id="1ec694d5-ea46-80fd-9b97-d5c24727afbc" class="bulleted-list"><li style="list-style-type:circle">每个&lt;Link /&gt;都有一个特定的路径分配给to属性，这位Link设置了目标路由，因此，当点击任何这些链接时，React Router会从to属性获取URL，匹配正确的route路径，并渲染指定的组件</li></ul></li></ul><ul id="1ec694d5-ea46-80d2-b6ac-daeef0f49c3a" class="bulleted-list"><li style="list-style-type:disc">由于Nav组件应在所有页面上可见，将其放在App组件顶部<blockquote id="1ec694d5-ea46-80fd-a4bd-e235baeafe5d" class="">export default function App() {<br/>return (<br/>&lt;&gt;<br/>&lt;Nav /&gt;<br/>&lt;Routes&gt;<br/>&lt;Route path=&#x27;/&#x27; element={&lt;Home /&gt;} /&gt;<br/>&lt;Route path=&#x27;/eras&#x27; element={&lt;Eras /&gt;} /&gt;<br/>&lt;Route path=&#x27;*&#x27; element={&lt;Error404 /&gt;} /&gt;<br/>&lt;/Routes&gt;<br/>&lt;/&gt;<br/>);<br/>}<br/></blockquote></li></ul><ul id="1ec694d5-ea46-806e-909d-eb7269fa5552" class="bulleted-list"><li style="list-style-type:disc">为其添加简单样式来增加吸引力，App.css<blockquote id="1ec694d5-ea46-80df-a14e-fdb6b7d0d15a" class="">a {<br/>text-decoration: none;<br/>color: inherit;<br/>}<br/>a:hover {<br/>color: #e32a30;<br/>}<br/><p id="1ec694d5-ea46-80db-8a80-f66708c0bcde" class="">.nav {<br/>list-style: none;<br/>display: flex;<br/>width: 500px;<br/>justify-content: space-around;<br/>align-items: center;<br/>font-size: 1.1rem;<br/>font-weight: bold;<br/>}<br/></p></blockquote></li></ul><p id="1ec694d5-ea46-802e-a839-c961922c5e90" class="">
+</p><p id="1ec694d5-ea46-80b8-9c2b-c87a099854da" class=""><strong><span style="border-bottom:0.05em solid">NavLink与Link不同：(都需要在react-router-dom中引入)</span></strong></p><ul id="1ec694d5-ea46-8083-b3a7-c392400223df" class="bulleted-list"><li style="list-style-type:disc">React Router有一个叫做NavLink的组件，类似于Link，但主要用于处理菜单导航链接，不同于Link组件，后者可以用于任何类型的连接</li></ul><ul id="1ec694d5-ea46-808a-ba3d-e3b249f4b243" class="bulleted-list"><li style="list-style-type:disc">NavLink和Link之间的主要区别就是，NavLink可以检测自身是否处于活动状态，当NavLink检测到自身处于活动状态时，默认为组件添加一个active类</li></ul><ul id="1ec694d5-ea46-80db-b065-c6405e7d48bc" class="bulleted-list"><li style="list-style-type:disc"><strong>总体来说，NavLink在创建导航菜单连接时比Link组件强大</strong></li></ul><p id="1ec694d5-ea46-800b-9d88-fac713744bec" class="">
+</p><p id="1ec694d5-ea46-8076-9d69-d86c4115cfcd" class=""><strong><span style="border-bottom:0.05em solid">嵌套路由：</span></strong></p><ul id="1ec694d5-ea46-80ad-88c3-fce415ac38f3" class="bulleted-list"><li style="list-style-type:disc">在React Router中，嵌套可以被视为在路由之间建立父子连接，这可以用来组织共享相同的URL路径的路由</li></ul><ul id="1ec694d5-ea46-8041-891b-d2b776405841" class="bulleted-list"><li style="list-style-type:disc">嵌套路由使用Route组件作为父路由，另一个Route组件用于定义父路由内部的子路由，因此只有在父路由上时才能渲染子路由</li></ul><ul id="1ec694d5-ea46-80fd-8776-c71d6a31ec66" class="bulleted-list"><li style="list-style-type:disc">在历史网站上，可以在时代部分找到中世纪和数字化这两个可用的时代类别，因此要访问这些时代的详细信息，可以把他们嵌套在/eras路径中。<ul id="1ec694d5-ea46-8055-986e-df114b71df35" class="bulleted-list"><li style="list-style-type:circle">创建Medieval和Digital组件<blockquote id="1ec694d5-ea46-80ce-a793-d90112089fa0" class="">function MedievalEra() {<br/>return (<br/>&lt;div&gt;<br/>&lt;hr /&gt;<br/>&lt;h3&gt;The Medieval Era&lt;/h3&gt;<br/>&lt;p&gt;Lorem ipsum dolor sit amet.&lt;/p&gt;<br/>&lt;/div&gt;<br/>);<br/>}<br/><p id="1ec694d5-ea46-8094-ad3e-fbe070718100" class="">function DigitalEra() {<br/>return (<br/>&lt;div&gt;<br/>&lt;hr /&gt;<br/>&lt;h3&gt;The Digital Era&lt;/h3&gt;<br/>&lt;p&gt;Lorem ipsum dolor sit amet.&lt;/p&gt;<br/>&lt;/div&gt;<br/>);<br/>}<br/></p></blockquote></li></ul><ul id="1ec694d5-ea46-80cd-a822-ff5ba2d9f7bf" class="bulleted-list"><li style="list-style-type:circle">并在App组件中使用<blockquote id="1ec694d5-ea46-807a-9e54-c133b7492c77" class="">export default function App() {<br/>return (<br/>&lt;&gt;<br/>&lt;Nav /&gt;<br/>&lt;Routes&gt;<br/>&lt;Route path=&quot;/&quot; element={&lt;Home /&gt;} /&gt;<br/>&lt;Route path=&quot;/eras&quot; element={&lt;Eras /&gt;}&gt;<br/>&lt;Route path=&quot;medieval&quot; element={&lt;MedievalEra /&gt;} /&gt;<br/>&lt;Route path=&quot;digital&quot; element={&lt;DigitalEra /&gt;} /&gt;<br/>&lt;/Route&gt;<br/>&lt;Route path=&quot;*&quot; element={&lt;Error404 /&gt;} /&gt;<br/>&lt;/Routes&gt;<br/>&lt;/&gt;<br/>);<br/>}<br/></blockquote></li></ul></li></ul><ul id="1ec694d5-ea46-8017-8686-f8592091333e" class="bulleted-list"><li style="list-style-type:disc">此时导航到/eras/medieval或/eras/digital应该分别呈现，两个对应的组件，但是<strong>他不会按预期呈现</strong></li></ul><ul id="1ec694d5-ea46-80ea-9c8c-c5c2582dc29f" class="bulleted-list"><li style="list-style-type:disc"><strong>因为React Router不知道如何放置嵌套组件，为解决问题，React Router提供了应该Outlet组件，可以明确指出嵌套路由组件应该放置在哪里</strong><ul id="1ec694d5-ea46-8069-b389-d8f6a8af9bc0" class="bulleted-list"><li style="list-style-type:circle">导入Outlet组件<ul id="1ec694d5-ea46-80de-8412-e6422be80021" class="bulleted-list"><li style="list-style-type:square">import {Outlet} from “react-router-dom”</li></ul></li></ul><ul id="1ec694d5-ea46-803a-a4e9-ccd93c002ddb" class="bulleted-list"><li style="list-style-type:circle">将Outlet组件放置在Eras组件内部<blockquote id="1ec694d5-ea46-8061-99f4-d4dd92651caa" class="">function Eras() {<br/>return (<br/>&lt;div&gt;<br/>&lt;h1&gt;The Eras of Time&lt;/h1&gt;<br/>&lt;ul&gt;<br/>&lt;li&gt;<br/>&lt;Link to=&quot;medieval&quot;&gt;Medieval&lt;/Link&gt;<br/>&lt;/li&gt;<br/>&lt;li&gt;<br/>&lt;Link to=&quot;digital&quot;&gt;Digital&lt;/Link&gt;<br/>&lt;/li&gt;<br/>&lt;/ul&gt;<br/>&lt;Outlet /&gt;<br/><p id="1ec694d5-ea46-809b-b9bf-ef4746e18664" class="">&lt;/div&gt;<br/>);<br/>}<br/></p></blockquote><ul id="1ec694d5-ea46-80db-afcc-e95d1f5d0bbe" class="bulleted-list"><li style="list-style-type:square">代码中，a标签被替换为Link组件，并将相应的路径放置在to属性中</li></ul><ul id="1ec694d5-ea46-806a-9302-f276875f573f" class="bulleted-list"><li style="list-style-type:square">在此之后，&lt;Outlet /&gt;组件被放置在下方，这是这是嵌套路由组件将被渲染的位置</li></ul></li></ul></li></ul><ul id="1ec694d5-ea46-809d-9d35-cf9d55ea2e1d" class="bulleted-list"><li style="list-style-type:disc">嵌套路由有各种用途，比如层次化组织路由、代码效率、提高性能等</li></ul><p id="1ec694d5-ea46-8058-b068-e86c1c0245b9" class="">
+</p><p id="1ec694d5-ea46-80c9-808c-ca04fa4fafc8" class=""><strong><span style="border-bottom:0.05em solid">动态路由与useParams：</span></strong></p><ul id="1ec694d5-ea46-80e2-b7ad-ce095064779f" class="bulleted-list"><li style="list-style-type:disc">动态路由是一个概念，允许创建不是硬编码的路由，而是根据用户操作或数据生成的路由</li></ul><ul id="1ec694d5-ea46-807f-8280-d0058ce055b6" class="bulleted-list"><li style="list-style-type:disc"><strong>React Router使用Route组件和useParams Hook来处理动态路由</strong><ul id="1ec694d5-ea46-8046-8359-d98a3c9c196a" class="bulleted-list"><li style="list-style-type:circle"><strong>设置动态路由时，在route组件的path属性中使用占位符（使用冒号：表示）</strong><ul id="1ec694d5-ea46-8005-b0ab-ca4832867958" class="bulleted-list"><li style="list-style-type:square"><strong>&lt;Route path=”/eras/：type“ element={&lt;EraType /&gt;} /&gt;</strong><ul id="1ec694d5-ea46-8057-b6b8-ee37685f43a0" class="bulleted-list"><li style="list-style-type:disc"><strong>对于Route的占位符是“：type”，表示type参数的值会动态生成</strong></li></ul></li></ul></li></ul><ul id="1ec694d5-ea46-80bf-8054-f4a7e4159b4f" class="bulleted-list"><li style="list-style-type:circle">React Router提供了usePramas的Hook，用于有效处理动态路由<ul id="1ec694d5-ea46-8049-b88c-dc9618de6cd3" class="bulleted-list"><li style="list-style-type:square">useParams Hook返回一个包含来自Route组件的动态之的对象，该值可以在负责渲染动态内容的组件中使用<blockquote id="1ec694d5-ea46-807d-8f03-e46f82ccc1ea" class="">import { useParams } from &quot;react-router-dom&quot;;<p id="1ec694d5-ea46-80ab-ac5a-f24e2dc3e1b5" class="">function EraType() {<br/>const { type } = useParams();<br/></p><p id="1ec694d5-ea46-80cd-851a-d01c5ec6b730" class="">return (<br/>&lt;div&gt;<br/>&lt;hr /&gt;<br/>&lt;h3&gt;The {type} Era&lt;/h3&gt;<br/>&lt;/div&gt;<br/>);<br/>}<br/></p></blockquote></li></ul><ul id="1ec694d5-ea46-8023-9332-d4343545e60d" class="bulleted-list"><li style="list-style-type:square">App组件变化<blockquote id="1ec694d5-ea46-80f0-a9ea-c422611ab75c" class="">export default function App() {<br/>return (<br/>&lt;&gt;<br/>&lt;Nav /&gt;<br/>&lt;Routes&gt;<br/>&lt;Route path=&#x27;/&#x27; element={&lt;Home /&gt;} /&gt;<br/>&lt;Route path=&#x27;/eras&#x27; element={&lt;Eras /&gt;}&gt;<br/>&lt;Route path=&#x27;medieval&#x27; element={&lt;MedievalEra /&gt;} /&gt;<br/>&lt;Route path=&#x27;digital&#x27; element={&lt;DigitalEra /&gt;} /&gt;<br/>{/* Dynamic route <br/><em>/}<br/>&lt;Route path=&#x27;:type&#x27; element={&lt;EraType /&gt;} /&gt;<br/>&lt;/Route&gt;<br/>&lt;Route path=&#x27;<br/></em>&#x27; element={&lt;Error404 /&gt;} /&gt;<br/>&lt;/Routes&gt;<br/>&lt;/&gt;<br/>);<br/>}<br/></blockquote></li></ul></li></ul></li></ul><ul id="1ec694d5-ea46-807f-961e-ca209ba0ec5c" class="bulleted-list"><li style="list-style-type:disc">有了动态Route，当你在/eras路由内导航时，像/eras/ancient这样，值“ancient”为动态路径，可以通过从useParams提取的type变量进行访问<ul id="1ec694d5-ea46-8045-bfee-d02d3f9eddb9" class="bulleted-list"><li style="list-style-type:circle">由于嵌套的路由结构，&lt;Eras /&gt;组件内的&lt;EraType /&gt;组件被渲染</li></ul></li></ul><ul id="1ec694d5-ea46-8091-bb6e-d6f657e83826" class="bulleted-list"><li style="list-style-type:disc">这是useParams的基本例子，这个Hook可以用于其他方式，比如从API中获取类似的动态数据</li></ul><p id="1ec694d5-ea46-8061-9119-fb27e88c8226" class="">
+</p><p id="1ec694d5-ea46-80d5-ab99-c78bcac952f0" class=""><strong><span style="border-bottom:0.05em solid">使用useRoutes Hook：</span></strong></p><ul id="1ec694d5-ea46-802e-99c8-ca4c509f6817" class="bulleted-list"><li style="list-style-type:disc">React Router提供了另一个Hook，是useRoutes Hook</li></ul><ul id="1ec694d5-ea46-8096-a78f-f5b6408cc5ff" class="bulleted-list"><li style="list-style-type:disc">这个Hook知识React Router中用于结构化Routes和Route的另一种方式，他的工作原理是：不使用React组件的形式（JSX），而是使用JS对象<ul id="1ec694d5-ea46-80a2-8a39-f5892bbfca8d" class="bulleted-list"><li style="list-style-type:circle">在App.js中，这是我们如何构建Routes和Route组件的结构<blockquote id="1ec694d5-ea46-8055-8dac-c18f70834c9c" class="">export default function App() {<br/>return (<br/>&lt;&gt;<br/>&lt;Nav /&gt;<br/>&lt;Routes&gt;<br/>&lt;Route path=&#x27;/&#x27; element={&lt;Home /&gt;} /&gt;<br/>&lt;Route path=&#x27;/eras&#x27; element={&lt;Eras /&gt;}&gt;<br/>&lt;Route path=&#x27;medieval&#x27; element={&lt;MedievalEra /&gt;} /&gt;<br/>&lt;Route path=&#x27;digital&#x27; element={&lt;DigitalEra /&gt;} /&gt;<br/>&lt;Route path=&#x27;:type&#x27; element={&lt;EraType /&gt;} /&gt;<br/>&lt;/Route&gt;<br/>&lt;Route path=&#x27;*&#x27; element={&lt;Error404 /&gt;} /&gt;<br/>&lt;/Routes&gt;<br/>&lt;/&gt;<br/>);<br/>}<br/></blockquote><ul id="1ec694d5-ea46-806d-a265-d6c0ac4e7b96" class="bulleted-list"><li style="list-style-type:square">使用useRoutes Hook代码重构如下<blockquote id="1ec694d5-ea46-80b0-944b-f9252d769938" class="">import { useRoutes } from &#x27;react-router-dom&#x27;;<p id="1ec694d5-ea46-8063-95d9-cfda2caba947" class="">export default function App() {<br/>const routes = useRoutes([<br/>{<br/>path: &quot;/&quot;,<br/>element: &lt;Home /&gt;,<br/>},<br/>{<br/>path: &quot;/eras&quot;,<br/>element: &lt;Eras /&gt;,<br/>children: [<br/>{<br/>path: &quot;medieval&quot;,<br/>element: &lt;MedievalEra /&gt;,<br/>},<br/>{<br/>path: &quot;digital&quot;,<br/>element: &lt;DigitalEra /&gt;,<br/>},<br/>{<br/>path: &quot;:type&quot;,<br/>element: &lt;EraType /&gt;,<br/>},<br/>],<br/>},<br/>{<br/>path: &quot;*&quot;,<br/>element: &lt;Error404 /&gt;,<br/>},<br/>]);<br/></p><p id="1ec694d5-ea46-8044-b2a5-eaa38037bbf9" class="">return (<br/>&lt;&gt;<br/>&lt;Nav /&gt;<br/>{routes}<br/>&lt;/&gt;<br/>);<br/>}<br/></p></blockquote></li></ul></li></ul></li></ul><ul id="1ec694d5-ea46-80d7-928f-fea1241ffff3" class="bulleted-list"><li style="list-style-type:disc">useRoutes Hook从react-router-dom导入，然后，一个路由对象数组被传递给useRoutes<ul id="1ec694d5-ea46-808b-90a6-fa6776c35590" class="bulleted-list"><li style="list-style-type:circle">每个路由对象都有一个path和element属性，用于指定路径和在路由匹配时应该渲染的组件</li></ul></li></ul><ul id="1ec694d5-ea46-80da-aff9-cb98f28b3b7f" class="bulleted-list"><li style="list-style-type:disc">所有，在useRoutes Hook或Routes和Route组件之间的选择归结为个人爱好，选择适配风格即可</li></ul><p id="1ec694d5-ea46-807a-a44d-f277d97f8c8b" class="">
+</p><p id="1ec694d5-ea46-8040-8f52-da0a4427be06" class=""><strong>学习React Router时前端开发者迈出的重要一步，使用该工具，在应用中管理路由导航和创建良好结构化的路由系统更简单。</strong></p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

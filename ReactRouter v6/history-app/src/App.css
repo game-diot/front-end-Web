@@ -1,0 +1,17 @@
+a {
+  text-decoration: none;
+  color: inherit;
+}
+a:hover {
+  color: #e32a30;
+}
+
+.nav {
+  list-style: none;
+  display: flex;
+  width: 500px;
+  justify-content: space-around;
+  align-items: center;
+  font-size: 1.1rem;
+  font-weight: bold;
+}
