@@ -1,0 +1,728 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>前后端框架链接-Axios</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.highlight-default_background {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.highlight-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.block-color-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: undefined; }
+.select-value-color-pink { background-color: rgba(225, 136, 179, 0.27); }
+.select-value-color-purple { background-color: rgba(168, 129, 197, 0.27); }
+.select-value-color-green { background-color: rgba(123, 183, 129, 0.27); }
+.select-value-color-gray { background-color: rgba(84, 72, 49, 0.15); }
+.select-value-color-translucentGray { background-color: undefined; }
+.select-value-color-orange { background-color: rgba(224, 124, 57, 0.27); }
+.select-value-color-brown { background-color: rgba(210, 162, 141, 0.35); }
+.select-value-color-red { background-color: rgba(244, 171, 159, 0.4); }
+.select-value-color-yellow { background-color: rgba(236, 191, 66, 0.39); }
+.select-value-color-blue { background-color: rgba(93, 165, 206, 0.27); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="1fc694d5-ea46-80ee-b99d-fe89f22c81f8" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">🫣</span></div><h1 class="page-title">前后端框架链接-Axios</h1><p class="page-description"></p></header><div class="page-body"><p id="1fc694d5-ea46-80da-9030-e53462bb01d0" class="">
+</p><p id="1fc694d5-ea46-80fa-9421-e05ded8fd523" class="">Axios是基于Promise的可以用于浏览器和Node.js的网络请求库。在服务端使用原生node.js的http模块，在客户端使用XMLHttpRequests</p><p id="1fc694d5-ea46-80af-bead-d59f1b5af2b4" class=""><mark class="highlight-red"><strong>（主推params和async）</strong></mark></p><p id="1fc694d5-ea46-8066-b660-ef166dec857a" class=""><strong><span style="border-bottom:0.05em solid">特性：</span></strong></p><ul id="1fc694d5-ea46-80b8-b840-f37094077905" class="bulleted-list"><li style="list-style-type:disc">在浏览器中创建XMLHttpRequests</li></ul><ul id="1fc694d5-ea46-8073-8c92-c21679ece565" class="bulleted-list"><li style="list-style-type:disc">从Node.js创建http请求</li></ul><ul id="1fc694d5-ea46-8085-aa64-f9baf7245a6c" class="bulleted-list"><li style="list-style-type:disc">支持Promise API</li></ul><ul id="1fc694d5-ea46-805e-98f5-cafe6c1380fd" class="bulleted-list"><li style="list-style-type:disc">拦截请求和响应</li></ul><ul id="1fc694d5-ea46-80b9-ac79-f7cbe5082213" class="bulleted-list"><li style="list-style-type:disc">转换请求和响应数据</li></ul><ul id="1fc694d5-ea46-80b0-b654-cdb3991a9bf7" class="bulleted-list"><li style="list-style-type:disc">取消请求</li></ul><ul id="1fc694d5-ea46-80d6-a762-c01c650e48b9" class="bulleted-list"><li style="list-style-type:disc">超时处理</li></ul><ul id="1fc694d5-ea46-80d8-be9e-ca73f2bb77b7" class="bulleted-list"><li style="list-style-type:disc">查询参数序列化支持嵌套项处理</li></ul><ul id="1fc694d5-ea46-8079-a734-e79806c2fef7" class="bulleted-list"><li style="list-style-type:disc">自动将请求提序列化为<ul id="1fc694d5-ea46-8039-a29b-d71128f38f4a" class="bulleted-list"><li style="list-style-type:circle">JSON（application/json）</li></ul><ul id="1fc694d5-ea46-80a2-bd24-c24216fe3a97" class="bulleted-list"><li style="list-style-type:circle">Multipart / FormData（multipart/form-data）</li></ul><ul id="1fc694d5-ea46-80fd-bee8-c10e23a971d9" class="bulleted-list"><li style="list-style-type:circle">URL encoded from （application/x-www-form-urlencoded）</li></ul></li></ul><ul id="1fc694d5-ea46-8059-9c37-d6277243b7f5" class="bulleted-list"><li style="list-style-type:disc">将HTML Form转换为JSON进行请求</li></ul><ul id="1fc694d5-ea46-80ef-909f-d554dcf6f0fa" class="bulleted-list"><li style="list-style-type:disc">自动转换JSON数据</li></ul><ul id="1fc694d5-ea46-8067-9108-e7d885a9590d" class="bulleted-list"><li style="list-style-type:disc">获取浏览器和node.js的请求进度，并提供额外的信息（速度、剩余时间等）</li></ul><ul id="1fc694d5-ea46-800c-b90f-ceae53de3187" class="bulleted-list"><li style="list-style-type:disc">为node.js设置带宽限制</li></ul><ul id="1fc694d5-ea46-8060-9b22-d8a396daed2b" class="bulleted-list"><li style="list-style-type:disc">兼容符合规范的FormData、Blob、node.js</li></ul><ul id="1fc694d5-ea46-8094-8e17-d6000646b01c" class="bulleted-list"><li style="list-style-type:disc">客户端支持防御XSRF</li></ul><p id="1fc694d5-ea46-8085-8764-cee400bd280c" class="">
+</p><p id="1fc694d5-ea46-8053-a6a4-ecefc34050e8" class=""><strong><span style="border-bottom:0.05em solid">安装：</span></strong></p><ul id="1fc694d5-ea46-8017-aa3c-d8271f061dd0" class="bulleted-list"><li style="list-style-type:disc">使用npm<ul id="1fc694d5-ea46-801a-8726-fe3de2cb18c6" class="bulleted-list"><li style="list-style-type:circle">npm install axios</li></ul></li></ul><ul id="1fc694d5-ea46-80de-ab8b-e34cf8d937ea" class="bulleted-list"><li style="list-style-type:disc">yarn<ul id="1fc694d5-ea46-80f3-9c48-c87fb7985e35" class="bulleted-list"><li style="list-style-type:circle">yarn add axios</li></ul></li></ul><ul id="1fc694d5-ea46-8029-95a1-e04e0285c23f" class="bulleted-list"><li style="list-style-type:disc">JS CDN<ul id="1fc694d5-ea46-8064-90c7-e124a05b5677" class="bulleted-list"><li style="list-style-type:circle">&lt;script <strong>src</strong>=&quot;https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js&quot;&gt;&lt;/script&gt;</li></ul></li></ul><p id="1fc694d5-ea46-802b-8886-c96a27ab74f9" class="">可以直接使用require导入预构建的CommonJS模块。<div class="indented"><ul id="1fc694d5-ea46-80fb-a7d2-e6d798a51ca4" class="bulleted-list"><li style="list-style-type:disc">const axios = require（‘axios/dist/node/axios.cjs’）</li></ul></div></p><p id="1fc694d5-ea46-80ce-893a-e28e0b81482d" class="">
+</p><p id="1fc694d5-ea46-8053-9595-f4d2edde5b5b" class=""><strong><span style="border-bottom:0.05em solid">基本示例：</span></strong></p><p id="1fc694d5-ea46-8097-919e-f1025c9c4e4d" class="">注意：CommonJS使用。在CommonJS中使用require（）导入时获得TS类型推断<div class="indented"><p id="1fc694d5-ea46-8033-b60e-c2474a9dedb8" class="">const axios = require（‘axios’）.default</p></div></p><p id="1fc694d5-ea46-8074-9233-efeffe303735" class=""><strong><span style="border-bottom:0.05em solid">Get请求</span></strong></p><ul id="1fc694d5-ea46-8017-b910-ff02dc79952f" class="bulleted-list"><li style="list-style-type:disc"><strong>发起Get请求：方法1</strong></li></ul><p id="1fc694d5-ea46-80a9-9d99-d44d8f55dcd6" class="">const axios = require（‘axios’）；</p><p id="1fc694d5-ea46-800e-b95d-e08282bcdb49" class="">//向指定的ID用户发起请求</p><p id="1fc694d5-ea46-80d5-9794-f4326e2bdabe" class="">axios.get（‘/user？ID=12345’）<div class="indented"><p id="1fc694d5-ea46-80bd-a8b6-c5fd446974d0" class="">.then（function（response）{</p><p id="1fc694d5-ea46-80b2-b3f6-eb440a0fe45b" class="">//成功情况<div class="indented"><p id="1fc694d5-ea46-80f3-b65e-fc608e083204" class="">console.log（response）；</p></div></p><p id="1fc694d5-ea46-8038-a0a1-f830b644dfe1" class="">}）</p><p id="1fc694d5-ea46-8058-81e7-c55d761164b5" class="">.catch（function（error）{</p><p id="1fc694d5-ea46-8030-b182-cdd89e20b46a" class="">//错误情况<div class="indented"><p id="1fc694d5-ea46-80f7-ac06-d8ae7a2285e6" class="">console.log（error）</p></div></p><p id="1fc694d5-ea46-8094-a2f3-e8e3436e861c" class="">}）</p><p id="1fc694d5-ea46-80ce-b114-d2b249ca3c47" class="">.finally（function（）{</p><p id="1fc694d5-ea46-8098-874d-ee51b121e8d3" class="">//总是会执行的代码<div class="indented"><p id="1fc694d5-ea46-805c-a5e5-ce475eeb8ab1" class="">…</p></div></p><p id="1fc694d5-ea46-8001-8285-d68189d2eb3a" class="">}）；</p></div></p><ul id="1fc694d5-ea46-8068-a394-e1dafa4ce56b" class="bulleted-list"><li style="list-style-type:disc"><strong>同上：发起Get请求：方法2</strong></li></ul><p id="1fc694d5-ea46-800a-bdb5-d7bf2fbf8237" class="">axios.get（‘/user’，{<div class="indented"><p id="1fc694d5-ea46-8016-9815-e28a72a74c88" class="">params：{<div class="indented"><p id="1fc694d5-ea46-8010-b5e9-cb47459ca662" class="">ID：12345</p><p id="1fc694d5-ea46-803e-99ec-f6ebfa0c9dd3" class="">}</p></div></p><p id="1fc694d5-ea46-800d-b622-c29e7ec0c0e0" class="">}）</p><p id="1fc694d5-ea46-8008-be8a-ed4616aca1e1" class="">.then（function（response）{<div class="indented"><p id="1fc694d5-ea46-809b-8041-ef4380ce9b52" class="">console.log（response）；</p></div></p><p id="1fc694d5-ea46-809c-b572-f62b15acf3f1" class="">}）</p><p id="1fc694d5-ea46-8048-9bb6-f2c0096e7032" class="">.catch（function（error）{<div class="indented"><p id="1fc694d5-ea46-8095-a025-ccba72182f10" class="">console.log（error）；</p></div></p><p id="1fc694d5-ea46-8025-a4a6-c75b93338858" class="">}）</p><p id="1fc694d5-ea46-8090-83dc-ed758e4d64dd" class="">.finally（function（）{<div class="indented"><p id="1fc694d5-ea46-802e-885e-e72d2f1dbc3a" class="">…</p></div></p><p id="1fc694d5-ea46-8009-88cb-fa83254ecc73" class="">}）；</p></div></p><ul id="1fc694d5-ea46-805c-aa5a-f9ccb6e58457" class="bulleted-list"><li style="list-style-type:disc"><strong>同上：发起Get请求：方法3</strong></li></ul><p id="1fc694d5-ea46-8031-b1cf-ec1b8dbd81e8" class="">async function getUser（）{<div class="indented"><p id="1fc694d5-ea46-80ce-b872-ec1f7c03b9cc" class="">try{<div class="indented"><p id="1fc694d5-ea46-8017-a99c-cad67fe828c5" class="">const response = await axios.get（‘/user？ID=12345‘）；</p><p id="1fc694d5-ea46-80d3-b0d4-f42388a6654f" class="">console.log（response）；</p></div></p><p id="1fc694d5-ea46-80ae-827a-e05cc0b0f992" class="">}catch（error）{<div class="indented"><p id="1fc694d5-ea46-806d-b6a8-ed2e6e3bbc4c" class="">console.error（error）；</p></div></p><p id="1fc694d5-ea46-80f4-898e-c4d3d44763b6" class="">}</p></div></p><p id="1fc694d5-ea46-8004-aca7-dc3217f30364" class="">}</p><p id="1fc694d5-ea46-8085-ae79-e5054734d16d" class="">
+</p><p id="1fc694d5-ea46-802e-a243-d9e9e0244506" class=""><strong><span style="border-bottom:0.05em solid">POST请求：</span></strong></p><ul id="1fc694d5-ea46-802f-b5c9-e15fe033f115" class="bulleted-list"><li style="list-style-type:disc"><strong>发起一个POST请求</strong></li></ul><p id="1fc694d5-ea46-8056-ad0c-cbb2387f9224" class="">axios.post（’/user‘，{<div class="indented"><p id="1fc694d5-ea46-806f-9193-d0398455214a" class="">firstName：’123‘，</p><p id="1fc694d5-ea46-8001-94d5-f94ee5453d1d" class="">lastName：’456‘</p></div></p><p id="1fc694d5-ea46-8010-86a2-c219e715643d" class="">}）<div class="indented"><p id="1fc694d5-ea46-8013-a102-ce2e13f8c45d" class="">.then（function（response）{<div class="indented"><p id="1fc694d5-ea46-80f7-8619-e18e81860cf5" class="">console.log（response）；</p></div></p><p id="1fc694d5-ea46-80ab-aae2-e07230b4ba5d" class="">}）</p><p id="1fc694d5-ea46-80ae-a370-db33339a3759" class="">.catch（function（error）{<div class="indented"><p id="1fc694d5-ea46-80f3-b057-c7841372502d" class="">console.log（error）</p></div></p><p id="1fc694d5-ea46-8013-ba7f-f7d33f73497a" class="">}）</p></div></p><ul id="1fc694d5-ea46-8024-a417-d3a8b3c92aaa" class="bulleted-list"><li style="list-style-type:disc"><strong>发起多个并发请求</strong></li></ul><p id="1fc694d5-ea46-80d3-b5e3-dc971d9f5b5e" class="">function getUserAccount（）{<div class="indented"><p id="1fc694d5-ea46-80ca-9105-d73e2eabdeba" class="">return axios.get（’/user/123456‘）；</p></div></p><p id="1fc694d5-ea46-80a5-b803-d7a9377a5913" class="">}</p><p id="1fc694d5-ea46-80e1-bd19-e55967aadf0f" class="">function getUserPermissions（）{<div class="indented"><p id="1fc694d5-ea46-8009-8da7-c93886588eab" class="">return axios.get（’/user/123456/permissions‘）；</p></div></p><p id="1fc694d5-ea46-8056-82a2-d7a1362c96f0" class="">}</p><p id="1fc694d5-ea46-802d-883b-f15f6be59e21" class="">const 【acct，perm】 = await Promise.all（【getUserAccount（），getUserPermissions（）】）；</p><p id="1fc694d5-ea46-80a7-8bee-ff492935358f" class="">或者</p><p id="1fc694d5-ea46-80cb-9b06-eb9bf42538a8" class="">Promise.all（【getUserAccount（），getUserPermissions（）】）<div class="indented"><p id="1fc694d5-ea46-80e8-a8ed-fb1303d72f5f" class="">.then（function（【acct，perm】）{<div class="indented"><p id="1fc694d5-ea46-802e-8826-dff5456d315b" class="">…</p></div></p><p id="1fc694d5-ea46-80cd-af8d-faed515477dd" class="">}）；</p></div></p><ul id="1fc694d5-ea46-8014-9220-f25cb91f56c2" class="bulleted-list"><li style="list-style-type:disc"><strong>将HTML表单转换成JSON进行请求</strong></li></ul><p id="1fc694d5-ea46-80c1-96d9-f9fa6f848169" class="">const {data} = await axios.post（’/user‘，document.querySelector（’#my-form‘），{<div class="indented"><p id="1fc694d5-ea46-80ac-93b0-fb580d26ca0d" class="">headers：{<div class="indented"><p id="1fc694d5-ea46-8085-a769-e330fe7c50ab" class="">‘Content-Type’：’application/json‘</p></div></p><p id="1fc694d5-ea46-805c-a6b8-de75bea2b62e" class="">}</p></div></p><p id="1fc694d5-ea46-805f-8622-cd360749eb01" class="">}）</p><ul id="1fc694d5-ea46-802c-b120-f42a10b1f809" class="bulleted-list"><li style="list-style-type:disc"><strong>表格多部分（multipart/form-data）</strong></li></ul><p id="1fc694d5-ea46-80b7-9c0a-ffcd27e7b28b" class="">const {data} = await axios.post（’https：//httpbin.org/post‘，{<div class="indented"><p id="1fc694d5-ea46-80d6-a5fe-d1afdc1828d2" class="">firstName：’123‘，</p><p id="1fc694d5-ea46-80e3-8d39-c28be1505670" class="">lastName：’456‘，</p><p id="1fc694d5-ea46-8044-8d7b-ed0a3b0f641e" class="">orders：【1，2，3】，</p><p id="1fc694d5-ea46-80c9-9b04-ff26b2b29371" class="">photo：document.querySelector（’#fileInput‘）.files</p></div></p><p id="1fc694d5-ea46-8017-bd35-c7670c5fe97b" class="">}，{<div class="indented"><p id="1fc694d5-ea46-8084-8c9f-cf41a2240132" class="">headers：{<div class="indented"><p id="1fc694d5-ea46-8095-ad86-da4dcc5bbd93" class="">‘Content-Type’：’multipart/form-data‘</p></div></p><p id="1fc694d5-ea46-807e-9d9c-f5b2c9b9658d" class="">}</p><p id="1fc694d5-ea46-807a-950a-cb1876530d13" class="">}</p></div></p><p id="1fc694d5-ea46-805e-8562-ec8c5b50b1dd" class="">）</p><ul id="1fc694d5-ea46-808d-9437-c434d9762d1d" class="bulleted-list"><li style="list-style-type:disc">表格URL编码形式（application/x-www-form-urlencoded）</li></ul><p id="1fc694d5-ea46-802b-bf2e-f54b85bd1ebd" class="">const {data} = await axios.port（’http：//httpbin.org/post‘，{<div class="indented"><p id="1fc694d5-ea46-80c2-9ade-e5efb5468950" class="">firstName：’123‘，</p><p id="1fc694d5-ea46-8067-9506-d36bf739cbe1" class="">latName：’456‘，</p><p id="1fc694d5-ea46-80de-b991-c07a684c8528" class="">orders：【1，2，3】</p></div></p><p id="1fc694d5-ea46-80f4-a973-c0234ac56284" class="">}，{<div class="indented"><p id="1fc694d5-ea46-80cd-b85e-e78aec279b70" class="">headers：{<div class="indented"><p id="1fc694d5-ea46-80a0-9b45-c419e0582886" class="">’Content-Type‘：’application/x-www-form-urlencoded‘</p></div></p><p id="1fc694d5-ea46-8032-ae86-c197a5686baf" class="">}</p></div></p><p id="1fc694d5-ea46-80ae-ac8b-ce9456164456" class="">}）</p><p id="1fc694d5-ea46-80db-8160-c71aac509017" class="">
+</p><p id="1fc694d5-ea46-80a7-9b95-f409b3260a23" class=""><strong><span style="border-bottom:0.05em solid">Axios API参考</span></strong></p><p id="1fc694d5-ea46-8057-a60a-e7ff5d306a07" class="">可以向axios提交相关配置来创建请求</p><ul id="1fc694d5-ea46-8008-b654-f4c5206e709b" class="bulleted-list"><li style="list-style-type:disc"><strong>axios（config）</strong></li></ul><p id="1fc694d5-ea46-80e2-be66-e76f2efb7566" class="">//发起一个post请求</p><p id="1fc694d5-ea46-80b8-a555-c15de68f2154" class="">axios（{<div class="indented"><p id="1fc694d5-ea46-8076-9017-cb896413c63b" class="">method：’post‘，</p><p id="1fc694d5-ea46-8072-bbb4-d17781a9e479" class="">url：’/user/123456‘，</p><p id="1fc694d5-ea46-8003-b6d3-d44900e3c574" class="">data：{<div class="indented"><p id="1fc694d5-ea46-80b0-9378-d3db4990d37d" class="">firstName：’123‘，</p><p id="1fc694d5-ea46-809d-a2f2-c201ab93708b" class="">latName：“456”</p></div></p><p id="1fc694d5-ea46-80c8-9843-cf9464fcb4ff" class="">}</p></div></p><p id="1fc694d5-ea46-80fe-93ec-fd61384d17eb" class="">}）；</p><ul id="1fc694d5-ea46-807e-8ea1-e3313a543276" class="bulleted-list"><li style="list-style-type:disc">例子，在node.js中使用GET来获取远程图片</li></ul><p id="1fc694d5-ea46-8015-bc40-d3224162d6a1" class="">axios（{<div class="indented"><p id="1fc694d5-ea46-80de-b1ac-cca85982ee82" class="">method：“get”，</p><p id="1fc694d5-ea46-80bf-a966-feec3e8c6ffd" class="">url：“http：//bit.ly/123”，</p><p id="1fc694d5-ea46-8067-93b2-e7d002fe771d" class="">responseType：“stream”</p></div></p><p id="1fc694d5-ea46-806e-b623-efff1f018972" class="">}）<div class="indented"><p id="1fc694d5-ea46-80b2-96da-d59fec2cf16c" class="">.then（function（response）{<div class="indented"><p id="1fc694d5-ea46-8083-956a-cbe7b38daa44" class="">response.data.pipe（fs.createWriteStream（’ada_lovelace.jpg‘））</p></div></p><p id="1fc694d5-ea46-8073-9622-c1c349272052" class="">}）；</p></div></p><ul id="1fc694d5-ea46-806e-9743-fe1b963a1c44" class="bulleted-list"><li style="list-style-type:disc">axios（url【，config】）</li></ul><p id="1fc694d5-ea46-8075-bf5a-c90f50aa8e8e" class="">//发起GET请求（默认请求方式）</p><p id="1fc694d5-ea46-8014-bebf-d25663f5dc6b" class="">axios（’/user/123456‘）；</p><p id="1fc694d5-ea46-80a8-840e-c2e732991f5c" class="">
+</p><p id="1fc694d5-ea46-8068-b06d-f88cb51bcbbd" class=""><strong>请求方式别名：使用别名时候，url、method、data等属性不必须指定</strong></p><ul id="1fc694d5-ea46-80b5-aeac-f040c8428d47" class="bulleted-list"><li style="list-style-type:disc">axios.request（config）</li></ul><ul id="1fc694d5-ea46-8094-ad40-fd583bc7d1d5" class="bulleted-list"><li style="list-style-type:disc">axios.get（url【，config】）</li></ul><ul id="1fc694d5-ea46-8066-9f34-f4322a630989" class="bulleted-list"><li style="list-style-type:disc">axios.delete（url【，config】）</li></ul><ul id="1fc694d5-ea46-80f2-ac62-df394d56b13c" class="bulleted-list"><li style="list-style-type:disc">axios.head（url【，config】）</li></ul><ul id="1fc694d5-ea46-8092-84fc-e85c8c076e40" class="bulleted-list"><li style="list-style-type:disc">axios.options（url【，config】）</li></ul><ul id="1fc694d5-ea46-8070-a98f-d48e03d56beb" class="bulleted-list"><li style="list-style-type:disc">axios.option（url【，config】）</li></ul><ul id="1fc694d5-ea46-8038-a5cf-c9e4cf32f50b" class="bulleted-list"><li style="list-style-type:disc">axios.post（url【，data【，config】】）</li></ul><ul id="1fc694d5-ea46-80c7-b731-da5a3a098628" class="bulleted-list"><li style="list-style-type:disc">axios.put（url【，data【，config】】）</li></ul><ul id="1fc694d5-ea46-80e2-9dfb-d566e2fdee34" class="bulleted-list"><li style="list-style-type:disc">axios.patch（url【，data【，config】】）</li></ul><ul id="1fc694d5-ea46-803f-b1b0-d3bae5f34907" class="bulleted-list"><li style="list-style-type:disc">axios.postForm（url【，data【，config】】）</li></ul><ul id="1fc694d5-ea46-8057-9845-eefab877023d" class="bulleted-list"><li style="list-style-type:disc">axios.putForm（url【，data【，config】】）</li></ul><ul id="1fc694d5-ea46-80f6-9b40-ded21626afc5" class="bulleted-list"><li style="list-style-type:disc">axios.patchForm（url【，data【，config】】）</li></ul><p id="1fd694d5-ea46-80fd-b1c8-e3041b00e102" class="">
+</p><p id="1fd694d5-ea46-8091-9525-d9631a7c898b" class=""><strong><span style="border-bottom:0.05em solid">请求配置：</span></strong></p><p id="1fd694d5-ea46-8048-b297-ea655d586a1b" class="">下面是创建请求时可以使用的配置选项，只有url是必须的，如果没有指定method，请求会默认使用get方法</p><p id="1fd694d5-ea46-8076-bf71-c66612bcef28" class="">{<div class="indented"><p id="1fd694d5-ea46-80f7-87b4-e302348ca667" class="">//url，用于请求的服务器URL</p><p id="1fd694d5-ea46-800b-9a8f-ff0dbbc9a213" class="">url：‘/user’，</p><p id="1fd694d5-ea46-807e-a301-c8e7eb8aff3c" class="">
+</p><p id="1fd694d5-ea46-8035-96ab-eb863c425106" class="">//method是创建请求时使用的方法</p><p id="1fd694d5-ea46-8064-9691-d9c33f389eaa" class="">method：‘get’</p><p id="1fd694d5-ea46-80a2-a266-e0b5d2074286" class="">
+</p><p id="1fd694d5-ea46-80a9-8f84-f7411dcf50b1" class="">//baseUrl将自动加在url前面，除非url是绝对URL，相对于传统的URL它可以通过设置一个baseURL便于为axios实例的方法传递</p><p id="1fd694d5-ea46-808c-bb75-fc236b5277e6" class="">baseURL：‘https：//some-domain.com/api/’</p><p id="1fd694d5-ea46-80ed-9889-e7e300618e44" class="">
+</p><p id="1fd694d5-ea46-80ab-884c-e3e28133ede4" class="">//transformRequest，允许向服务器发送前，修改请求数据，只能用于PUT、POST、PATCH方法，数组中的最后一个函数必须返回一个字符串。下面实例，可以修改请求头<div class="indented"><p id="1fd694d5-ea46-8048-a86a-c0ed2f0f4339" class="">transformRequest：【function（data，headers）{<div class="indented"><p id="1fd694d5-ea46-8087-a1c0-d7d5e7b57a29" class="">对发送的data进行任意转换处理修改</p><p id="1fd694d5-ea46-80b0-a0f5-c5989941c617" class="">return data；</p></div></p><p id="1fd694d5-ea46-807e-b4bf-ed4caa872d75" class="">}】</p></div></p><p id="1fd694d5-ea46-8074-8b43-e5c342b0d40f" class="">
+</p><p id="1fd694d5-ea46-8001-841c-ca05df5c6cd0" class="">//transformResponse，在传递给then/catch之前，允许修改相应数据<div class="indented"><p id="1fd694d5-ea46-8004-90e8-d295bc7c59ee" class="">transformResponse：【function（data）{<div class="indented"><p id="1fd694d5-ea46-80ba-9617-c34380368a7d" class="">对接受的data进行任意转换处理修改</p><p id="1fd694d5-ea46-809f-b2f4-ed4bc696f342" class="">return data</p></div></p><p id="1fd694d5-ea46-8010-b885-d78280176db8" class="">}】</p></div></p><p id="1fd694d5-ea46-80c2-a140-e801d4196255" class="">
+</p><p id="1fd694d5-ea46-8090-8301-e15e0379cd4a" class="">//自定义请求头</p><p id="1fd694d5-ea46-8084-8854-feebc9732d93" class="">headers：{‘X-Requested-With’：‘XMLHttpRequest’}</p><p id="1fd694d5-ea46-80dc-89e1-d3fbdf695c61" class="">
+</p><p id="1fd694d5-ea46-80b0-bdc2-d1bc129c3348" class="">//params是与请求一起发送的URL参数，必须是一个简单对象或URLSearchParams对象<div class="indented"><p id="1fd694d5-ea46-80d0-975c-e81d1a382ab3" class="">params：{<div class="indented"><p id="1fd694d5-ea46-80f2-94fe-e4ffa63421ac" class="">ID：‘123456’</p></div></p><p id="1fd694d5-ea46-80ce-9d07-df201ff5cdcc" class="">}</p></div></p><p id="1fd694d5-ea46-80c0-a482-f5674d1decf8" class="">
+</p><p id="1fd694d5-ea46-80c5-9a54-c3f5ca74993a" class="">//paramsSerializer是可选方法，主要用于序列化params。 (e.g. https://www.npmjs.com/package/qs, http://api.jquery.com/jquery.param/)<div class="indented"><p id="1fd694d5-ea46-8088-87a5-f8de0ccf8567" class="">paramsSerializer：function（params）{<div class="indented"><p id="1fd694d5-ea46-8050-a9d8-e32b0ad18f25" class="">return Qs.stringify（params，{arrayFormat：‘brackets’}）</p></div></p><p id="1fd694d5-ea46-806e-aac4-e465ec85fd2f" class="">}</p><p id="1fd694d5-ea46-8018-9d80-c7a762d4076f" class="">
+</p></div></p><p id="1fd694d5-ea46-809f-9574-cbc1b591d3e4" class="">//data作为请求体被发送的数据，仅适用于PUT、POST、DELETE、PATCH请求方法，在没有设置transformRequest时，data必须是以下类型</p><p id="1fd694d5-ea46-80c0-9d8d-d7a0b6ea1dc1" class="">string，plain object，ArrayBuffer，ArrayBufferView，URLSearchParams。（浏览器专用：FormData，File，Blob），（Node专用：Stream，Buffer）<div class="indented"><p id="1fd694d5-ea46-8037-8985-f973c88dd616" class="">data：{<div class="indented"><p id="1fd694d5-ea46-80e9-9f04-df66c9216bde" class="">firstName：‘Fred’</p></div></p><p id="1fd694d5-ea46-8048-a74a-dfde82450283" class="">}</p></div></p><p id="1fd694d5-ea46-80f2-a197-d4f9bfbcf99d" class="">
+</p><p id="1fd694d5-ea46-8024-8528-cdc85cf05bb7" class="">//发送请求提数据的可选语法，请求方式post，只有value会被发送，key不会<div class="indented"><p id="1fd694d5-ea46-80dd-8374-e38957c72e7b" class="">data：‘Country=CN&amp;City=CQ’</p></div></p><p id="1fd694d5-ea46-80f2-a3c7-c192e5953ded" class="">
+</p><p id="1fd694d5-ea46-8087-9638-cc1e00f3058f" class="">//timeout指定请求超时的毫秒数，如果请求时间超过timeout的值，则请求会被中断<div class="indented"><p id="1fd694d5-ea46-806f-b373-d71508ef17d8" class="">timeout：1000，//默认值是0，永不超时</p></div></p><p id="1fd694d5-ea46-8022-9be0-d8bf0b07731b" class="">
+</p><p id="1fd694d5-ea46-807e-b3e1-ccf1f7730c1c" class="">//withCredentials，表示跨域请求时是否需要使用凭证<div class="indented"><p id="1fd694d5-ea46-80ff-804b-cd46fd93ded5" class="">withCredentials：false//default</p></div></p><p id="1fd694d5-ea46-80d5-8c5f-f29945f357f2" class="">
+</p><p id="1fd694d5-ea46-80c6-bf23-fc02fbbc58f3" class="">//adapter允许自定义请求处理，使得测试更加容易，返回一个promise并提供一个有效的响应<div class="indented"><p id="1fd694d5-ea46-806f-825b-cac5702c40aa" class="">adapter：function（config）{<div class="indented"><p id="1fd694d5-ea46-808f-8ee4-f2264821ef6c" class="">/* …*/</p></div></p><p id="1fd694d5-ea46-80fc-87f9-cbe6b3ac4c9d" class="">}</p></div></p><p id="1fd694d5-ea46-80af-87cd-dec4c8936dad" class="">
+</p><p id="1fd694d5-ea46-803c-b9f2-ee20811a2991" class="">//auth HTTP Basic Auth<div class="indented"><p id="1fd694d5-ea46-80b2-8f3d-dac66da273df" class="">auth：{<div class="indented"><p id="1fd694d5-ea46-8062-8a49-eee6fac1cd8b" class="">username：‘tom’</p><p id="1fd694d5-ea46-80c6-bb1a-f8a30738d44a" class="">passward：‘123456’</p></div></p><p id="1fd694d5-ea46-80c8-8895-ed6d1bdfeb87" class="">}</p></div></p><p id="1fd694d5-ea46-8072-a184-c5c3a87908c7" class="">
+</p><p id="1fd694d5-ea46-80cc-bc24-c624dfd06441" class="">//responseType，表示浏览器要响应的数据类型，包括arraybuffer，document，json，text，stream，（浏览器专用：blob）<div class="indented"><p id="1fd694d5-ea46-80f2-959f-f361f4d45a82" class="">responseType：‘json’</p></div></p><p id="1fd694d5-ea46-8006-a0df-f19e6972cd76" class="">
+</p><p id="1fd694d5-ea46-8069-a1ee-dae71c169916" class="">//responseEncoding，表示用于解码响应的编码，Node.js专用<div class="indented"><p id="1fd694d5-ea46-80ca-92b2-e98223116871" class="">responseEncoding：‘utf-8’</p></div></p><p id="1fd694d5-ea46-80e2-aba5-d2a58bd1ec8e" class="">
+</p><p id="1fd694d5-ea46-8009-871c-e503735784e9" class="">//xsrfCookieName是xsrf token的值，被用作cookie名称<div class="indented"><p id="1fd694d5-ea46-809d-95b4-dcdfb544fc28" class="">xsrfCookieName：‘XSRF-TOKEN’</p></div></p><p id="1fd694d5-ea46-809d-bda8-c82ab878a573" class="">
+</p><p id="1fd694d5-ea46-805d-907c-f0f5b2d1e235" class="">//xsrfHeaderName，是带有xsrf token值的http请求头名称<div class="indented"><p id="1fd694d5-ea46-8074-a477-e024d809a826" class="">xsrfHeaderName：‘X-XSRF-TOKEN’</p></div></p><p id="1fd694d5-ea46-8055-91b8-cffc1daf99c4" class="">
+</p><p id="1fd694d5-ea46-803a-8eee-da18550efdf4" class="">//onUploadProgress，允许为上传处理进度实践，浏览器专用</p><p id="1fd694d5-ea46-8088-acda-e5b6385a8393" class="">onUploadProgress：function（progressEvent）{<div class="indented"><p id="1fd694d5-ea46-8097-9d92-d3a7e5a09fa8" class="">处理原生进度事件</p><p id="1fd694d5-ea46-80e4-847c-c2f36386c38a" class="">}</p></div></p><p id="1fd694d5-ea46-8022-b913-fb93e8adc921" class="">
+</p><p id="1fd694d5-ea46-809e-80b6-f68fdafe9d99" class="">//maxContentLength，定义了node.js中允许的HTTP相应内容的最大字节数<div class="indented"><p id="1fd694d5-ea46-806c-a1dd-d761950d0a24" class="">maxContentLength：2000</p></div></p><p id="1fd694d5-ea46-805e-bda4-ec139c4fa4a5" class="">
+</p><p id="1fd694d5-ea46-80e0-863e-d4d4883a4f7e" class="">//maxBodyLength，仅Node.js，请求内容的最大字节数<div class="indented"><p id="1fd694d5-ea46-8036-a97a-f47aa94e5e73" class="">maxBodyLength：2000</p></div></p><p id="1fd694d5-ea46-8068-b4c9-f2a29b9cc76e" class="">
+</p><p id="1fd694d5-ea46-801f-bf7c-faa4645e3416" class="">//validateStatus，定义了对于给定的HTTP状态码是resolve还是reject promise。如果返回true或设置为null/undefined，则promise会为resolved否则为rejected<div class="indented"><p id="1fd694d5-ea46-80a2-8281-e9cae8476e39" class="">validateStatus：function（status）{<div class="indented"><p id="1fd694d5-ea46-805a-984c-c51fa8a1cc94" class="">return status ≥ 200&amp;&amp;status&lt;300</p></div></p><p id="1fd694d5-ea46-8027-801b-e534fdd2c1e2" class="">}</p></div></p><p id="1fd694d5-ea46-807a-a17e-e9b01704b99e" class="">
+</p><p id="1fd694d5-ea46-803c-941b-e2bff9ba075d" class="">//maxRedirects定义了在node.js中要遵循的最大重定向数，设置为0则不会重定向<div class="indented"><p id="1fd694d5-ea46-8047-8e5f-e29b4b901a10" class="">maxRedirects：5</p></div></p><p id="1fd694d5-ea46-80e3-8b82-f9b29ecde56c" class="">
+</p><p id="1fd694d5-ea46-8007-b4c8-e6eb97398714" class="">//socketPath定义了在node.js中使用的UNIX套接字，<br/>e.g. &#x27;/var/run/docker.sock&#x27; 发送请求到 docker 守护进程。只能指定socketPath或proxy，都指定会使用socketPath<br/><div class="indented"><p id="1fd694d5-ea46-80db-b5c1-fe2b2be41b87" class="">socketPath：null</p></div></p><p id="1fd694d5-ea46-80ab-8ccc-e04eceed2b89" class="">
+</p><p id="1fd694d5-ea46-80d4-8fdc-c75aa28832ec" class="">// `httpAgent` and `httpsAgent` define a custom agent to be used when performing http<br/>  // and https requests, respectively, in node.js. This allows options to be added like<br/>  // `keepAlive` that are not enabled by default.<br/>  httpAgent: <br/><strong>new </strong>http.Agent({ keepAlive: true }),<br/>  httpsAgent: <br/><strong>new </strong>https.Agent({ keepAlive: true }),</p><p id="1fd694d5-ea46-80bb-a945-cd2e7ebe70cf" class="">
+</p><p id="1fd694d5-ea46-8042-80cb-ec9940baf44e" class="">// <code>proxy</code> 定义了代理服务器的主机名，端口和协议。<br/>// 您可以使用常规的<br/><code>http_proxy</code> 和 <code>https_proxy</code> 环境变量。<br/>// 使用 <br/><code>false</code> 可以禁用代理功能，同时环境变量也会被忽略。<br/>// <br/><code>auth</code>表示应使用HTTP Basic auth连接到代理，并且提供凭据。<br/>// 这将设置一个 <br/><code>Proxy-Authorization</code> 请求头，它会覆盖 <code>headers</code> 中已存在的自定义 <code>Proxy-Authorization</code> 请求头。<br/>// 如果代理服务器使用 HTTPS，则必须设置 protocol 为<br/><code>https</code><br/>proxy: {<br/>  protocol: &#x27;https&#x27;,<br/>  host: &#x27;127.0.0.1&#x27;,<br/>  port: 9000,<br/>  auth: {<br/>    username: &#x27;mikeymike&#x27;,<br/>    password: &#x27;rapunz3l&#x27;<br/>  }<br/>},<br/></p><p id="1fd694d5-ea46-8060-b625-f39709ea103b" class="">}</p></div></p><p id="1fd694d5-ea46-8081-b6a1-f389a37a4124" class="">
+</p><p id="1fd694d5-ea46-8036-ab7f-ef510f1b52ff" class=""><strong><span style="border-bottom:0.05em solid">响应结构：</span></strong></p><p id="1fd694d5-ea46-80d3-adb9-fb02f06c3160" class="">一个请求的响应包含以下信息</p><p id="1fd694d5-ea46-802e-8f7d-d75ecefcb19c" class="">{<div class="indented"><p id="1fd694d5-ea46-8072-9e4e-c29559706833" class="">//data由服务器提供的响应</p><p id="1fd694d5-ea46-8090-93a0-c3c861a789d7" class="">data：{}</p><p id="1fd694d5-ea46-80b6-991f-df0ce3733b18" class="">
+</p><p id="1fd694d5-ea46-804d-8fe1-fbfa9d5e8a88" class="">//status来自服务器响应的http状态码</p><p id="1fd694d5-ea46-8076-a289-d2150cda14a9" class="">status：200</p><p id="1fd694d5-ea46-8065-b69c-f233b9a86e48" class="">
+</p><p id="1fd694d5-ea46-80ac-9d22-d8ea49c9f400" class="">//statusText来自服务器响应的HTTP状态信息</p><p id="1fd694d5-ea46-8053-bbdd-ca9aa066239e" class="">statusText：‘ok’</p><p id="1fd694d5-ea46-8023-b401-d0d86d8a1855" class="">
+</p><p id="1fd694d5-ea46-807c-a81d-ec1ce0951ded" class="">//headers是服务器响应头，所有的header名称为小写，而且可以使用方括号语法访问，例如response.headers【‘content-type’】</p><p id="1fd694d5-ea46-8034-a03a-d3c7d647d931" class="">headers：{}</p><p id="1fd694d5-ea46-8030-82ad-f4eaac6335ca" class="">
+</p><p id="1fd694d5-ea46-803d-8c7d-c09e7efaf075" class="">//config是axios请求的配置信息</p><p id="1fd694d5-ea46-808a-93d6-ee9ddaaeebc5" class="">config：{}</p><p id="1fd694d5-ea46-8077-8ae4-e4c059cab326" class="">
+</p><p id="1fd694d5-ea46-804e-9051-ee0022597b47" class="">//request是生成此相应的请求，在node.js中他是最后一个ClientRequest实例，在浏览器中是XMLHttpRequest实例</p><p id="1fd694d5-ea46-801e-bc8b-d97c9a94ca39" class="">request：{}</p></div></p><p id="1fd694d5-ea46-8055-a475-f45a05ee6ac3" class="">}</p><p id="1fd694d5-ea46-8011-915c-ddc980a97337" class="">使用then，会接受以下响应<div class="indented"><p id="1fd694d5-ea46-8064-be55-d6fe8d9154cc" class="">axios.get（‘/user/12345’）<div class="indented"><p id="1fd694d5-ea46-808d-8ef8-dbda4040b4c2" class="">.then（function（response）{<div class="indented"><p id="1fd694d5-ea46-80f7-a5d9-f0246fcd259d" class="">console.log（response.data）</p><p id="1fd694d5-ea46-80cc-8bc7-cde23a06cbe0" class="">console.log（response.status）</p><p id="1fd694d5-ea46-806d-b800-cb93d2e3846f" class="">console.log（response.statusText）</p><p id="1fd694d5-ea46-80e9-ae83-d29404eeb547" class="">console.log（response.headers）</p><p id="1fd694d5-ea46-80dc-b510-e9f42f28392e" class="">console.log（responde.config）</p></div></p><p id="1fd694d5-ea46-8054-96ad-ca9a745edeec" class="">}）</p></div></p></div></p><p id="1fd694d5-ea46-8024-8bb3-de6c16f7d3d0" class="">使用catch或者传递一个拒绝回调作为then的第二个参数时，响应可以通过error对象被使用，同错误处理部分解释一样</p><p id="1fd694d5-ea46-80e0-8a73-c0789c889eaf" class="">
+</p><p id="1fd694d5-ea46-80ca-ba35-fa00e81f7172" class=""><strong><span style="border-bottom:0.05em solid">默认配置：</span></strong></p><p id="1fd694d5-ea46-8018-9f2d-fe2f17a6fb86" class="">可以指定默认配置，作用域每个请求</p><p id="1fd694d5-ea46-80b5-b7ce-d87ce0603ade" class=""><strong>全局axios默认值</strong><div class="indented"><p id="1fd694d5-ea46-80f3-ab81-ea9848a94e8a" class="">axios.defaults.baseURL = &#x27;https://api.example.com&#x27;;<br/>axios.defaults.headers.common[&#x27;Authorization&#x27;] =<br/><strong>AUTH_TOKEN</strong>;<br/>axios.defaults.headers.post[&#x27;Content-Type&#x27;] = &#x27;application/x-www-form-urlencoded&#x27;;<br/></p></div></p><p id="1fd694d5-ea46-8008-81c0-d3aa09b33a69" class=""><strong>自定义实例默认值</strong><div class="indented"><p id="1fd694d5-ea46-805f-b275-c7dd4e8d3346" class="">// 创建实例时配置默认值</p><p id="1fd694d5-ea46-80f1-a0da-fc93a35450fe" class=""><strong>const </strong>instance = axios.<strong>create</strong>({<br/>  baseURL: &#x27;https://api.example.com&#x27;<br/>});<br/>// 创建实例后修改默认值<br/>instance.defaults.headers.common[&#x27;Authorization&#x27;] =<br/><strong>AUTH_TOKEN</strong>;</p></div></p><p id="1fd694d5-ea46-801d-bebd-f18de248fec8" class=""><strong>配置的优先级</strong><div class="indented"><p id="1fd694d5-ea46-8024-8a28-ff5bc16a5c63" class="">配置会按照优先级进行合并，顺序时在lib/defaults.js中找到的库默认值，然后是实例的defaults属性，最后是请求的config参数。后面的优先级要高于前面，例子如下<div class="indented"><p id="1fd694d5-ea46-80d2-861a-f8fcad4ad724" class="">// 使用库提供的默认配置创建实例<br/>// 此时超时配置的默认值是 `0`<br/></p><p id="1fd694d5-ea46-80f7-ba7e-ffd2679c3a89" class=""><strong>const </strong>instance = axios.<strong>create</strong>();<br/>// 重写库的超时默认值<br/>// 现在，所有使用此实例的请求都将等待2.5秒，然后才会超时<br/>instance.defaults.timeout = 2500;<br/>// 重写此请求的超时时间，因为该请求需要很长时间<br/>instance.<br/><strong>get</strong>(&#x27;/longRequest&#x27;, {<br/>  timeout: 5000<br/>});<br/></p></div></p></div></p><p id="1fd694d5-ea46-8006-9205-c2ac251a29a8" class="">
+</p><p id="1fd694d5-ea46-80d0-ba8d-ce7dd6c5b970" class=""><strong><span style="border-bottom:0.05em solid">拦截器：</span></strong></p><p id="1fd694d5-ea46-80b8-8418-dde922624dc6" class="">在请求或响应被then或catch处理前拦截他们<div class="indented"><p id="1fd694d5-ea46-8028-8688-de2fad445bfb" class=""><strong>//添加请求拦截器</strong></p><p id="1fd694d5-ea46-806a-b567-e36fad550a64" class="">axios.interceptors，request.use（function（config）{<div class="indented"><p id="1fd694d5-ea46-807d-860e-ea22f341145e" class="">//再发送请求之前做些什么</p><p id="1fd694d5-ea46-8060-aa2e-c0ce271c676e" class="">return config；</p><p id="1fd694d5-ea46-8035-96b4-ebad0d132137" class="">}，function（error）{</p><p id="1fd694d5-ea46-8088-8118-c427740380fa" class="">//对错误请求做些什么</p><p id="1fd694d5-ea46-8056-a6b5-d4e1468279d4" class="">return Promise.reject（error）</p></div></p><p id="1fd694d5-ea46-8006-b833-fdcfe7db2cb3" class="">}）；</p><p id="1fd694d5-ea46-8091-a6c9-cf3299d1af2c" class=""><strong>//添加响应拦截器</strong></p><p id="1fd694d5-ea46-80c8-b04b-de73b38aae82" class="">axios.interceptors.response.use（function（response）{<div class="indented"><p id="1fd694d5-ea46-807c-bebe-e89f0e3161dc" class="">//2xx范围内状态码都会触发该函数</p><p id="1fd694d5-ea46-80df-906f-ece821a28343" class="">//对响应数据做些什么</p><p id="1fd694d5-ea46-8085-8e31-fd0906c19994" class="">return response；</p><p id="1fd694d5-ea46-80c3-b57e-d1c9a48bb06c" class="">}，function（error）{</p><p id="1fd694d5-ea46-80be-8a08-ce1122c96468" class="">//对超出2xx范围的状态码触发该函数</p><p id="1fd694d5-ea46-80c1-9cb1-db0fb426498c" class="">//对响应错误做些什么</p><p id="1fd694d5-ea46-8043-b49c-f8feec1ecfda" class="">return Promise.reject（error）；</p><p id="1fd694d5-ea46-80e1-8e3c-e51ab92080d2" class="">}）；</p><p id="1fd694d5-ea46-80e8-8613-c28480607cb7" class="">
+</p></div></p></div></p><p id="1fd694d5-ea46-8031-bed7-eb519c3521e4" class="">稍后需要移除拦截器可以<div class="indented"><p id="1fd694d5-ea46-8054-8c1a-c3ef68d67161" class=""><strong>//移除拦截器</strong></p><p id="1fd694d5-ea46-8049-a4c8-eec962272b8d" class="">const myInterceptor = axios.interceptors.request.use（function（）{/**/}）；</p><p id="1fd694d5-ea46-80b2-9ac2-dd737321736a" class="">axios.interceptors.request.reject（myInterceptor）；</p></div></p><p id="1fd694d5-ea46-8055-a40e-c998cd128f8a" class="">可以给自定义的axios实例添加拦截器<div class="indented"><p id="1fd694d5-ea46-80c7-a83e-f4572ee26a47" class=""><strong>//添加拦截器</strong></p><p id="1fd694d5-ea46-80b9-ab30-c2e0fa2f488e" class="">const instance = axios.create（）；</p><p id="1fd694d5-ea46-8093-9012-ff28280877b3" class="">instance.interceptors.request.use（function（）{/**/}）</p></div></p><p id="1fd694d5-ea46-801e-8524-d5b10ce640b5" class="">
+</p><p id="1fd694d5-ea46-80b2-93e2-e27d36b78df6" class=""><strong><span style="border-bottom:0.05em solid">错误处理</span></strong></p><p id="1fd694d5-ea46-80e3-93ee-c251f07afc44" class="">axios.get（‘/user/12345’）<div class="indented"><p id="1fd694d5-ea46-80ba-a813-f01d692e9c8e" class="">.catch（function（error）{<div class="indented"><p id="1fd694d5-ea46-8038-aaf6-c137c35c93d8" class="">if（error.response）{</p><p id="1fd694d5-ea46-807f-9cc5-f118d5670b0a" class="">//请求成功且服务器响应了状态码，但是超出2XX范围<div class="indented"><p id="1fd694d5-ea46-8058-8b12-e7fa1be17eda" class="">console.log（error.response.data）；</p><p id="1fd694d5-ea46-80d4-928b-eb8d21477ef5" class="">console.log（error.response.status）；</p><p id="1fd694d5-ea46-8020-bd8f-e1a899ed7418" class="">console.log（error.response.headers）；</p></div></p><p id="1fd694d5-ea46-8018-9cae-dd598b98dbda" class="">}else if（error.request）{</p><p id="1fd694d5-ea46-801c-a963-ccc505e62d7d" class="">//请求成功发起，没有收到响应</p><p id="1fd694d5-ea46-8011-a90c-c3c8498479bb" class="">//error.request在浏览器中是XMLHttpRequest的实例</p><p id="1fd694d5-ea46-80da-8e69-e0ff7ce388f9" class="">//node.js中是http.ClientRequest<div class="indented"><p id="1fd694d5-ea46-80ed-abe0-e69adda20a17" class="">console.log（error.request）；</p></div></p><p id="1fd694d5-ea46-80ca-8a56-dea272c301c7" class="">}else{</p><p id="1fd694d5-ea46-80f7-b97c-d629aac219d3" class="">//发送请求时出现问题<div class="indented"><p id="1fd694d5-ea46-80a9-9c80-c257db427701" class="">console.log（‘Error’，error.message）；</p></div></p><p id="1fd694d5-ea46-80b7-ad59-e44e076411fc" class="">}</p><p id="1fd694d5-ea46-8079-8a06-c560777c8639" class="">console.log（error.config）；</p></div></p><p id="1fd694d5-ea46-80df-a01e-fcafd5f82bc3" class="">}）；</p></div></p><p id="1fd694d5-ea46-80df-9e43-d1b42650957e" class="">使用validateStatus配置选项，可以自定义抛出错误的HTTP code</p><p id="1fd694d5-ea46-80d7-8ab9-e4ddfeec1ccf" class="">axios.get（‘/user/12345’，{<div class="indented"><p id="1fd694d5-ea46-8061-adb9-c302bbdb0049" class="">validateStatus：function（status）{<div class="indented"><p id="1fd694d5-ea46-8000-b13f-f812e94e83e0" class="">return status&lt;500；</p></div></p><p id="1fd694d5-ea46-80ac-a9d1-d2f2def6ebb7" class="">}</p></div></p><p id="1fd694d5-ea46-80fa-b996-ca6fb9fef3de" class="">}）</p><p id="1fd694d5-ea46-8090-8c4d-c159c0c4b179" class="">使用toJSON可以获取更多关于HTTP错误信息</p><p id="1fd694d5-ea46-80a8-afae-f1a7fb294086" class="">axios.get（‘/user/12345’）<div class="indented"><p id="1fd694d5-ea46-801c-86e3-f833c1acde13" class="">.catch（function（error）{<div class="indented"><p id="1fd694d5-ea46-8097-9188-c543ab559ac3" class="">console.log（error0toJSON（））；</p></div></p><p id="1fd694d5-ea46-8011-bddb-c7c3fef8abfa" class="">}）；</p></div></p><p id="1fd694d5-ea46-80f5-a551-eaa744d0e4a8" class="">
+</p><p id="1fd694d5-ea46-802d-9907-ec93f294f974" class=""><strong><span style="border-bottom:0.05em solid">取消请求：</span></strong></p><p id="1fd694d5-ea46-807d-8747-de630bf038d3" class=""><strong>AbortController</strong></p><p id="1fd694d5-ea46-8022-b556-ebc4a669def8" class="">Axios支持以fetch API方式—AbortController取消请求<div class="indented"><p id="1fd694d5-ea46-800d-819b-cb6c0f1a656b" class="">const controller = new AbortController（）；</p><p id="1fd694d5-ea46-806f-b1bf-db49e60e5db8" class="">axios.get（‘/foo/bar’，{<div class="indented"><p id="1fd694d5-ea46-8056-8dc9-e6a9c507a7dd" class="">signal：controller.signal</p></div></p><p id="1fd694d5-ea46-8053-9e7e-d6243790d7b4" class="">}）<div class="indented"><p id="1fd694d5-ea46-8066-b1e5-e0be39ffccac" class="">.then（function（response）{<div class="indented"><p id="1fd694d5-ea46-8091-b4a7-ecc6cb394c83" class="">//…..</p></div></p><p id="1fd694d5-ea46-80f2-8071-d40150d8165b" class="">}）；</p></div></p><p id="1fd694d5-ea46-80cb-9daf-ebbcbbeb62f8" class="">//取消请求</p><p id="1fd694d5-ea46-8000-993f-d1ec5ab4e3f1" class="">controller.abort（）</p></div></p><p id="1fd694d5-ea46-8035-9abd-db1281f038cb" class=""><strong>CancelToken （deprecated）</strong></p><p id="1fd694d5-ea46-801f-880a-f8c59471a6e4" class="">可以使用cancel token取消一个请求<div class="indented"><p id="1fd694d5-ea46-8058-9d79-f825e7ead92e" class="">Axios的cancel token API是基于被撤销cancelable promises proposal</p></div></p><p id="1fd694d5-ea46-807c-867c-f58466e17bfa" class="">
+</p><p id="1fd694d5-ea46-8009-bb51-f557bbcc64a0" class=""><strong><span style="border-bottom:0.05em solid">请求体编码：</span></strong></p><p id="1fd694d5-ea46-8010-a1e6-e1f63c699aef" class="">默认情况下，axios将JS对象序列化为JSON，以application/x-www-form-urlencoded格式发送数据，可以使用以下选项</p><p id="1fd694d5-ea46-8059-b24d-e572fd343483" class=""><strong>浏览器：</strong></p><ul id="1fd694d5-ea46-807d-b7d2-d0df0b013acb" class="bulleted-list"><li style="list-style-type:disc">在浏览器中，可以使用URLSearchParams API，如下所示<p id="1fd694d5-ea46-80cf-aa2b-da2d24960a74" class="">const params = new URLSearchParams（）；</p><p id="1fd694d5-ea46-80b3-81ac-d7d9ee5e6fdc" class="">params.append（‘param1’，‘value1’）</p><p id="1fd694d5-ea46-80d4-ad32-cd33abc4dd6c" class="">params.append（‘param2’，‘value2’）</p><p id="1fd694d5-ea46-807e-8627-d0b2878378bc" class="">axios.post（‘/foo’，params）</p><p id="1fd694d5-ea46-8054-b4d0-f4348df7c0c6" class="">注意不是所有浏览器都支持URLSearchParams，可以使用polyfill，确保polufill全局环境</p></li></ul><ul id="1fd694d5-ea46-80e2-b757-d23de609eddf" class="bulleted-list"><li style="list-style-type:disc">也可以使用qs库编码数据<p id="1fd694d5-ea46-8071-ba4a-f6216cb00b44" class="">const qs = require（‘qs’）</p><p id="1fd694d5-ea46-8064-a1a6-f574963b0619" class="">axios.post（‘/foo’，qs.stringify（{‘bar’：123}））；</p></li></ul><ul id="1fd694d5-ea46-80ca-ad25-c83dde92ca1f" class="bulleted-list"><li style="list-style-type:disc">也可以使用ES6本地方法<p id="1fd694d5-ea46-80e1-a869-d797d99facbc" class="">import qs from ‘qs’</p><p id="1fd694d5-ea46-807a-97e3-c839e4781e68" class="">const data = {‘bar’：123}；</p><p id="1fd694d5-ea46-80c1-b211-d5872d3cd766" class="">const options = {<div class="indented"><p id="1fd694d5-ea46-809a-85fd-e314e944910e" class="">method：‘post’，</p><p id="1fd694d5-ea46-80c0-bb80-c33c87ba77e9" class="">headers：{‘content-type’：‘application/x-www-form-urlencoded’}，</p><p id="1fd694d5-ea46-8009-a39f-c3adb36c5a7a" class="">data：qs.stringify（data），</p><p id="1fd694d5-ea46-801d-a060-dd841b996696" class="">url，</p></div></p><p id="1fd694d5-ea46-802a-9f6a-c575038692cb" class="">}；</p><p id="1fd694d5-ea46-809b-bb71-dfd4368ad35b" class="">axios（options）；</p></li></ul><p id="1fd694d5-ea46-8019-b558-fb529066f933" class=""><strong>Node.js</strong></p><ul id="1fd694d5-ea46-809a-84d3-fc57f9732fb9" class="bulleted-list"><li style="list-style-type:disc"><strong>Query string</strong><p id="1fd694d5-ea46-8057-ae09-d46d3fac48bf" class="">在node.js中可以使用querysting模块，如下所示<div class="indented"><p id="1fd694d5-ea46-804d-a8e6-c63cea462eac" class="">const querystring = require（‘querystring’）；</p><p id="1fd694d5-ea46-80ac-9791-c26d2bb6d428" class="">axios.post（‘http：//some.com’，querysting.stringiry（{foo：‘bar’}））</p></div></p><p id="1fd694d5-ea46-809f-bc29-f04b977924e7" class="">或者从url module中使用URLSearchParams<div class="indented"><p id="1fd694d5-ea46-8037-912f-f77979f7b4d3" class="">const url = require（‘url’）；</p><p id="1fd694d5-ea46-8057-9d1e-d179bada2c52" class="">const params = new url.URLSearchParams（{foo：‘bar’}）；</p><p id="1fd694d5-ea46-80cb-aa14-fc7fd9f29264" class="">axios.post（‘http：//some.com’，params0toString（））；</p></div></p></li></ul><ul id="1fd694d5-ea46-801b-943d-e1eeff781e0c" class="bulleted-list"><li style="list-style-type:disc"><strong>qs库</strong><p id="1fd694d5-ea46-80b1-88ca-ebea68704a9d" class="">如果需要嵌套对象进行字符串化处理，最好使用qs库，querystring的方法在用例中出现问题</p></li></ul><ul id="1fd694d5-ea46-80ad-9868-e93412746715" class="bulleted-list"><li style="list-style-type:disc"><strong>form-data</strong><p id="1fd694d5-ea46-80ba-bf95-deaa6dbe8e70" class="">在node.js中可以使用form-data库。如下所示<div class="indented"><p id="1fd694d5-ea46-8027-8557-f5854af55e96" class="">const FormData = require（‘form-data’）；</p><p id="1fd694d5-ea46-8082-847f-dd4d77e8c3d5" class="">const form = new FormData（）；</p><p id="1fd694d5-ea46-80b0-9182-d5096baa627e" class="">form.append（‘my_field’,’my value’）;</p><p id="1fd694d5-ea46-8018-94d3-f00bee1d4451" class="">form.append(’my_buffer’,new Buffer(10);</p><p id="1fd694d5-ea46-804f-8409-ede5e53d86b0" class="">form.append(’my_file’,fs.createReadStream(’/foo/bar.jpg’));</p><p id="1fd694d5-ea46-80b1-b016-cab92d474d8a" class="">axios.post(’https://example.com’,form,{headers:form.getHeaders()}))</p></div></p><p id="1fd694d5-ea46-80ad-bddc-c11451a03a0d" class="">或者使用一个拦截器<div class="indented"><p id="1fd694d5-ea46-80c1-94c8-db3007eb6d9f" class="">axios.interceptors.request.<strong>use</strong>(config =&gt; {<div class="indented"><p id="1fd694d5-ea46-8027-bcb8-d6170cba5920" class=""><strong>if </strong>(config.data <strong>instanceof </strong>FormData) {<br/>    Object.<br/><strong>assign</strong>(config.headers, config.data.<strong>getHeaders</strong>());<br/>  }<br/></p><p id="1fd694d5-ea46-801f-9e9b-f1752989026e" class=""><strong>return</strong>config;<br/>});<br/></p></div></p></div></p></li></ul><p id="1fd694d5-ea46-802d-ae73-eca780d21d0c" class=""><strong>自动序列化</strong></p><p id="1fd694d5-ea46-80bd-8312-c747cce974ef" class="">请求头中的content-type是application/x-www-form-urlencoded时，Axios将自动把普通对象序列转换为urlencoded格式</p><ul id="1fd694d5-ea46-80c3-8481-d55518328717" class="bulleted-list"><li style="list-style-type:disc">在浏览器和node.js中都适用<p id="1fd694d5-ea46-8075-8666-d971eca25368" class=""><strong>const </strong>data = {<br/>  x: 1,<br/>  arr: [1, 2, 3],<br/>  arr2: [1, [2], 3],<br/>  users: [{name: &#x27;Peter&#x27;, surname: &#x27;Griffin&#x27;}, {name: &#x27;Thomas&#x27;, surname: &#x27;Anderson&#x27;}],<br/>};<br/></p><p id="1fd694d5-ea46-80aa-9b86-c9dbf47a8ee5" class=""><strong>await </strong>axios.<strong>post</strong>(&#x27;https://postman-echo.com/post&#x27;, data,<br/>  {headers: {&#x27;content-type&#x27;: &#x27;application/x-www-form-urlencoded&#x27;}}<br/>);<br/></p></li></ul><ul id="1fd694d5-ea46-804c-9b25-fcd893ece9bd" class="bulleted-list"><li style="list-style-type:disc">在服务器中接收的数据类似入下<p id="1fd694d5-ea46-80b6-baac-e02628f7cdce" class="">{<br/>x: &#x27;1&#x27;,<br/>&#x27;arr[]&#x27;: [ &#x27;1&#x27;, &#x27;2&#x27;, &#x27;3&#x27; ],<br/>&#x27;arr2[0]&#x27;: &#x27;1&#x27;,<br/>&#x27;arr2[1][0]&#x27;: &#x27;2&#x27;,<br/>&#x27;arr2[2]&#x27;: &#x27;3&#x27;,<br/>&#x27;arr3[]&#x27;: [ &#x27;1&#x27;, &#x27;2&#x27;, &#x27;3&#x27; ],<br/>&#x27;users[0][name]&#x27;: &#x27;Peter&#x27;,<br/>&#x27;users[0][surname]&#x27;: &#x27;griffin&#x27;,<br/>&#x27;users[1][name]&#x27;: &#x27;Thomas&#x27;,<br/>&#x27;users[1][surname]&#x27;: &#x27;Anderson&#x27;<br/>}<br/></p></li></ul><p id="1fd694d5-ea46-8097-b06b-e131a88ad62c" class="">如果服务器框架的请求体解析器（express.js的body-parser）支持嵌套对象解码，则接收的数据与提交的数据一致<div class="indented"><ul id="1fd694d5-ea46-80f3-bbe4-eae38d433793" class="bulleted-list"><li style="list-style-type:disc">在express.js的服务器中接收的数据作为响应返回<p id="1fd694d5-ea46-8030-acb6-d72e737250f5" class=""><strong>var </strong>app =<strong>express</strong>();<br/>  app.<br/><strong>use</strong>(bodyParser.<strong>urlencoded</strong>({ extended: true })); <br/>// support url-encoded bodies<br/>  app.<br/><strong>post</strong>(&#x27;/&#x27;,<strong>function</strong>(req, res, next) {<br/>     res.<br/><strong>send</strong>(JSON.<strong>stringify</strong>(req.body));<br/>  });<br/>  server = app.<br/><strong>listen</strong>(3000);</p></li></ul></div></p><p id="1fd694d5-ea46-80b2-8f74-e8b99b4bd881" class="">
+</p><p id="1fd694d5-ea46-808d-90e2-c44456899fbe" class=""><strong><span style="border-bottom:0.05em solid">Multipart实体请求</span></strong></p><p id="1fd694d5-ea46-80bd-950f-f911add8c033" class="">使用multipart/form-data类型发起POST请求</p><ul id="1fd694d5-ea46-807c-bcf4-eb67aad01e0e" class="bulleted-list"><li style="list-style-type:disc">使用FormData AP<ul id="1fd694d5-ea46-8059-8536-e053c4781f51" class="bulleted-list"><li style="list-style-type:circle">浏览器<p id="1fd694d5-ea46-805c-88de-f2237e08150e" class=""><strong>const </strong>form = <strong>new</strong>FormData();<br/>form.<br/><strong>append</strong>(&#x27;my_field&#x27;, &#x27;my value&#x27;);<br/>form.<br/><strong>append</strong>(&#x27;my_buffer&#x27;,<strong>new</strong>Blob([1,2,3]));<br/>form.<br/><strong>append</strong>(&#x27;my_file&#x27;, fileInput.files[0]);<br/><br/>axios.<br/><strong>post</strong>(&#x27;https://example.com&#x27;, form)</p><ul id="1fd694d5-ea46-8000-a175-e2a22c260022" class="bulleted-list"><li style="list-style-type:square"><strong>Axios会将传入数据序列化，因此使用Axios提供的API可以无需手动处理FormData的数据并实现一样的效果</strong></li></ul><p id="1fd694d5-ea46-804c-ae2a-e45c6fe848bc" class="">axios.<strong>postForm</strong>(&#x27;https://httpbin.org/post&#x27;, {<br/>  my_field: &#x27;my value&#x27;,<br/>  my_buffer:<br/><strong>new </strong>Blob([1,2,3]),<br/>  my_file:  fileInput.files // FileList will be unwrapped as sepate fields<br/>});<br/></p><p id="1fd694d5-ea46-8099-afd2-cdebdfb9e20b" class="">HTML表单可以直接作为请求内容来传输</p></li></ul><ul id="1fd694d5-ea46-800c-8569-f7e94cd735fe" class="bulleted-list"><li style="list-style-type:circle">Node.js<p id="1fd694d5-ea46-807b-b9a1-f021ae7b286c" class=""><strong>import </strong>axios <strong>from </strong>&#x27;axios&#x27;;</p><p id="1fd694d5-ea46-8048-aff1-e7338d9a08bb" class=""><strong>const </strong>form = <strong>new </strong>FormData();</p><p id="1fd694d5-ea46-8064-b84d-ce2480042e52" class="">form.<strong>append</strong>(&#x27;my_field&#x27;, &#x27;my value&#x27;);<br/>form.<br/><strong>append</strong>(&#x27;my_buffer&#x27;,<strong>new</strong>Blob([&#x27;some content&#x27;]));<br/><br/>axios.<br/><strong>post</strong>(&#x27;https://example.com&#x27;, form)</p></li></ul><p id="1fd694d5-ea46-8091-99c5-e7304860db30" class="">node.js不支持从文件中创建Blob，可以使用第三方包来实现<div class="indented"><p id="1fd694d5-ea46-8029-a0c9-d0e6bf272bd5" class=""><strong>import </strong>{fileFromPath} <strong>from </strong>&#x27;formdata-node/file-from-path&#x27;<br/><br/>form.<br/><strong>append</strong>(&#x27;my_field&#x27;, &#x27;my value&#x27;);<br/>form.<br/><strong>append</strong>(&#x27;my_file&#x27;,<strong>await fileFromPath </strong>(&#x27;/foo/bar.jpg&#x27;));<br/><br/>axios.<br/><strong>post </strong>(&#x27;https://example.com&#x27;, form)</p></div></p></li></ul><ul id="1fd694d5-ea46-8003-8fb4-fec5f7f5778d" class="bulleted-list"><li style="list-style-type:disc">自动化序列<p id="1fd694d5-ea46-80b7-a60b-c7caded4f4f4" class="">请求头中的Content-Type时multipart/form-data时，axios支持自动将普通对象序列化为一个FormData对象</p><ul id="1fd694d5-ea46-804f-a555-c1f4db804f92" class="bulleted-list"><li style="list-style-type:circle">例子，将数据通过FormData格式提交，浏览器和Node.js环境<p id="1fd694d5-ea46-80a1-a37f-f684945e355f" class=""><strong>import </strong>axios <strong>from </strong>&#x27;axios&#x27;;<br/><br/>axios.<br/><strong>post</strong>(&#x27;https://httpbin.org/post&#x27;, {<br/>  user: {<br/>    name: &#x27;Dmitriy&#x27;<br/>  },<br/>  file: fs.<br/><strong>createReadStream</strong>(&#x27;/foo/bar.jpg&#x27;)<br/>}, {<br/>  headers: {<br/>    &#x27;Content-Type&#x27;: &#x27;multipart/form-data&#x27;<br/>  }<br/>}).<br/><strong>then</strong>(({data})=&gt; console.<strong>log</strong>(data));</p></li></ul></li></ul><ul id="1fd694d5-ea46-8057-846a-c71b01e4503c" class="bulleted-list"><li style="list-style-type:disc">Axios FormData序列化器支持一些特殊的结尾，并执行以下操作<ul id="1fd694d5-ea46-8014-bfc9-cbf5307c82b4" class="bulleted-list"><li style="list-style-type:circle">{}，通过JSON.stringify序列化数据</li></ul><ul id="1fd694d5-ea46-802b-b54c-f1641aea6209" class="bulleted-list"><li style="list-style-type:circle">【】，将array-like的对象使用相同的键值来展开为单独的字段</li></ul><ul id="1fd694d5-ea46-80f6-82db-cdfee38abf58" class="bulleted-list"><li style="list-style-type:circle">默认情况下，展开、扩展操作将在数组和FileList对象上使用</li></ul></li></ul><ul id="1fd694d5-ea46-80d2-a9a3-d955b4e5c41e" class="bulleted-list"><li style="list-style-type:disc">FormData序列化器支持通过config.formSerializer：object这个参数来传递一些额外的选项，来支持一些特殊的情况<ul id="1fd694d5-ea46-8065-bac1-ceb5e14fa869" class="bulleted-list"><li style="list-style-type:circle">visitor: Function - 用户定义的处理函数，将递归调用以按照自定义规则将数据对象序列化为FormData对象。</li></ul><ul id="1fd694d5-ea46-8091-865e-db0f8f21fdad" class="bulleted-list"><li style="list-style-type:circle">dots: boolean = false - 使用点符号而不是括号来序列化数组和对象；</li></ul><ul id="1fd694d5-ea46-807f-ae8c-fb5532869385" class="bulleted-list"><li style="list-style-type:circle">metaTokens: boolean = true - 在 FormData 键值中添加特殊结尾（例如user{}: &#x27;{&quot;name&quot;: &quot;John&quot;}&#x27;）。后端的 body-parser 可能会使用此元信息自动将值解析为 JSON。</li></ul><ul id="1fd694d5-ea46-8046-9922-c38610b77992" class="bulleted-list"><li style="list-style-type:circle">indexes: null|false|true = false - 控制如何添加索引到打平的 array-like 对象的展开键值中<ul id="1fd694d5-ea46-804c-8773-deb84ce52150" class="bulleted-list"><li style="list-style-type:square">null - 不添加中括号（arr: 1，arr: 2，arr: 3）</li></ul><ul id="1fd694d5-ea46-8088-8fdc-e9ccc382b01e" class="bulleted-list"><li style="list-style-type:square">false（默认值）- 添加空中括号（arr[]: 1，arr[]: 2，arr[]: 3）</li></ul><ul id="1fd694d5-ea46-8043-a91a-d0638b665083" class="bulleted-list"><li style="list-style-type:square">true - 添加带有索引的中括号（arr[0]: 1，arr[1]: 2，arr[2]: 3）</li></ul></li></ul></li></ul><p id="1fd694d5-ea46-80bd-89f9-f98afca94ae7" class="">例子，有一个实例对象</p><p id="1fd694d5-ea46-80ad-b0be-c8b9b93c6fb3" class=""><strong>const </strong>obj = {<br/>  x: 1,<br/>  arr: [1, 2, 3],<br/>  arr2: [1, [2], 3],<br/>  users: [{name: &#x27;Peter&#x27;, surname: &#x27;Griffin&#x27;}, {name: &#x27;Thomas&#x27;, surname: &#x27;Anderson&#x27;}],<br/>  &#x27;obj2{}&#x27;: [{x:1}]<br/>};<br/></p><p id="1fd694d5-ea46-8078-ab5c-d372536b5a36" class="">下面序列化步骤会由Axios内置的序列化器自动执行</p><p id="1fd694d5-ea46-80b9-81bb-ca4b2e20a794" class=""><strong>const </strong>formData=<strong>new </strong>FormData();<br/>formData.<br/><strong>append</strong>(&#x27;x&#x27;, &#x27;1&#x27;);<br/>formData.<br/><strong>append</strong>(&#x27;arr[]&#x27;, &#x27;1&#x27;);<br/>formData.<br/><strong>append</strong>(&#x27;arr[]&#x27;, &#x27;2&#x27;);</p><p id="1fd694d5-ea46-8091-a74f-e10b1c85a390" class="">formData.<strong>append</strong></p><p id="1fd694d5-ea46-80ba-b001-fc9f6f5185e4" class="">(&#x27;arr[]&#x27;, &#x27;3&#x27;);<br/>formData.<br/><strong>append</strong></p><p id="1fd694d5-ea46-8032-822f-c5819a74ec81" class="">(&#x27;arr2[0]&#x27;, &#x27;1&#x27;);<br/>formData.<br/><strong>append</strong></p><p id="1fd694d5-ea46-80fa-a374-fc6dc32373ea" class="">(&#x27;arr2[1][0]&#x27;, &#x27;2&#x27;);<br/>formData.<br/><strong>append</strong></p><p id="1fd694d5-ea46-80b0-b925-d4419f6e0fdd" class="">(&#x27;arr2[2]&#x27;, &#x27;3&#x27;);<br/>formData.<br/><strong>append</strong>(&#x27;users[0][name]&#x27;, &#x27;Peter&#x27;);<br/>formData.<br/></p><p id="1fd694d5-ea46-80fc-ab85-fe85bbbe89cc" class=""><strong>append</strong>(&#x27;users[0][surname]&#x27;, &#x27;Griffin&#x27;);<br/>formData.<br/></p><p id="1fd694d5-ea46-807c-a8b3-c4909897bfab" class=""><strong>append</strong>(&#x27;users[1][name]&#x27;, &#x27;Thomas&#x27;);<br/>formData.<br/><strong>append</strong></p><p id="1fd694d5-ea46-805d-b9a7-ec3d1fa61cce" class="">(&#x27;users[1][surname]&#x27;, &#x27;Anderson&#x27;);<br/>formData.<br/><strong>append</strong></p><p id="1fd694d5-ea46-80f0-b5d3-f24cf4d3c02f" class="">(&#x27;obj2{}&#x27;, &#x27;[{&quot;x&quot;:1}]&#x27;);</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
