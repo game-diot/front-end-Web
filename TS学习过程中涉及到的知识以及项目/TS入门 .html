@@ -1,0 +1,768 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>TS入门</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.highlight-default_background {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.highlight-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.block-color-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: undefined; }
+.select-value-color-pink { background-color: rgba(225, 136, 179, 0.27); }
+.select-value-color-purple { background-color: rgba(168, 129, 197, 0.27); }
+.select-value-color-green { background-color: rgba(123, 183, 129, 0.27); }
+.select-value-color-gray { background-color: rgba(84, 72, 49, 0.15); }
+.select-value-color-translucentGray { background-color: undefined; }
+.select-value-color-orange { background-color: rgba(224, 124, 57, 0.27); }
+.select-value-color-brown { background-color: rgba(210, 162, 141, 0.35); }
+.select-value-color-red { background-color: rgba(244, 171, 159, 0.4); }
+.select-value-color-yellow { background-color: rgba(236, 191, 66, 0.39); }
+.select-value-color-blue { background-color: rgba(93, 165, 206, 0.27); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="20d694d5-ea46-807a-a104-f4f193524cae" class="page sans"><header><h1 class="page-title">TS入门</h1><p class="page-description"></p></header><div class="page-body"><p id="211694d5-ea46-80a5-8286-ef51881fe807" class="">interface Shape {</p><p id="211694d5-ea46-8083-8312-f92a04f41e50" class="">getArea: () =&gt; number;</p><p id="211694d5-ea46-80e3-92f4-eeabf43ca2df" class="">}</p><p id="211694d5-ea46-8045-a137-f6ac30585785" class="">class Rectangle implements Shape {</p><p id="211694d5-ea46-8028-9d9f-c1a6182bb868" class="">// using protected for these members allows access from classes that extend from this class, such as Square</p><p id="211694d5-ea46-802b-aa0c-cdbbbcc3deca" class="">public constructor(protected readonly width: number, protected readonly height: number) {}</p><p id="211694d5-ea46-809b-8186-cee782ebb7d4" class="">public getArea(): number {</p><p id="211694d5-ea46-8028-af16-e9e785b5ea1c" class="">return this.width * this.height;</p><p id="211694d5-ea46-8035-9f37-f0af2a980171" class="">}</p><p id="211694d5-ea46-80df-92ef-ee792eca754c" class="">public toString(): string {</p><p id="211694d5-ea46-8096-848c-e54bbfe0f992" class="">return `Rectangle[width=${this.width}, height=${this.height}]`;</p><p id="211694d5-ea46-80c4-9409-e004864afea7" class="">}</p><p id="211694d5-ea46-800c-bead-ca0875db49b2" class="">}</p><p id="211694d5-ea46-80bc-9e38-f27e768bb214" class="">class Square extends Rectangle {</p><p id="211694d5-ea46-8036-84c4-eccf2f429f94" class="">public constructor(width: number) {</p><p id="211694d5-ea46-805a-a40b-df50763c71aa" class="">super(width, width);</p><p id="211694d5-ea46-80ee-8e48-facbbcc6946c" class="">}</p><p id="211694d5-ea46-80bc-98d5-cce2f949a9a2" class="">// this toString replaces the toString from Rectangle</p><p id="211694d5-ea46-8053-ade6-e4e67b787b07" class="">public override toString(): string {</p><p id="211694d5-ea46-80a6-ac12-dccc884c98db" class="">return `Square[width=${this.width}]`;</p><p id="211694d5-ea46-8086-b9cb-ddc71251e521" class="">}</p><p id="211694d5-ea46-801d-8fab-ee1ad409c2cc" class="">}</p><p id="211694d5-ea46-803f-bced-d2d29db169e2" class="">
+</p><p id="20d694d5-ea46-8020-8626-cd31013b8b97" class=""><strong><span style="border-bottom:0.05em solid">TS简单数据类型</span></strong></p><ul id="211694d5-ea46-80b9-80e5-cf24d70083e7" class="bulleted-list"><li style="list-style-type:disc">boolean布尔值 - 真假值判断</li></ul><ul id="211694d5-ea46-8011-b877-c82eec526270" class="bulleted-list"><li style="list-style-type:disc">number数字 - 整数和浮点数</li></ul><ul id="211694d5-ea46-806b-bdda-e0ac6a2c795e" class="bulleted-list"><li style="list-style-type:disc">string字符串 - 文本值</li></ul><ul id="211694d5-ea46-805d-8ce5-ee48b6d47968" class="bulleted-list"><li style="list-style-type:disc">bigint大数值 - 整数和浮点数，允许比number更大的值</li></ul><ul id="211694d5-ea46-80b7-a869-c9271a783332" class="bulleted-list"><li style="list-style-type:disc">symbol标识符 - 用于创建全局唯一标识符</li></ul><p id="211694d5-ea46-8010-bbe2-c78f53d882e4" class="">
+</p><p id="211694d5-ea46-80c5-b6f9-fc547d3b0300" class=""><strong>类型分配：创建变量时分配类型的方式</strong></p><ul id="211694d5-ea46-8036-afac-e22f29115e05" class="bulleted-list"><li style="list-style-type:disc">显示类型 - 明确写出类型<ul id="211694d5-ea46-8012-afe3-e9d75097ec9a" class="bulleted-list"><li style="list-style-type:circle">let firstName：string = ‘Name’</li></ul></li></ul><ul id="211694d5-ea46-8073-bc17-efe2b9df0476" class="bulleted-list"><li style="list-style-type:disc">隐式类型 - 根据分配的值猜测类型<ul id="211694d5-ea46-8013-abde-f4191e0fec4f" class="bulleted-list"><li style="list-style-type:circle">let firstName = ‘Name’</li></ul></li></ul><ul id="211694d5-ea46-80d3-8859-f1fdd502cd00" class="bulleted-list"><li style="list-style-type:disc"><strong>让TS猜测一个值的类型为推断，隐式赋值强制TS推断值。其分配更短，输入更快，常用</strong></li></ul><p id="211694d5-ea46-805c-be12-c71009dc875f" class="">
+</p><p id="211694d5-ea46-8078-9f11-d05ba8c393b9" class=""><strong>类型赋值错误：数据类型不匹配，TS抛出错误，JS不会报错</strong></p><ul id="211694d5-ea46-8004-8c19-f09b02ec71c3" class="bulleted-list"><li style="list-style-type:disc">显示错误<ul id="211694d5-ea46-8024-9a69-db7b4c3c1756" class="bulleted-list"><li style="list-style-type:circle">let firstName：string = ‘name’</li></ul><ul id="211694d5-ea46-80f9-966d-e412468e55b6" class="bulleted-list"><li style="list-style-type:circle">firstName = 33</li></ul></li></ul><ul id="211694d5-ea46-8051-91ce-d6d7d5c3d607" class="bulleted-list"><li style="list-style-type:disc">隐式类型分配错误<ul id="211694d5-ea46-8084-bfd9-e054b17d4275" class="bulleted-list"><li style="list-style-type:circle">let firstName = ‘name’</li></ul><ul id="211694d5-ea46-8095-b214-fa8af10069e9" class="bulleted-list"><li style="list-style-type:circle">firstName = 33</li></ul></li></ul><p id="211694d5-ea46-801a-a056-f39f8155824a" class="">
+</p><p id="211694d5-ea46-80d4-b8a6-f2041722a5b9" class=""><strong>无法推断：TS无法始终正确推断变量类型，他会将类型设置为any并禁用类型检查</strong></p><ul id="211694d5-ea46-804b-8ca4-f59d32e6659d" class="bulleted-list"><li style="list-style-type:disc">const json = JSON.parse（“55”）</li></ul><ul id="211694d5-ea46-8015-9c5e-c50577f9e19e" class="bulleted-list"><li style="list-style-type:disc">console.log（typeof json）</li></ul><ul id="211694d5-ea46-801b-87a3-d17394fa38e0" class="bulleted-list"><li style="list-style-type:disc"><strong>noImplicitAny可以在TS项目中启用选项来禁用此行为。在tsconfig.json配置文件中，自定义TS的行为</strong></li></ul><p id="211694d5-ea46-803e-941e-d5ca31f9f1dd" class="">
+</p><p id="211694d5-ea46-8094-915d-f9ef36a287a0" class=""><strong><span style="border-bottom:0.05em solid">TS特殊数据类型：</span></strong></p><p id="211694d5-ea46-809e-af16-e0a3877bacd9" class=""><strong>类型：any</strong></p><ul id="211694d5-ea46-80df-92c3-d1b63c705e27" class="bulleted-list"><li style="list-style-type:disc">any可以禁用类型检查并有效使用所有类型的类型<ul id="211694d5-ea46-80e0-89a5-ef33828b61f5" class="bulleted-list"><li style="list-style-type:circle">例子：无any，会报错<ul id="211694d5-ea46-8044-9bac-d971f564a7a7" class="bulleted-list"><li style="list-style-type:square">let u = true</li></ul><ul id="211694d5-ea46-80fd-8ba5-d15babf963b8" class="bulleted-list"><li style="list-style-type:square">u = ‘string’</li></ul><ul id="211694d5-ea46-806b-9807-d67abd2ad3b3" class="bulleted-list"><li style="list-style-type:square">Math.round（u）</li></ul></li></ul><ul id="211694d5-ea46-8042-8b02-d03ccd65ea40" class="bulleted-list"><li style="list-style-type:circle">设置any为特殊类型，禁用类型检查即可<ul id="211694d5-ea46-8098-80fe-ce35ee58ca14" class="bulleted-list"><li style="list-style-type:square">let v：any = true</li></ul><ul id="211694d5-ea46-8099-b673-e14ce4869e6f" class="bulleted-list"><li style="list-style-type:square">v = ‘string’</li></ul><ul id="211694d5-ea46-8020-b6af-e463a492aca6" class="bulleted-list"><li style="list-style-type:square">Math.round（v）</li></ul></li></ul></li></ul><ul id="211694d5-ea46-807b-9a99-e91d6641dde6" class="bulleted-list"><li style="list-style-type:disc"><strong>由于any仅用了类型检查，可以避免报出错误，但不会解决错误，少使用</strong></li></ul><p id="211694d5-ea46-8009-8ef4-cc3e4336a862" class="">
+</p><p id="211694d5-ea46-800f-b135-f8c64266f6f1" class=""><strong>类型：unknown</strong></p><ul id="211694d5-ea46-802e-b66f-c31c44fa0632" class="bulleted-list"><li style="list-style-type:disc">unknown是any类型更安全的替代方案。<ul id="211694d5-ea46-80d2-8097-e5b1203db9f1" class="bulleted-list"><li style="list-style-type:circle">TS会阻止unknown使用类型<ul id="211694d5-ea46-8054-8911-d238a881108c" class="bulleted-list"><li style="list-style-type:square">let w：known = 1</li></ul><ul id="211694d5-ea46-8008-ae64-f618f8fe4467" class="bulleted-list"><li style="list-style-type:square">w = ‘string’</li></ul><ul id="211694d5-ea46-80f6-9684-da28f0006824" class="bulleted-list"><li style="list-style-type:square">w = {<br/>  runANonExistentMethod: () =&gt; {<br/>    console.log(&quot;I think therefore I am&quot;);<br/>  }<br/>} as { runANonExistentMethod: () =&gt; void };<br/></li></ul><ul id="211694d5-ea46-80d7-809c-fe59e4b4f3d9" class="bulleted-list"><li style="list-style-type:square">if （typeof w ===‘object’ &amp;&amp; w ！==null）{</li></ul><ul id="211694d5-ea46-806e-9e13-feecb4ecff68" class="bulleted-list"><li style="list-style-type:square"> (w as { runANonExistentMethod: Function }).runANonExistentMethod();}</li></ul></li></ul></li></ul><ul id="211694d5-ea46-8083-9d69-eb5df7e75cea" class="bulleted-list"><li style="list-style-type:disc"><strong>unknown适用于不知道输入的数据类型情况，后续添加类型，需要类型转换，使用as关键字来表示属性或变量属于强制类型转换</strong></li></ul><p id="211694d5-ea46-8006-b611-f7a0ac79deee" class="">
+</p><p id="211694d5-ea46-8098-88af-dc9e00c14e46" class=""><strong>类型：never，极少数使用，会报错</strong></p><ul id="211694d5-ea46-8022-b3e7-d54caa6f0777" class="bulleted-list"><li style="list-style-type:disc">let x：never = true</li></ul><p id="211694d5-ea46-80cc-a9b2-c8fd5cebb046" class="">
+</p><p id="211694d5-ea46-80f1-a19a-cf5e426b87ca" class=""><strong>类型：undefined&amp;null</strong></p><ul id="211694d5-ea46-80ba-82ff-f16568dcd902" class="bulleted-list"><li style="list-style-type:disc">undefinde和null分别引用JS的undefined和null类型<ul id="211694d5-ea46-80e7-85fa-e2318730925e" class="bulleted-list"><li style="list-style-type:circle">let y：undefined = undefined</li></ul><ul id="211694d5-ea46-802e-9913-f49296e73660" class="bulleted-list"><li style="list-style-type:circle">let z：null = null</li></ul></li></ul><p id="211694d5-ea46-8012-acfc-d1ec6f4bb9c7" class="">
+</p><p id="211694d5-ea46-8025-aef7-c59a98537321" class=""><strong>特殊类型都尽量少使用</strong></p><p id="211694d5-ea46-8043-a281-c8b0ca7c66b2" class="">
+</p><p id="211694d5-ea46-8015-9a50-defa3a7eaee1" class=""><strong><span style="border-bottom:0.05em solid">TS数组：TS具有输入数组的特定语法</span></strong></p><ul id="211694d5-ea46-80d6-a614-ccf43ed73dc9" class="bulleted-list"><li style="list-style-type:disc">const names：string【】 = 【】</li></ul><ul id="211694d5-ea46-8014-acf9-c17f5d7e975a" class="bulleted-list"><li style="list-style-type:disc">names.push（‘name’）正常运行，若写入其他类型数据报错</li></ul><p id="211694d5-ea46-8045-b7e9-c7f7e74f3e43" class="">
+</p><p id="211694d5-ea46-8018-b3d6-f3332aace314" class=""><strong>只读：readonly</strong></p><ul id="211694d5-ea46-804e-af21-d4ec6b44d66c" class="bulleted-list"><li style="list-style-type:disc">readonly可以防止数组被改变<ul id="211694d5-ea46-800a-ac6a-c64a9646ed68" class="bulleted-list"><li style="list-style-type:circle">const names：readonly string【】 = 【‘name’】</li></ul><ul id="211694d5-ea46-8045-a5e7-fb395c601aa7" class="bulleted-list"><li style="list-style-type:circle">names.push（‘name1’）会报错，不可对数组操作，可以查看</li></ul></li></ul><p id="211694d5-ea46-8002-970e-ca3858ed1fe1" class="">
+</p><p id="211694d5-ea46-802a-9852-ca86a6593e28" class=""><strong>类型判断</strong></p><ul id="211694d5-ea46-8079-ac45-e91a936b82a2" class="bulleted-list"><li style="list-style-type:disc">如果数组有值，TS可以判断数组的类型<ul id="211694d5-ea46-8089-8b9e-c3586005854b" class="bulleted-list"><li style="list-style-type:circle">const numbers = 【1，2，3】</li></ul><ul id="211694d5-ea46-80fb-b4f1-eab8918ad8c7" class="bulleted-list"><li style="list-style-type:circle">numbers.push（4）正常不报错</li></ul><ul id="211694d5-ea46-801c-85f3-c484962dc5ea" class="bulleted-list"><li style="list-style-type:circle">numbers.push（“2”）报错，类型与数组不符合</li></ul><ul id="211694d5-ea46-803d-9fcc-d4c584057d4e" class="bulleted-list"><li style="list-style-type:circle">let head：number = numbers【0】正常不报错，获取数组第一个数据保存为head，类型为number</li></ul></li></ul><p id="211694d5-ea46-8034-856d-d607f40b97ba" class="">
+</p><p id="211694d5-ea46-80c5-8a55-d0c5bfe3e9f0" class=""><strong><span style="border-bottom:0.05em solid">TS元组：</span></strong></p><p id="211694d5-ea46-8008-b7ea-d89cdca993c7" class=""><strong>类型：数组</strong></p><ul id="211694d5-ea46-80ce-a147-d371603c125f" class="bulleted-list"><li style="list-style-type:disc">元组是类型化数组，具有预定义的长度和每个索引的类型，允许数组中的每个元素成为已知类型的值</li></ul><ul id="211694d5-ea46-8077-9201-f03f2db32b7d" class="bulleted-list"><li style="list-style-type:disc">要定义元组，需要指定数组中每个元素的类型<ul id="211694d5-ea46-80c0-8cc7-d4b00c44f97a" class="bulleted-list"><li style="list-style-type:circle">let ourTuple：【number，boolean，string】</li></ul><ul id="211694d5-ea46-8010-a06c-f60f62ba79c6" class="bulleted-list"><li style="list-style-type:circle">ourTuple = 【5，false，‘name’】</li></ul><ul id="211694d5-ea46-80c0-beff-e9770f7d3b16" class="bulleted-list"><li style="list-style-type:circle"><strong>如果对应位置数据类型与预定义类型不符会报错</strong></li></ul></li></ul><p id="211694d5-ea46-80d8-84bc-f87d0d6a4965" class="">
+</p><p id="211694d5-ea46-804f-8c2f-eae2ebc9c369" class=""><strong>只读元组</strong></p><ul id="211694d5-ea46-80c4-944d-c6fb7cd4719a" class="bulleted-list"><li style="list-style-type:disc">很好的保障是将元组设置为readonly只读，元组仅对初始值具有强定义类型<ul id="211694d5-ea46-80f7-af2b-d2c2bada824a" class="bulleted-list"><li style="list-style-type:circle">let ourTuple：【number，boolean，string】</li></ul><ul id="211694d5-ea46-8037-ab71-e52f55e6c5bb" class="bulleted-list"><li style="list-style-type:circle">ourTuple = 【5，false，‘name’】</li></ul><ul id="211694d5-ea46-808e-8d17-ce047da4e34a" class="bulleted-list"><li style="list-style-type:circle">ourTuple.push（‘666’），后续的值没有要求</li></ul></li></ul><ul id="211694d5-ea46-804e-b33b-c541e48335c4" class="bulleted-list"><li style="list-style-type:disc">例子，设置只读<ul id="211694d5-ea46-8014-b4b9-d5d128af64a2" class="bulleted-list"><li style="list-style-type:circle">const ourReadonlyTuple: readonly [number, boolean, string] = [5, true, &#x27;The Real Coding God&#x27;];</li></ul><ul id="211694d5-ea46-80c2-8b19-ef5b22435b52" class="bulleted-list"><li style="list-style-type:circle">ourReadonlyTuple.push(&#x27;Coding God took a day off&#x27;);</li></ul></li></ul><p id="211694d5-ea46-805f-bb8c-d3b93aedfa59" class="">
+</p><p id="211694d5-ea46-80d9-87cd-c2effca4a6df" class=""><strong>命名元组</strong></p><ul id="211694d5-ea46-801d-a8d3-ef85f992c696" class="bulleted-list"><li style="list-style-type:disc">命名元组允许为每个索引的值提供上下文<ul id="211694d5-ea46-8054-a150-df1e933e6666" class="bulleted-list"><li style="list-style-type:circle">const graph：【x：number，y：number】 = 【55.2，41.3】</li></ul></li></ul><p id="211694d5-ea46-80f5-ae94-db88e41ec71c" class="">
+</p><p id="211694d5-ea46-8028-a510-fd069160e789" class=""><strong>解构元组</strong></p><ul id="211694d5-ea46-8079-9fef-caa5460b51ee" class="bulleted-list"><li style="list-style-type:disc">元组属于数组，可以对其进行解构<ul id="211694d5-ea46-8027-bf3a-c62e1184ccc5" class="bulleted-list"><li style="list-style-type:circle">const graph：【number，number】 = 【123，321】</li></ul><ul id="211694d5-ea46-8021-9dfe-caa2e0c8fc28" class="bulleted-list"><li style="list-style-type:circle">const 【下，y】 = graph</li></ul></li></ul><p id="211694d5-ea46-80ce-84ce-f8ba226a0fb7" class="">
+</p><p id="211694d5-ea46-80e1-98c7-d0c6c47551d0" class=""><strong><span style="border-bottom:0.05em solid">TS对象类型：</span></strong></p><ul id="211694d5-ea46-8084-9269-f6a5fce3153c" class="bulleted-list"><li style="list-style-type:disc">TS具有对对象进行类型输入的特定语法<ul id="211694d5-ea46-8029-8653-c4d72bbca7ee" class="bulleted-list"><li style="list-style-type:circle">const car: { type: string, model: string, year: number } = {<p id="211694d5-ea46-809a-b8e5-c6aaac42b159" class="">type: &quot;Toyota&quot;,</p><p id="211694d5-ea46-809c-a96c-f17946044809" class="">model: &quot;Corolla&quot;,</p><p id="211694d5-ea46-80ef-8985-d4a274c0f6a4" class="">year: 2009</p><p id="211694d5-ea46-8046-bee6-f4770556e9d4" class="">};</p></li></ul></li></ul><p id="211694d5-ea46-80d9-9c13-dc502983afae" class="">
+</p><p id="211694d5-ea46-8072-b5ac-c94f5ac26851" class=""><strong>类型判断：TS可以根据属性值推断其类型</strong></p><ul id="211694d5-ea46-805f-ae46-d29dffef17a1" class="bulleted-list"><li style="list-style-type:disc">const car = {<p id="211694d5-ea46-803e-bd75-db7bb3ed5c31" class="">type: &quot;Toyota&quot;,</p><p id="211694d5-ea46-801e-831f-ca4a328dc9d8" class="">};</p><p id="211694d5-ea46-800b-af03-c868e3884008" class="">car.type = &quot;Ford&quot;; 更改属性值正常不会报错</p><p id="211694d5-ea46-809d-bda6-f3512f92244f" class="">car.type = 2; 报错属性值类型符合</p></li></ul><p id="211694d5-ea46-8039-b50e-f148c6aa31e4" class="">
+</p><p id="211694d5-ea46-80e3-a750-d5af8ab748c9" class=""><strong>可选属性</strong></p><ul id="211694d5-ea46-8056-bf73-c9868db7b875" class="bulleted-list"><li style="list-style-type:disc">可选属性是不需要在对象定义中定义的属性<ul id="211694d5-ea46-80ea-a453-e6e2753fdcae" class="bulleted-list"><li style="list-style-type:circle">没有使用可选属性<ul id="211694d5-ea46-800e-a814-d8c77595622e" class="bulleted-list"><li style="list-style-type:square">const car：{type：string，mileage：number} = {<br/>type：“toyota”}报错，初始化数组没有写全<br/></li></ul><ul id="211694d5-ea46-80a5-9c66-dc16925f5e50" class="bulleted-list"><li style="list-style-type:square">car.mileage = 2000</li></ul></li></ul><ul id="211694d5-ea46-80f0-86fa-ec42f8a30fce" class="bulleted-list"><li style="list-style-type:circle">具有可选属性<ul id="211694d5-ea46-805c-a35c-e4eeb6e26b62" class="bulleted-list"><li style="list-style-type:square">const car：{type：string，mileage？：number} = {<br/>type：“toyota”}可选属性就不会报错<br/></li></ul><ul id="211694d5-ea46-80f9-832a-c5fae30def09" class="bulleted-list"><li style="list-style-type:square">car.mileage = 2000</li></ul></li></ul></li></ul><p id="211694d5-ea46-80c6-bca5-df2034683523" class="">
+</p><p id="211694d5-ea46-80ed-899c-c6dcc51fddb2" class=""><strong>索引签名</strong></p><ul id="211694d5-ea46-80b7-8feb-d5f61f6717cb" class="bulleted-list"><li style="list-style-type:disc">索引签名可用于没有定义属性列表的对象<ul id="211694d5-ea46-8087-b821-fc60b9921394" class="bulleted-list"><li style="list-style-type:circle">const nameAgeMap: { [index: string]: number } = {};<p id="211694d5-ea46-803d-8b11-db41dd5ca01b" class="">nameAgeMap.Jack = 25; 不会报错</p><p id="211694d5-ea46-80f4-99e6-c89fad4d31c2" class="">nameAgeMap.Mark = &quot;Fifty&quot;;报错类型不符</p></li></ul></li></ul><p id="211694d5-ea46-8023-8b8a-cc86a8456444" class="">
+</p><p id="211694d5-ea46-8029-9add-f766b0162414" class=""><strong><span style="border-bottom:0.05em solid">TS枚举 - enum：</span></strong></p><ul id="211694d5-ea46-8060-b0e0-c059858b34f3" class="bulleted-list"><li style="list-style-type:disc">枚举是特殊的类，代表一组不可改变的变量，有两种类型，string和numeric</li></ul><p id="211694d5-ea46-806c-bb03-ef26209da787" class="">
+</p><p id="211694d5-ea46-8059-9329-daf7af6dc9fc" class=""><strong>数字枚举 - 默认</strong></p><ul id="211694d5-ea46-802a-98f2-d3fa320c257a" class="bulleted-list"><li style="list-style-type:disc">默认情况，枚举可初始化第一个值，0并将每个附加值 + 1<ul id="211694d5-ea46-805c-8bda-f2a1f00333dc" class="bulleted-list"><li style="list-style-type:circle">enum Cards{North，East，South，West}，默认赋值0123</li></ul><ul id="211694d5-ea46-80d8-b1a1-cbdaf6e271f0" class="bulleted-list"><li style="list-style-type:circle">let currentCard = Card.North  //logs = 0</li></ul><ul id="211694d5-ea46-80a6-a3d4-ffd076506c5f" class="bulleted-list"><li style="list-style-type:circle">console.log（currentCard）打印结果为0</li></ul><ul id="211694d5-ea46-806c-be57-c4327e2b7d0f" class="bulleted-list"><li style="list-style-type:circle">currentCard = ‘North’错误数据类型为Cards枚举，而不是string</li></ul><ul id="211694d5-ea46-80e3-bf1f-f6f3cd238e46" class="bulleted-list"><li style="list-style-type:circle">currentDirection = CardinalDirections.North; 正确赋值</li></ul></li></ul><p id="211694d5-ea46-803f-9133-dd45b6328fba" class="">
+</p><p id="211694d5-ea46-800f-9614-f5303fecf378" class=""><strong>数字枚举 - 已初始化</strong></p><ul id="211694d5-ea46-80dd-a1d4-fcb20d1f2bea" class="bulleted-list"><li style="list-style-type:disc">可以设置第一个数字枚举的值，使其自动递增</li></ul><ul id="211694d5-ea46-8020-b8cc-ef884668fc75" class="bulleted-list"><li style="list-style-type:disc">enum CardinalDirections {<p id="211694d5-ea46-80f1-a8ed-dc420893a242" class="">North = 1,</p><p id="211694d5-ea46-80ff-9bd2-d742aaf6c5b4" class="">East,</p><p id="211694d5-ea46-8058-a216-f89e7a111dd9" class="">South,</p><p id="211694d5-ea46-808d-841c-c47a85ae596a" class="">West</p><p id="211694d5-ea46-805b-afa6-ef0e140ec6f9" class="">}</p><p id="211694d5-ea46-809d-976c-fff121ea453c" class="">// logs 1</p><p id="211694d5-ea46-80b5-b3e0-f6c622e6f2d0" class="">console.log(CardinalDirections.North);</p><p id="211694d5-ea46-800e-bdfc-d2fa927e17b5" class="">// logs 4</p><p id="211694d5-ea46-8018-b280-fc1fbbf0ca52" class="">console.log(CardinalDirections.West);</p></li></ul><p id="211694d5-ea46-80cc-aefb-e21fbd1668b1" class="">
+</p><p id="211694d5-ea46-80f7-8c8c-db0340862070" class=""><strong>数字枚举 - 完全初始化</strong></p><ul id="211694d5-ea46-80bd-aecd-d293756a04e5" class="bulleted-list"><li style="list-style-type:disc">为每个枚举值分配唯一的数字值，这样值不会自动递增<ul id="211694d5-ea46-80dc-82e3-c518718581ce" class="bulleted-list"><li style="list-style-type:circle">enum StatusCodes {<p id="211694d5-ea46-80e4-898f-f471b9605a3e" class="">NotFound = 404,</p><p id="211694d5-ea46-80b1-aeea-cd44e72b79f5" class="">Success = 200,</p><p id="211694d5-ea46-80a6-8d13-c33f22728abc" class="">Accepted = 202,</p><p id="211694d5-ea46-8019-a0d2-c70bb05b2307" class="">BadRequest = 400</p><p id="211694d5-ea46-80cc-b17e-d71ecc9f11b3" class="">}</p><p id="211694d5-ea46-80cc-8470-eea08a14e542" class="">// logs 404</p><p id="211694d5-ea46-8085-b5dd-d5af5b63a7cb" class="">console.log(StatusCodes.NotFound);</p><p id="211694d5-ea46-8013-a918-ec57e3f47591" class="">// logs 200</p><p id="211694d5-ea46-8098-9785-d4fc90bc3f72" class="">console.log(StatusCodes.Success);</p></li></ul></li></ul><p id="211694d5-ea46-80c0-b93b-e6de1769b9f4" class="">
+</p><p id="211694d5-ea46-803a-8538-cdc01b3af93a" class=""><strong>字符串枚举 - 更常用</strong></p><ul id="211694d5-ea46-80a2-94c1-d1c5dd6facea" class="bulleted-list"><li style="list-style-type:disc">enum CardinalDirections {<p id="211694d5-ea46-8008-81ee-e7f96679fd70" class="">North = &#x27;North&#x27;,</p><p id="211694d5-ea46-808c-860d-f9714b8e0cba" class="">East = &quot;East&quot;,</p><p id="211694d5-ea46-80e7-8e77-d8ca76fd42ba" class="">South = &quot;South&quot;,</p><p id="211694d5-ea46-809d-9881-e70e2311c95c" class="">West = &quot;West&quot;</p><p id="211694d5-ea46-8004-86d2-fd1efa2f2b49" class="">};</p><p id="211694d5-ea46-80c2-962f-e753b39479be" class="">// logs &quot;North&quot;</p><p id="211694d5-ea46-80f0-971c-ec2cce05a12e" class="">console.log(CardinalDirections.North);</p><p id="211694d5-ea46-804f-8415-d2c803123df4" class="">// logs &quot;West&quot;</p><p id="211694d5-ea46-8048-87b1-edbe3abce41f" class="">console.log(CardinalDirections.West);</p></li></ul><ul id="211694d5-ea46-80d8-ab1c-fc9d2450ede1" class="bulleted-list"><li style="list-style-type:disc"><strong>避免字符串、数字枚举混合使用</strong></li></ul><p id="211694d5-ea46-80d8-b017-e6970117c112" class="">
+</p><p id="211694d5-ea46-8022-9b7f-fe887eb36e90" class=""><strong><span style="border-bottom:0.05em solid">TS类型别名和接口：</span></strong></p><ul id="211694d5-ea46-806c-b40f-d0a326f15d51" class="bulleted-list"><li style="list-style-type:disc">TS允许将类型与使用它们的变量分开定义</li></ul><ul id="211694d5-ea46-80bc-80fb-e848d1490d0c" class="bulleted-list"><li style="list-style-type:disc">别名和接口允许不同变量/对象之间的共享类型</li></ul><p id="211694d5-ea46-80d3-a3b1-f818b4a019dc" class="">
+</p><p id="211694d5-ea46-8080-88d7-c14928eb25da" class=""><strong>类型别名</strong></p><ul id="211694d5-ea46-8079-8724-e5fd836d660b" class="bulleted-list"><li style="list-style-type:disc">类型别名允许使用自定义别名的定义类型</li></ul><ul id="211694d5-ea46-8093-9c99-d7d13979c644" class="bulleted-list"><li style="list-style-type:disc">类型别名可用于原始类型string或更复杂的类型，例如object或arrays<ul id="211694d5-ea46-8067-a712-deda39058b3a" class="bulleted-list"><li style="list-style-type:circle">t<strong>ype CarYear = number  自定义类型</strong><p id="211694d5-ea46-8098-925a-e760bee04c67" class=""><strong>type CarType = string</strong></p><p id="211694d5-ea46-8045-a105-f5926014c0d6" class=""><strong>type CarModel = string</strong></p><p id="211694d5-ea46-8014-8aca-d13e2467a649" class=""><strong>type Car = {   自定义类型</strong><div class="indented"><p id="211694d5-ea46-8045-b0d9-dfa9e4381c37" class=""><strong>year: CarYear,</strong></p><p id="211694d5-ea46-8080-be83-f2504f85c6bc" class=""><strong>type: CarType,</strong></p><p id="211694d5-ea46-800d-a06a-c8ba8b2314f6" class=""><strong>model: CarModel</strong></p></div></p><p id="211694d5-ea46-80d9-8d74-f196016480ff" class=""><strong>}</strong></p><p id="211694d5-ea46-808e-b551-f8b4837d171e" class="">const carYear: CarYear = 2001</p><p id="211694d5-ea46-809e-8c15-dcaabd36d021" class="">const carType: CarType = &quot;Toyota&quot;</p><p id="211694d5-ea46-807f-bdd5-d487f4223144" class="">const carModel: CarModel = &quot;Corolla&quot;</p><p id="211694d5-ea46-80ab-8e9f-df434f823ff1" class="">const car: Car = {<div class="indented"><p id="211694d5-ea46-80ac-afb0-d9ed7e960797" class="">year: carYear,</p><p id="211694d5-ea46-8035-80dd-d18382b818a0" class="">type: carType,</p><p id="211694d5-ea46-80a0-a960-dd53beb12fec" class="">model: carModel</p></div></p><p id="211694d5-ea46-8041-bd53-d429c0562ad5" class="">};</p></li></ul></li></ul><p id="211694d5-ea46-8047-b406-ef29f61d003c" class="">
+</p><p id="211694d5-ea46-8027-abe9-cc9c63942873" class=""><strong>接口</strong></p><ul id="211694d5-ea46-80f5-865e-c5b4d3937c33" class="bulleted-list"><li style="list-style-type:disc">接口类似于类型别名，但他们仅适用于object类型<ul id="211694d5-ea46-800f-852b-e7f609179ef9" class="bulleted-list"><li style="list-style-type:circle">interface Rectangle {<br/>height：number，<br/>width：number<br/>}<br/>const rectangle：Rectangle = {<br/>height：20，<br/>width：10<br/>}<br/></li></ul></li></ul><p id="211694d5-ea46-8060-8af7-c2395dda07af" class="">
+</p><p id="211694d5-ea46-8003-8110-fab639f99327" class=""><strong>扩展接口</strong></p><ul id="211694d5-ea46-801f-b80f-f99ae19671ca" class="bulleted-list"><li style="list-style-type:disc">接口可以互相扩展定义</li></ul><ul id="211694d5-ea46-80c2-b909-eb46f3524db5" class="bulleted-list"><li style="list-style-type:disc">扩展接口意味着正创建一个具有与原始接口相同的属性以及一些新属性的新街口<ul id="211694d5-ea46-80d7-8744-d1a2695b3f09" class="bulleted-list"><li style="list-style-type:circle">interface Rectangle {  自定义接口<p id="211694d5-ea46-8049-8502-d1dab54a0cf8" class="">height: number,</p><p id="211694d5-ea46-8077-9b8a-fa46e77469f2" class="">width: number</p><p id="211694d5-ea46-8072-9a72-c280fd33f065" class="">}</p><p id="211694d5-ea46-80a6-a484-f756510fbde0" class="">interface ColoredRectangle extends Rectangle {</p><p id="211694d5-ea46-801a-88ea-ebdef08544f9" class="">color: string   为旧接口赋予新属性</p><p id="211694d5-ea46-80d3-99cf-ed93dabe74b3" class="">}</p><p id="211694d5-ea46-8027-b14c-f1aa4de9a037" class="">const coloredRectangle: ColoredRectangle = {</p><p id="211694d5-ea46-80f9-81d8-fbcd5be3559d" class="">height: 20,</p><p id="211694d5-ea46-801b-b2ca-f3fa42bbd139" class="">width: 10,    使用新接口创建对象</p><p id="211694d5-ea46-804a-8583-d6b818f177fc" class="">color: &quot;red&quot;</p><p id="211694d5-ea46-80e2-8acc-c1ac7492a4f4" class="">};</p></li></ul></li></ul><p id="211694d5-ea46-800a-a837-f6b474b45f88" class="">
+</p><p id="211694d5-ea46-8057-a535-ea7a27353707" class=""><strong><span style="border-bottom:0.05em solid">TS联合类型：</span></strong></p><ul id="211694d5-ea46-806e-839b-c0a1d3bcd5c6" class="bulleted-list"><li style="list-style-type:disc">当一个值可以有多种类型时，可以使用联合类型<ul id="211694d5-ea46-802b-85f9-f5879bc4f613" class="bulleted-list"><li style="list-style-type:circle">例如当某个属性为string或number时</li></ul></li></ul><p id="211694d5-ea46-80d4-953a-d4b51cb5605a" class="">
+</p><p id="211694d5-ea46-801c-90df-cddadef16367" class=""><strong>联合类型： | （或）</strong></p><ul id="211694d5-ea46-804e-b2f9-c6ab8f4d61f2" class="bulleted-list"><li style="list-style-type:disc">使用|，来表示参数为string或number<ul id="211694d5-ea46-801f-a1c0-d557ec754f4e" class="bulleted-list"><li style="list-style-type:circle">function printCode（code：string|number）{<ul id="211694d5-ea46-80c6-b2c9-ffb0f978d712" class="bulleted-list"><li style="list-style-type:square">console.log（”123 = ${code}“）<br/>}<br/></li></ul></li></ul><ul id="211694d5-ea46-8023-8804-c3b50c4b38ae" class="bulleted-list"><li style="list-style-type:circle">printCode（555）</li></ul><ul id="211694d5-ea46-80d3-80fd-d32cc6f9f9b7" class="bulleted-list"><li style="list-style-type:circle">printCode（“555”）</li></ul></li></ul><p id="211694d5-ea46-8084-9fd2-d7d32d6cbf7c" class="">
+</p><p id="211694d5-ea46-80a4-b0db-d5098222656e" class=""><strong>联合类型错误</strong></p><ul id="211694d5-ea46-80c8-bca4-dd99e9436186" class="bulleted-list"><li style="list-style-type:disc">使用联合类型时，应知道类型为什么，避免类型错误<ul id="211694d5-ea46-807a-8d4e-e8da3f12e0bf" class="bulleted-list"><li style="list-style-type:circle">function printStatusCode(code: string | number) {<p id="211694d5-ea46-80f6-813d-df308d923a40" class="">console.log(`My status code is ${code.toUpperCase()}.`) <br/>运行会报错，upper为string函数<br/>upperProperty &#x27;toUpperCase&#x27; does not exist ontype &#x27;string | number&#x27;.<br/></p><p id="211694d5-ea46-8067-a690-e293725de09b" class="">Property &#x27;toUpperCase&#x27; does not exist on type &#x27;number&#x27;</p><p id="211694d5-ea46-8086-beb9-e3ca3f38b51e" class="">}</p></li></ul></li></ul><p id="211694d5-ea46-8095-8a76-d2c515774944" class="">
+</p><p id="211694d5-ea46-8052-927d-d32518f58e59" class=""><strong><span style="border-bottom:0.05em solid">TS函数：</span></strong></p><ul id="211694d5-ea46-8038-8399-f4f5e3f993a0" class="bulleted-list"><li style="list-style-type:disc">TS对于输入函数参数和返回值有特定的语法</li></ul><p id="211694d5-ea46-808f-8473-dc1dccad6a0a" class="">
+</p><p id="211694d5-ea46-8050-bd52-e8eace1a4498" class=""><strong>返回类型</strong></p><ul id="211694d5-ea46-80fd-8d71-f4b51bbad84d" class="bulleted-list"><li style="list-style-type:disc">函数返回值的类型可以明确定义，返回的参数类型和函数定义参数类型一致<ul id="211694d5-ea46-80a6-9a5e-f25c0b87323d" class="bulleted-list"><li style="list-style-type:circle">function getTime（）：number{<br/>return new Date（）.getTime（）；<br/>}<br/></li></ul></li></ul><ul id="211694d5-ea46-80c9-a33a-fbbf3f561513" class="bulleted-list"><li style="list-style-type:disc">如果没有定义返回类型，TS会通过返回的变量或表达式类型来推断</li></ul><p id="211694d5-ea46-80a3-a9eb-d63ad526c2d2" class="">
+</p><p id="211694d5-ea46-80e4-a08d-cc55b36c2f35" class=""><strong>Void返回类型</strong></p><ul id="211694d5-ea46-8012-8788-e752fe745128" class="bulleted-list"><li style="list-style-type:disc">void类型，可用于指示函数不返回任何值<ul id="211694d5-ea46-80b8-b21c-dda8f0c1ec9c" class="bulleted-list"><li style="list-style-type:circle">function printHello（）：void{<br/>console.log（“hello”）<br/>}<br/></li></ul></li></ul><p id="211694d5-ea46-80bd-bb23-ca06403e1c05" class="">
+</p><p id="211694d5-ea46-809d-8a1c-c8dc2f1406a6" class=""><strong>参数</strong></p><ul id="211694d5-ea46-8011-acf4-d14d8b50ffc9" class="bulleted-list"><li style="list-style-type:disc">函数参数的类型与变量声明的语法类似<ul id="211694d5-ea46-80e6-8f02-c38eba7f697d" class="bulleted-list"><li style="list-style-type:circle">function multiply（a：number，b：number）{<br/>return a * b<br/>}<br/></li></ul></li></ul><ul id="211694d5-ea46-8034-9423-e37edb0af478" class="bulleted-list"><li style="list-style-type:disc">如果没有定义参数类型，TS将默认使用any，除非有其他类型信息可用，如下面的默认参数和类型别名部分所示</li></ul><p id="211694d5-ea46-80ca-8438-f8a45d35201e" class="">
+</p><p id="211694d5-ea46-80c0-af81-f788c9ba386e" class=""><strong>可选参数</strong></p><ul id="211694d5-ea46-8062-ac79-d39c87b9f653" class="bulleted-list"><li style="list-style-type:disc">默认情况下，TS会假定所有参数都是必须的，但可用明确将其标记为可选<ul id="211694d5-ea46-8049-a6c6-fd3ec9d4a3fa" class="bulleted-list"><li style="list-style-type:circle">function add（a：number，b：number，c？：number）{<br/>return a+ b + （c || 0）<br/>}<br/></li></ul></li></ul><p id="211694d5-ea46-8054-a875-c83c1a7e43f7" class="">
+</p><p id="211694d5-ea46-80d5-bf76-d3c14e8dfcf1" class=""><strong>默认参数</strong></p><ul id="211694d5-ea46-8048-a315-ef127aa25e3f" class="bulleted-list"><li style="list-style-type:disc">对于具有默认值的参数，默认值位于类型注释之后<ul id="211694d5-ea46-80e9-9afd-e2f0779f8ea5" class="bulleted-list"><li style="list-style-type:circle">function pow（value：number，exponent：number = 10）{<br/>return value ** exponent<br/>}<br/></li></ul></li></ul><ul id="211694d5-ea46-8015-9442-d571e4706261" class="bulleted-list"><li style="list-style-type:disc">同理TS可以根据默认值推断出类型</li></ul><p id="211694d5-ea46-805c-926b-d7dd8bbded94" class="">
+</p><p id="211694d5-ea46-80fd-a3d1-d327c5157839" class=""><strong>命名参数</strong></p><ul id="211694d5-ea46-805a-80a0-c29e81f23ca8" class="bulleted-list"><li style="list-style-type:disc">输入命名参数遵循与输入普通参数相同的模式<ul id="211694d5-ea46-8080-9af9-cc3475f5fbfa" class="bulleted-list"><li style="list-style-type:circle">function divide（{dividend，divisor}：{dividend：number，divisor：number}）{<br/>return dividend / divisor<br/></li></ul><ul id="211694d5-ea46-8011-b218-de1ee00dc252" class="bulleted-list"><li style="list-style-type:circle">}</li></ul></li></ul><p id="211694d5-ea46-807d-8647-cd2b9faf7193" class="">
+</p><p id="211694d5-ea46-805a-9e48-ca71d7ee5b44" class=""><strong>剩余参数</strong></p><ul id="211694d5-ea46-80e0-9b06-e51eae7d680e" class="bulleted-list"><li style="list-style-type:disc">其余参数可以想普通参数一样输入，但类型必须是数组，因为其他参数始终是数组<ul id="211694d5-ea46-80d4-90a4-ffacfa6701a4" class="bulleted-list"><li style="list-style-type:circle">function add（a：number，b：number，…rest：number【】）{<br/>return a + b + rest.reduce（（p，c）⇒ p + c ，0）<br/></li></ul><ul id="211694d5-ea46-801c-acd8-ed3c865b72b8" class="bulleted-list"><li style="list-style-type:circle">}</li></ul></li></ul><p id="211694d5-ea46-805f-b43f-dc7e4a72e4e1" class="">
+</p><p id="211694d5-ea46-802f-ac2a-f32828b4f121" class=""><strong>类型别名</strong></p><ul id="211694d5-ea46-800b-9fc0-e3b9428e6d55" class="bulleted-list"><li style="list-style-type:disc">函数类型可以与具有类型别名的函数分开指定</li></ul><ul id="211694d5-ea46-8003-8f63-c87e7a04524b" class="bulleted-list"><li style="list-style-type:disc">这些类型的写法类似于箭头函数<ul id="211694d5-ea46-804a-be42-e4846d28a4f2" class="bulleted-list"><li style="list-style-type:circle">type Negate = （value：number） ⇒ number；</li></ul><ul id="211694d5-ea46-802d-b995-d11953648420" class="bulleted-list"><li style="list-style-type:circle">const negateFunction：Negate = （value）⇒value * -1</li></ul></li></ul><p id="211694d5-ea46-8004-bd64-f4c66c2292c3" class="">
+</p><p id="211694d5-ea46-80f3-983b-caf5ba193c00" class=""><strong><span style="border-bottom:0.05em solid">TS转换：</span></strong></p><ul id="211694d5-ea46-8061-863c-c0dfa13c40b3" class="bulleted-list"><li style="list-style-type:disc">有时处理类型时需要覆盖变量的类型，例如当库提供不正确的类型时</li></ul><ul id="211694d5-ea46-8037-8659-f3a149f54113" class="bulleted-list"><li style="list-style-type:disc">强制转换时覆盖类型的过程</li></ul><p id="211694d5-ea46-80ad-8328-e676f1e79bc8" class="">
+</p><p id="211694d5-ea46-80c7-a2f2-f1bf6b14c500" class=""><strong>转换变量：as</strong></p><ul id="211694d5-ea46-80eb-804d-ca8ba2bc71f6" class="bulleted-list"><li style="list-style-type:disc">转换变量的直接方法时as关键字，将直接改变给定变量的类型<ul id="211694d5-ea46-801c-af7c-e1174c0a4f6b" class="bulleted-list"><li style="list-style-type:circle">let x：unknown = ‘hello’；</li></ul><ul id="211694d5-ea46-80b0-9ef5-ef46752e82fb" class="bulleted-list"><li style="list-style-type:circle">console.log（（x as string）.length）</li></ul></li></ul><ul id="211694d5-ea46-809e-819d-d061773cd493" class="bulleted-list"><li style="list-style-type:disc">强制转换实际上不会改变变量内数据的类型，例如变量x仍保存为数字，以下代码无法正常工作<ul id="211694d5-ea46-80ad-9fe1-d8c521e4da89" class="bulleted-list"><li style="list-style-type:circle">let x：known = 4</li></ul><ul id="211694d5-ea46-805f-8fe1-e940c857d860" class="bulleted-list"><li style="list-style-type:circle">console.log（（x ax string）.length）</li></ul></li></ul><ul id="211694d5-ea46-803b-9df4-fbc585ac4f99" class="bulleted-list"><li style="list-style-type:disc">TS会尝试进行类型检查转换，防止出现不正确的转换，例如，下面内容会引发类型错误，因为TS会进行转换数据，否则代码本身没有意义<ul id="211694d5-ea46-80d5-98dc-e333dc1afd7d" class="bulleted-list"><li style="list-style-type:circle">console.log（（4 as string）.length）</li></ul></li></ul><p id="211694d5-ea46-8077-b743-cbe47de5dd26" class="">
+</p><p id="211694d5-ea46-8015-b143-c02127d39895" class=""><strong>转换变量：&lt;&gt;</strong></p><ul id="211694d5-ea46-80bb-ac31-c53673ff18eb" class="bulleted-list"><li style="list-style-type:disc">使用&lt;&gt;与as相同强制转换类型<ul id="211694d5-ea46-80ff-b48f-f11218e78920" class="bulleted-list"><li style="list-style-type:circle">let x ： knowen = “hello”</li></ul><ul id="211694d5-ea46-8084-8d4d-c3f4b5fc0457" class="bulleted-list"><li style="list-style-type:circle">console.log（（ &lt;string&gt;x）.length）</li></ul></li></ul><ul id="211694d5-ea46-8091-8a68-f8aa3b4ddb27" class="bulleted-list"><li style="list-style-type:disc">这种类型转换不适用于tsx，尤其处理React文件时</li></ul><p id="211694d5-ea46-8070-84ef-d7fbafcf8999" class="">
+</p><p id="211694d5-ea46-80f6-a560-d7cd211e7b82" class=""><strong>强制施法</strong></p><ul id="211694d5-ea46-8047-924c-e620a13552d5" class="bulleted-list"><li style="list-style-type:disc">覆盖TS在转换时可能引发的类型错误，先将其转换为unknown，然后转换为目标类型<ul id="211694d5-ea46-8086-8a1c-fcf7317577b8" class="bulleted-list"><li style="list-style-type:circle">let x = “hello”</li></ul><ul id="211694d5-ea46-80b6-a04b-fc8e8d7fb1cb" class="bulleted-list"><li style="list-style-type:circle">console.log（（（x as unknown）as number）.length），会返回未定义结果</li></ul></li></ul><p id="211694d5-ea46-80a0-8ea0-cbb4fe5b8968" class="">
+</p><p id="211694d5-ea46-8096-8340-df860795094e" class=""><strong><span style="border-bottom:0.05em solid">TS类：</span></strong></p><ul id="211694d5-ea46-800f-aaf5-c502553fea15" class="bulleted-list"><li style="list-style-type:disc">TS为JS类添加类型和可见性修饰符</li></ul><p id="211694d5-ea46-80fe-9213-cf70e16c611a" class="">
+</p><p id="211694d5-ea46-80d4-893f-ca3eab0cca12" class=""><strong>成员：类型</strong></p><ul id="211694d5-ea46-801a-aed4-f8f9b6791af0" class="bulleted-list"><li style="list-style-type:disc">类的成员（属性和方法）使用类型注释进行类型化，类似于变量<ul id="211694d5-ea46-8087-9b00-c9f11cd54b3f" class="bulleted-list"><li style="list-style-type:circle">clas Person{<ul id="211694d5-ea46-8011-8c0a-ff72ea93437d" class="bulleted-list"><li style="list-style-type:square">name：string；</li></ul></li></ul><ul id="211694d5-ea46-80c3-91ec-e715c109943f" class="bulleted-list"><li style="list-style-type:circle">}</li></ul><ul id="211694d5-ea46-80c5-a3a6-e1bc8190fec6" class="bulleted-list"><li style="list-style-type:circle">const person = new Person（）</li></ul><ul id="211694d5-ea46-8084-a744-ca9fcb60b6e2" class="bulleted-list"><li style="list-style-type:circle"><a href="http://person.name">person.name</a> = ‘Tom’</li></ul></li></ul><p id="211694d5-ea46-80f8-8326-d5681e83ced4" class="">
+</p><p id="211694d5-ea46-8056-8780-c0c5cfd7189c" class=""><strong>成员：可见性</strong></p><ul id="211694d5-ea46-80a4-b1a9-f60cfc7125f6" class="bulleted-list"><li style="list-style-type:disc">类成员还可以被赋予影响可见性的特殊修饰符<ul id="211694d5-ea46-80bb-938e-c7e4fd484ffb" class="bulleted-list"><li style="list-style-type:circle">三个主要可见性修饰符<ul id="211694d5-ea46-808c-b2c7-db0399becb63" class="bulleted-list"><li style="list-style-type:square">punblic（默认），允许从任何地方访问类成员</li></ul><ul id="211694d5-ea46-804e-809b-e7395d0c6ced" class="bulleted-list"><li style="list-style-type:square">private，仅允许从类内部访问类成员</li></ul><ul id="211694d5-ea46-80de-a4d8-e4974a0f5ded" class="bulleted-list"><li style="list-style-type:square">protected，允许从自身以及继承他的任何类访问类成员</li></ul></li></ul></li></ul><ul id="211694d5-ea46-8058-829d-d6eaf8e1ce1c" class="bulleted-list"><li style="list-style-type:disc">例子<ul id="211694d5-ea46-806b-bb4d-fde3cddff178" class="bulleted-list"><li style="list-style-type:circle">class Person {<ul id="211694d5-ea46-8078-9c66-eee003a12b26" class="bulleted-list"><li style="list-style-type:square">private name：string；</li></ul><ul id="211694d5-ea46-8003-9bf4-de42b4ea8421" class="bulleted-list"><li style="list-style-type:square">public constructor（name：string）{<ul id="211694d5-ea46-8046-9230-cfaf088c27b0" class="bulleted-list"><li style="list-style-type:disc"><a href="http://this.name">this.name</a> = name</li></ul></li></ul><ul id="211694d5-ea46-80d2-9436-c40d041f9c4f" class="bulleted-list"><li style="list-style-type:square">}</li></ul><ul id="211694d5-ea46-8063-b799-d893ed1f4bfb" class="bulleted-list"><li style="list-style-type:square">public getName（）：string{<ul id="211694d5-ea46-806b-869b-d06bb30ad8d5" class="bulleted-list"><li style="list-style-type:disc">return this.name；</li></ul></li></ul><ul id="211694d5-ea46-8009-a082-ce7740ea2601" class="bulleted-list"><li style="list-style-type:square">}</li></ul></li></ul><ul id="211694d5-ea46-8076-a5c6-e2436908003a" class="bulleted-list"><li style="list-style-type:circle">}</li></ul><ul id="211694d5-ea46-80ec-a0f8-c2bb088a8b8f" class="bulleted-list"><li style="list-style-type:circle">const person = new Person（‘Jane’）</li></ul><ul id="211694d5-ea46-80cd-ab64-da3afd11952b" class="bulleted-list"><li style="list-style-type:circle">console.log（person.getName（））</li></ul></li></ul><ul id="211694d5-ea46-80a2-97aa-d6cb67491e92" class="bulleted-list"><li style="list-style-type:disc">类中的关键字this通常指该类的实例</li></ul><p id="211694d5-ea46-80c1-ac05-e54f44cb8c81" class="">
+</p><p id="211694d5-ea46-80b6-b9d5-e928f1ea3554" class=""><strong>参数属性：</strong></p><ul id="211694d5-ea46-8073-b07d-d63d2629ab18" class="bulleted-list"><li style="list-style-type:disc">TS提供了一种在构造函数中定义类成员的便捷方法，即通过向参数添加可见性修饰符<ul id="211694d5-ea46-8064-b7da-c38df52fb6d0" class="bulleted-list"><li style="list-style-type:circle">class Person{<ul id="211694d5-ea46-8022-85b0-ddf2e51e34d9" class="bulleted-list"><li style="list-style-type:square">public constructor（private name：string）{}</li></ul><ul id="211694d5-ea46-80b4-8b93-d089dfb551d1" class="bulleted-list"><li style="list-style-type:square">public getName（）：string{<ul id="211694d5-ea46-80c4-9bc3-e53bbdc69e4e" class="bulleted-list"><li style="list-style-type:disc">return this.name</li></ul></li></ul><ul id="211694d5-ea46-8064-8870-f4e238718991" class="bulleted-list"><li style="list-style-type:square">}</li></ul></li></ul><ul id="211694d5-ea46-80c0-9fd1-f03851671462" class="bulleted-list"><li style="list-style-type:circle">}</li></ul><ul id="211694d5-ea46-80ba-aed8-f5c0924326e2" class="bulleted-list"><li style="list-style-type:circle">const person = new Person（“Tom”）</li></ul><ul id="211694d5-ea46-8023-bc76-f4dd4a4f569a" class="bulleted-list"><li style="list-style-type:circle">console.log（person.getName（））</li></ul></li></ul><p id="211694d5-ea46-80d4-8308-d1ee5dc45016" class="">
+</p><p id="211694d5-ea46-8012-9e82-c13d358d0e87" class=""><strong>只读：</strong></p><ul id="211694d5-ea46-8006-8ecf-f173cc4d2089" class="bulleted-list"><li style="list-style-type:disc">与数组类似，readonly关键字可以防止类成员被更改<ul id="211694d5-ea46-80c4-b86e-d16039917bc6" class="bulleted-list"><li style="list-style-type:circle">class Person{<ul id="211694d5-ea46-80cb-b56a-f2a25e798bd9" class="bulleted-list"><li style="list-style-type:square">private readonly name：string；</li></ul><ul id="211694d5-ea46-8045-a4a0-cecafb01eb3b" class="bulleted-list"><li style="list-style-type:square">public constructor（name：string）{<ul id="211694d5-ea46-80ad-9753-d4ef1d05cb6c" class="bulleted-list"><li style="list-style-type:disc"><a href="http://this.name">this.name</a> = name</li></ul></li></ul><ul id="211694d5-ea46-80d3-9cdb-d82e25a68e03" class="bulleted-list"><li style="list-style-type:square">}</li></ul><ul id="211694d5-ea46-8065-8d3a-c0345b0cd712" class="bulleted-list"><li style="list-style-type:square">public getName（）：string{<ul id="211694d5-ea46-80cd-91b2-fc232a5ae8c5" class="bulleted-list"><li style="list-style-type:disc">return this.name</li></ul></li></ul><ul id="211694d5-ea46-803f-9274-eb1c66ac2433" class="bulleted-list"><li style="list-style-type:square">}</li></ul></li></ul><ul id="211694d5-ea46-807a-b8b6-df884df7b8e7" class="bulleted-list"><li style="list-style-type:circle">}</li></ul><ul id="211694d5-ea46-8034-8a3a-d0319d5c4e70" class="bulleted-list"><li style="list-style-type:circle">const person = newPerson（‘tom’）</li></ul><ul id="211694d5-ea46-8012-bfa7-fdfcf4e6a794" class="bulleted-list"><li style="list-style-type:circle">console.log（person.getName（））</li></ul></li></ul><p id="211694d5-ea46-8066-bd06-f7585cc9577a" class="">
+</p><p id="211694d5-ea46-80ea-a46e-d5df3fdf9469" class=""><strong>继承：实现</strong></p><ul id="211694d5-ea46-8094-a8db-d45b62d18364" class="bulleted-list"><li style="list-style-type:disc">接口可以用于通过implements关键字定义类必须遵循的类型<ul id="211694d5-ea46-8083-b50b-f09906ffa5ee" class="bulleted-list"><li style="list-style-type:circle">interface Shape{<ul id="211694d5-ea46-80cb-83d6-ed5270396bb3" class="bulleted-list"><li style="list-style-type:square">getArea：（）⇒number</li></ul></li></ul><ul id="211694d5-ea46-8039-935c-eb1de071847c" class="bulleted-list"><li style="list-style-type:circle">}</li></ul><ul id="211694d5-ea46-8056-b5a0-fd6823a1dc6e" class="bulleted-list"><li style="list-style-type:circle">clas Rectangle implements Shape {<ul id="211694d5-ea46-8074-b49d-f360f506ef7f" class="bulleted-list"><li style="list-style-type:square">public constructor（protected readonly width：number，protected readonly height：number）{}</li></ul><ul id="211694d5-ea46-80a4-be63-e18193f791e7" class="bulleted-list"><li style="list-style-type:square">public getArea（）：number{<ul id="211694d5-ea46-8006-ba07-c12a2a0f3351" class="bulleted-list"><li style="list-style-type:disc">return this.width*this.height</li></ul></li></ul><ul id="211694d5-ea46-8008-b980-c7bb2f5da332" class="bulleted-list"><li style="list-style-type:square">}</li></ul></li></ul><ul id="211694d5-ea46-8012-a55d-fce6b25d52c5" class="bulleted-list"><li style="list-style-type:circle">}</li></ul></li></ul><ul id="211694d5-ea46-80f7-a3b5-e46ad782fcad" class="bulleted-list"><li style="list-style-type:disc">一个类可以通过在implements后面列出每个接口来实现多个接口，并使用逗号分隔，<ul id="211694d5-ea46-8092-bd2b-f1942f18e002" class="bulleted-list"><li style="list-style-type:circle">clas Rectangle implements Shape，Colored{</li></ul></li></ul><p id="211694d5-ea46-80ce-a7b9-c05b6e4017e1" class="">
+</p><p id="211694d5-ea46-804f-ac27-ea6b3cf23608" class=""><strong>继承：扩展</strong></p><ul id="211694d5-ea46-80a1-b00b-e4d2ed6ecc50" class="bulleted-list"><li style="list-style-type:disc">类可以通过extend关键字相互扩展，一个类只能扩展一个其他类<ul id="211694d5-ea46-8004-a61c-c4fb9cb83047" class="bulleted-list"><li style="list-style-type:circle">interface Shape{<ul id="211694d5-ea46-80e1-9aba-f88978e4e4dc" class="bulleted-list"><li style="list-style-type:square">getArea：（）⇒number</li></ul></li></ul><ul id="211694d5-ea46-80fb-aa5a-e81e2fdce0fc" class="bulleted-list"><li style="list-style-type:circle">}</li></ul><ul id="211694d5-ea46-80f9-8528-fdeb008fc3e4" class="bulleted-list"><li style="list-style-type:circle">class Rectangle implements Shape{<ul id="211694d5-ea46-80e4-b80d-e83333b09a50" class="bulleted-list"><li style="list-style-type:square">public constructor（protected readonly width：number，protected readonly height：number）{}</li></ul><ul id="211694d5-ea46-80a3-8492-e2c4a4d7f98e" class="bulleted-list"><li style="list-style-type:square">public getArea（）：number{<ul id="211694d5-ea46-80c0-bc5d-dad38bd76016" class="bulleted-list"><li style="list-style-type:disc">return this.width * this.height</li></ul></li></ul><ul id="211694d5-ea46-80e9-aa3e-eded713b0771" class="bulleted-list"><li style="list-style-type:square">}</li></ul></li></ul><ul id="211694d5-ea46-80c5-af7f-e1ea7ff767b7" class="bulleted-list"><li style="list-style-type:circle">}</li></ul><ul id="211694d5-ea46-8044-afac-ea1b33bf54a0" class="bulleted-list"><li style="list-style-type:circle">clas Square extends Rectangle{<ul id="211694d5-ea46-808d-8777-d771f2678fd5" class="bulleted-list"><li style="list-style-type:square">public constructor（width：number）{<ul id="211694d5-ea46-80c3-966b-e24ef5c06b53" class="bulleted-list"><li style="list-style-type:disc">super（width，width）</li></ul></li></ul><ul id="211694d5-ea46-80b2-8f7c-d5bb1f152a8a" class="bulleted-list"><li style="list-style-type:square">}</li></ul></li></ul><ul id="211694d5-ea46-8055-8f48-d8810d31ef76" class="bulleted-list"><li style="list-style-type:circle">}</li></ul></li></ul><p id="211694d5-ea46-8079-8bef-ceb01c441dce" class="">
+</p><p id="211694d5-ea46-8076-85c2-decfaa975609" class=""><strong>覆盖：</strong></p><ul id="211694d5-ea46-809f-b223-f26ca7b5f1a9" class="bulleted-list"><li style="list-style-type:disc">当一个类扩展另一个类时，它可以替换父类中同名的成员</li></ul><ul id="211694d5-ea46-8085-939e-f5f2c75a3225" class="bulleted-list"><li style="list-style-type:disc">TS中允许使用override关键字来标记<ul id="211694d5-ea46-80a5-b3ad-c40ce309fb9d" class="bulleted-list"><li style="list-style-type:circle">interface Shape {<p id="211694d5-ea46-8022-92d4-f7071ffa3f26" class="">getArea: () =&gt; number;</p><p id="211694d5-ea46-80f7-a512-e43ae6e26488" class="">}</p><p id="211694d5-ea46-8084-b286-ed925b7dcd5c" class="">class Rectangle implements Shape {</p><p id="211694d5-ea46-8028-9303-da2e23dedd0c" class="">// using protected for these members allows access from classes that extend from this class, such as Square</p><p id="211694d5-ea46-807a-a400-ed5d0b863bd2" class="">public constructor(protected readonly width: number, protected readonly height: number) {}</p><p id="211694d5-ea46-808a-b315-f40207298cce" class="">public getArea(): number {</p><p id="211694d5-ea46-806d-8ca2-fbd57c33e0db" class="">return this.width * this.height;</p><p id="211694d5-ea46-804e-a7de-fbe07dfbf2a6" class="">}</p><p id="211694d5-ea46-80b8-8612-c33ec904bd79" class="">public toString(): string {</p><p id="211694d5-ea46-80ae-8989-e2935cfd52b0" class="">return `Rectangle[width=${this.width}, height=${this.height}]`;</p><p id="211694d5-ea46-8017-b4dd-d84c72fa5908" class="">}</p><p id="211694d5-ea46-8070-ba8b-eac1dbfdd464" class="">}</p><p id="211694d5-ea46-80fb-86a2-d2d2d18fcd10" class="">class Square extends Rectangle {</p><p id="211694d5-ea46-80a3-9b87-e638e614d77c" class="">public constructor(width: number) {</p><p id="211694d5-ea46-804a-9520-f99a8a2d8b7c" class="">super(width, width);</p><p id="211694d5-ea46-8094-8020-c12db5acae9b" class="">}</p><p id="211694d5-ea46-8015-b7e2-c1bcb2a6f6c5" class="">// this toString replaces the toString from Rectangle</p><p id="211694d5-ea46-80dd-b109-f29832a52128" class="">public override toString(): string {</p><p id="211694d5-ea46-80cc-8de1-c1abc35aed51" class="">return `Square[width=${this.width}]`;</p><p id="211694d5-ea46-807a-89cd-da8055c5d77c" class="">}</p><p id="211694d5-ea46-80a7-8d9b-d36fc95b8631" class="">}</p></li></ul></li></ul><ul id="211694d5-ea46-80f1-b6c1-ca459a2d00ca" class="bulleted-list"><li style="list-style-type:disc">默认，override重写方法是关键字是可选的，仅用于防止意外重写不存在的方法</li></ul><p id="211694d5-ea46-8010-b9a2-e8604c9e3177" class="">
+</p><p id="211694d5-ea46-8074-ab41-e523450a3875" class=""><strong>抽象类：</strong></p><ul id="211694d5-ea46-802c-8e98-eda3f334d8e5" class="bulleted-list"><li style="list-style-type:disc">类可以编写，使其用作其他类的基类，无需事先所有成员，可以通过使用abstract关键字来实现，未实现的成员也可以使用abstract关键字<ul id="211694d5-ea46-8026-98d8-f696b857ed44" class="bulleted-list"><li style="list-style-type:circle">abstract class Polygon {<p id="211694d5-ea46-80c7-9908-d81be4e53847" class="">public abstract getArea(): number;</p><p id="211694d5-ea46-8020-a68b-c9dd95eb23c4" class="">public toString(): string {</p><p id="211694d5-ea46-80e8-8345-fae69ee3b3da" class="">return `Polygon[area=${this.getArea()}]`;</p><p id="211694d5-ea46-8001-9150-dfe94de05942" class="">}</p><p id="211694d5-ea46-80ed-9b5d-eeb2fe5e614d" class="">}</p><p id="211694d5-ea46-80a4-9518-d81451ae81c2" class="">class Rectangle extends Polygon {</p><p id="211694d5-ea46-8085-b14a-fce5ff814cd0" class="">public constructor(protected readonly width: number, protected readonly height: number) {</p><p id="211694d5-ea46-8044-9876-c2d46e7ff560" class="">super();</p><p id="211694d5-ea46-809f-8579-d3d51eac7a0c" class="">}</p><p id="211694d5-ea46-80d0-abcf-fd1fe36f0bb3" class="">public getArea(): number {</p><p id="211694d5-ea46-8060-8833-d572150a71fb" class="">return this.width * this.height;</p><p id="211694d5-ea46-80ed-a018-f4e50a719108" class="">}</p><p id="211694d5-ea46-808f-b20e-d5c801470370" class="">}</p></li></ul></li></ul><ul id="211694d5-ea46-8007-9b4f-e31ed7412b47" class="bulleted-list"><li style="list-style-type:disc">抽象类不能直接实例化，因为他们没有实现所有成员</li></ul><p id="211694d5-ea46-8056-9b29-f4174c1c7d0d" class="">
+</p><p id="211694d5-ea46-8092-ab5f-dc63bca0e849" class=""><strong><span style="border-bottom:0.05em solid">TS基本泛型：</span></strong></p><ul id="211694d5-ea46-8055-b9a0-d656a23ccd7f" class="bulleted-list"><li style="list-style-type:disc">泛型允许创建类型变量，可用于创建不需要明确定义其使用的类型的类、函数和类型别名</li></ul><ul id="211694d5-ea46-801a-8467-f42f7bfe2cfc" class="bulleted-list"><li style="list-style-type:disc">泛型是的编写可重用代码变得更加容易</li></ul><p id="211694d5-ea46-804d-b960-e162a3a8da94" class="">
+</p><p id="211694d5-ea46-809d-9c2f-d174e1e8f131" class=""><strong>功能functions：</strong></p><ul id="211694d5-ea46-80c4-a9f8-f25d7088078c" class="bulleted-list"><li style="list-style-type:disc">具有函数功能的泛型有助于制作通用的方法，以更准确地使用和返回的类型<ul id="211694d5-ea46-80e7-a0c8-f766d36b812f" class="bulleted-list"><li style="list-style-type:circle">function createPair &lt;S,T&gt;(v1：S，v2：T)：【S，T】{<ul id="211694d5-ea46-800b-a617-f21c006cb144" class="bulleted-list"><li style="list-style-type:square">return 【v1，v2】</li></ul></li></ul><ul id="211694d5-ea46-8041-ba63-ee7c8733e4bf" class="bulleted-list"><li style="list-style-type:circle">}</li></ul><ul id="211694d5-ea46-80c6-8180-ccdaca8bc5aa" class="bulleted-list"><li style="list-style-type:circle">console.log（createPair&lt;string，number&gt;（‘hello’，42））</li></ul></li></ul><ul id="211694d5-ea46-80bb-91c8-c7b177ac057c" class="bulleted-list"><li style="list-style-type:disc">TS可以从函数类型推断泛型参数的类型。</li></ul><p id="211694d5-ea46-80ef-94d4-dacdcd4c11ae" class="">
+</p><p id="211694d5-ea46-80cf-9c39-ef8c510c07aa" class=""><strong>课程classes：</strong></p><ul id="211694d5-ea46-8056-a51c-f67514d8b28a" class="bulleted-list"><li style="list-style-type:disc">泛型可以用于创建通用类，例如map<ul id="211694d5-ea46-80fe-83a1-c2d8f62e068d" class="bulleted-list"><li style="list-style-type:circle">class NamedValue&lt;T&gt; {<p id="211694d5-ea46-80fe-9be8-e18e632e08be" class="">private _value: T | undefined;</p><p id="211694d5-ea46-803f-887d-fdd98d2399ec" class="">constructor(private name: string) {}</p><p id="211694d5-ea46-8063-8747-cd5c08fcd46f" class="">public setValue(value: T) {</p><p id="211694d5-ea46-80bc-9635-fc9fb508f5e6" class="">this._value = value;</p><p id="211694d5-ea46-8081-b580-db0ab081ae48" class="">}</p><p id="211694d5-ea46-804e-908d-e8e3f413dc48" class="">public getValue(): T | undefined {</p><p id="211694d5-ea46-803b-a4a6-f2a20d6c1203" class="">return this._value;</p><p id="211694d5-ea46-8063-a48b-d5703d4d8991" class="">}</p><p id="211694d5-ea46-8003-b0ce-f4cf8d1523f5" class="">public toString(): string {</p><p id="211694d5-ea46-809c-8e14-ce4faf0ab8a0" class="">return `${this.name}: ${this._value}`;</p><p id="211694d5-ea46-8092-9e46-cbe4db5e54e1" class="">}</p><p id="211694d5-ea46-8093-8d5e-e4685f88e7aa" class="">}</p><p id="211694d5-ea46-804b-bde9-ce5e91330669" class="">let value = new NamedValue&lt;number&gt;(&#x27;myNumber&#x27;);</p><p id="211694d5-ea46-80aa-8421-db124cbb0ce7" class="">value.setValue(10);</p><p id="211694d5-ea46-80b2-8b2f-cdbb19d6f40f" class="">console.log(value.toString()); // myNumber: 10</p></li></ul></li></ul><ul id="211694d5-ea46-80df-92ff-c7914e8279e0" class="bulleted-list"><li style="list-style-type:disc">在构造函数参数中使用泛型参数，TS可以推断其类型</li></ul><p id="211694d5-ea46-80f4-9a51-e0f1fbc1f016" class="">
+</p><p id="211694d5-ea46-8062-b79b-e06ee6c81ea7" class=""><strong>类型别名：</strong></p><ul id="211694d5-ea46-8038-8f8a-f24e4f1c72b9" class="bulleted-list"><li style="list-style-type:disc">类型别名中的泛型允许创建更可重用的类型<ul id="211694d5-ea46-80d5-863a-d3920caaa231" class="bulleted-list"><li style="list-style-type:circle">type Wrapped&lt;T&gt; = { value: T };<p id="211694d5-ea46-80eb-9674-c76064ca05c0" class="">const wrappedValue: Wrapped&lt;number&gt; = { value: 10 };</p></li></ul></li></ul><ul id="211694d5-ea46-8034-ae89-dfc5db1ed2e5" class="bulleted-list"><li style="list-style-type:disc">这也是用具有以下语法的接口 interface Wrapped&lt;T&gt;{</li></ul><p id="211694d5-ea46-8003-8df7-f161a2439d71" class="">
+</p><p id="211694d5-ea46-8070-8790-c935b897caed" class=""><strong>默认值：</strong></p><ul id="211694d5-ea46-8086-b630-e7fd109112f9" class="bulleted-list"><li style="list-style-type:disc">如果没有指定或推断其他值，则可以为泛型分配默认值<ul id="211694d5-ea46-8082-ab51-f6ff235693d7" class="bulleted-list"><li style="list-style-type:circle">class NamedValue&lt;T = string&gt; {<p id="211694d5-ea46-806e-bfbd-ca061b45364c" class="">private _value: T | undefined;</p><p id="211694d5-ea46-804a-b153-f221e51c171d" class="">constructor(private name: string) {}</p><p id="211694d5-ea46-8042-bee7-d49c21018715" class="">public setValue(value: T) {</p><p id="211694d5-ea46-8023-bff7-e24cdd833781" class="">this._value = value;</p><p id="211694d5-ea46-802a-8413-eafc0b4ea673" class="">}</p><p id="211694d5-ea46-80a7-a5c8-c71b811791f1" class="">public getValue(): T | undefined {</p><p id="211694d5-ea46-8078-9165-f0adc6621ac0" class="">return this._value;</p><p id="211694d5-ea46-8025-bf47-ea27b73bec05" class="">}</p><p id="211694d5-ea46-80af-a7a2-d64c94992941" class="">public toString(): string {</p><p id="211694d5-ea46-806f-ab3e-d6d2449f51a0" class="">return `${this.name}: ${this._value}`;</p><p id="211694d5-ea46-80c0-a04e-fcdc574c31c9" class="">}</p><p id="211694d5-ea46-80e6-8593-c38e24776056" class="">}</p><p id="211694d5-ea46-8067-81ee-db649a4b598c" class="">let value = new NamedValue(&#x27;myNumber&#x27;);</p><p id="211694d5-ea46-8071-9934-cf6d5b86ad68" class="">value.setValue(&#x27;myValue&#x27;);</p><p id="211694d5-ea46-8010-990d-f3d43a31b300" class="">console.log(value.toString()); // myNumber: myValue</p></li></ul></li></ul><p id="211694d5-ea46-80da-9e4c-e6920f159032" class="">
+</p><p id="211694d5-ea46-8092-90e1-e41318f77c25" class=""><strong>扩展：</strong></p><ul id="211694d5-ea46-8051-9d6d-c3d0721c10a3" class="bulleted-list"><li style="list-style-type:disc">可以向泛型添加约束来限制允许的内容，这些约束使得在使用泛型时可以依赖更具体的类型<ul id="211694d5-ea46-8001-b828-f39356c1b0d3" class="bulleted-list"><li style="list-style-type:circle">function createLoggedPair&lt;S extends string | number, T extends string | number&gt;(v1: S, v2: T): [S, T] {<p id="211694d5-ea46-8025-a9c7-d11f29420d9f" class="">console.log(`creating pair: v1=&#x27;${v1}&#x27;, v2=&#x27;${v2}&#x27;`);</p><p id="211694d5-ea46-80f9-a53b-c188f2364e40" class="">return [v1, v2];</p><p id="211694d5-ea46-8054-83ac-dd2a4d5d4d90" class="">}</p></li></ul></li></ul><p id="212694d5-ea46-80cc-a7f6-df16e27e4919" class="">
+</p><p id="212694d5-ea46-80af-afd2-e40ce4fe7c00" class="">
+</p><p id="212694d5-ea46-8093-ab4f-d9bddffde7ae" class=""><strong><span style="border-bottom:0.05em solid">TS实用程序类型：</span></strong></p><ul id="212694d5-ea46-8021-82b4-f61901eaf153" class="bulleted-list"><li style="list-style-type:disc">TS带有大量数据类型，可以进行一些常见的类型操作，通常称为实用程序类型</li></ul><p id="212694d5-ea46-804e-b6cb-fdfff30bd0b4" class="">
+</p><p id="212694d5-ea46-801f-ae66-c1a39e532389" class=""><strong>类型：Partial，部分的</strong></p><ul id="212694d5-ea46-80d5-b66c-e46b644a387f" class="bulleted-list"><li style="list-style-type:disc">Partial可以将对象中的属性更改为可选<ul id="212694d5-ea46-80aa-91d0-c51018ae3a62" class="bulleted-list"><li style="list-style-type:circle">interface Point {<ul id="212694d5-ea46-80d1-ad20-d21fd8f4f347" class="bulleted-list"><li style="list-style-type:square">x：number；</li></ul><ul id="212694d5-ea46-80c3-adf2-d0d65d2ba612" class="bulleted-list"><li style="list-style-type:square">y：number；</li></ul></li></ul><ul id="212694d5-ea46-8082-aad1-ddaf5729a726" class="bulleted-list"><li style="list-style-type:circle">}</li></ul><ul id="212694d5-ea46-8074-b722-e3e73a929001" class="bulleted-list"><li style="list-style-type:circle">let pointPart：partial&lt;Point&gt; = {}；，  xy变为可选属性参数</li></ul><ul id="212694d5-ea46-80cf-ac73-fd96f2a1add4" class="bulleted-list"><li style="list-style-type:circle">pointPart.x = 10</li></ul></li></ul><p id="212694d5-ea46-8030-ba17-d50fd79d5987" class="">
+</p><p id="212694d5-ea46-803f-bc41-e5a8b171ff7a" class=""><strong><span style="border-bottom:0.05em solid">类型：Required，必需的</span></strong></p><ul id="212694d5-ea46-80a7-b03f-d23add9e053a" class="bulleted-list"><li style="list-style-type:disc">Required可以将对象中的所有属性更改为必需的<ul id="212694d5-ea46-80e4-a36d-f0af77ce1808" class="bulleted-list"><li style="list-style-type:circle">interface Car {<ul id="212694d5-ea46-808d-9e68-ef126d7b4d62" class="bulleted-list"><li style="list-style-type:square">make：string；</li></ul><ul id="212694d5-ea46-809d-ab5f-df88ef9ad4af" class="bulleted-list"><li style="list-style-type:square">model：string；</li></ul><ul id="212694d5-ea46-800d-a9a8-fdfc1f989b59" class="bulleted-list"><li style="list-style-type:square">mileage？：number；</li></ul></li></ul><ul id="212694d5-ea46-808f-8985-cb9ad84029af" class="bulleted-list"><li style="list-style-type:circle">}</li></ul><ul id="212694d5-ea46-808f-9f7f-c9aa92079c85" class="bulleted-list"><li style="list-style-type:circle">let myCar：Required&lt;Car&gt; = {<ul id="212694d5-ea46-80cb-8240-e2545fe3b47f" class="bulleted-list"><li style="list-style-type:square">make：‘Ford’；</li></ul><ul id="212694d5-ea46-8082-ba61-cc8d5bef55ef" class="bulleted-list"><li style="list-style-type:square">model：“Focus”，</li></ul><ul id="212694d5-ea46-8095-9c6b-c7bd3b3d8c46" class="bulleted-list"><li style="list-style-type:square">mileage：12000，必需属性需要填写</li></ul></li></ul><ul id="212694d5-ea46-8065-b196-c3cbfc2a26ce" class="bulleted-list"><li style="list-style-type:circle">}</li></ul></li></ul><p id="212694d5-ea46-8017-9b1d-c6727bcce40b" class="">
+</p><p id="212694d5-ea46-80ae-a347-d9ee71d951e8" class=""><strong>类型：Record，记录</strong></p><ul id="212694d5-ea46-8084-afca-ff6ceb63dac2" class="bulleted-list"><li style="list-style-type:disc">Record是具有特定键类型和值类型的对象类型的快捷方式<ul id="212694d5-ea46-8090-81db-db75136b13dd" class="bulleted-list"><li style="list-style-type:circle">const nameAgeMap：Record&lt;string，number&gt; = {<ul id="212694d5-ea46-80e6-a763-e9d2994bd094" class="bulleted-list"><li style="list-style-type:square">‘tom’：21，</li></ul><ul id="212694d5-ea46-80ae-a441-d5bf98dee638" class="bulleted-list"><li style="list-style-type:square">’bob‘：25</li></ul></li></ul><ul id="212694d5-ea46-80e1-b7b4-c8398ceca0c0" class="bulleted-list"><li style="list-style-type:circle">}</li></ul></li></ul><ul id="212694d5-ea46-8037-92f6-ddd1159ad5d6" class="bulleted-list"><li style="list-style-type:disc">Record&lt;string，number&gt;相当于{【key：string】：number}</li></ul><p id="212694d5-ea46-8016-9816-f8f019a6bf43" class="">
+</p><p id="212694d5-ea46-8089-8fe7-fd3f2477dff7" class=""><strong>类型：omit，忽略</strong></p><ul id="212694d5-ea46-8080-beaf-dd27a56a5965" class="bulleted-list"><li style="list-style-type:disc">Omit可以从对象类型中删除键<ul id="212694d5-ea46-80a4-8eb7-e4fafd6b55c8" class="bulleted-list"><li style="list-style-type:circle">interface Person{<ul id="212694d5-ea46-8009-a379-e14639eebc43" class="bulleted-list"><li style="list-style-type:square">name：string；</li></ul><ul id="212694d5-ea46-8076-b8ec-da0650d60db8" class="bulleted-list"><li style="list-style-type:square">age：number；</li></ul><ul id="212694d5-ea46-8067-af7e-cf5fe59150e4" class="bulleted-list"><li style="list-style-type:square">location？：string；</li></ul></li></ul><ul id="212694d5-ea46-803c-8f21-dec25d0d1e62" class="bulleted-list"><li style="list-style-type:circle">}</li></ul><ul id="212694d5-ea46-80c4-b9b4-f7edda30a016" class="bulleted-list"><li style="list-style-type:circle">const bob：Omit&lt;Person，‘age’|‘location’&gt; = {<ul id="212694d5-ea46-8027-8cdf-d674b47061b5" class="bulleted-list"><li style="list-style-type:square">name：‘bob’</li></ul></li></ul><ul id="212694d5-ea46-8067-becc-f93f3736c786" class="bulleted-list"><li style="list-style-type:circle">}</li></ul></li></ul><p id="212694d5-ea46-80cc-8ddc-cb06173fdef8" class="">
+</p><p id="212694d5-ea46-8070-9c33-e6217a8f12a4" class=""><strong>类型：Pick，挑选</strong></p><ul id="212694d5-ea46-80d8-af44-d12e109727be" class="bulleted-list"><li style="list-style-type:disc">Pick从对象类型中删除指定键之外的所有键<ul id="212694d5-ea46-809e-9148-eb801800243d" class="bulleted-list"><li style="list-style-type:circle">interface Person{<ul id="212694d5-ea46-80dc-8ba9-d6541fb0b2db" class="bulleted-list"><li style="list-style-type:square">name：string；</li></ul><ul id="212694d5-ea46-804c-8205-d9154cbc54e4" class="bulleted-list"><li style="list-style-type:square">age：number；</li></ul><ul id="212694d5-ea46-80ad-a136-ef934586f4f8" class="bulleted-list"><li style="list-style-type:square">location？：string；</li></ul></li></ul><ul id="212694d5-ea46-8047-bbfb-ca544b4ee7db" class="bulleted-list"><li style="list-style-type:circle">}</li></ul><ul id="212694d5-ea46-8087-af53-d33d36a765e4" class="bulleted-list"><li style="list-style-type:circle">const bob：Pick&lt;Person，‘name’&gt; = {<ul id="212694d5-ea46-802c-83a7-c4784710558f" class="bulleted-list"><li style="list-style-type:square">name：‘bob’</li></ul></li></ul><ul id="212694d5-ea46-80b0-9795-fb1854dc5ea1" class="bulleted-list"><li style="list-style-type:circle">}</li></ul></li></ul><p id="212694d5-ea46-8037-afe3-eaa4f400e20b" class="">
+</p><p id="212694d5-ea46-801b-92b3-cc489375ad0f" class=""><strong>类型：Exclude，排除</strong></p><ul id="212694d5-ea46-80a4-a173-d519b7e2187a" class="bulleted-list"><li style="list-style-type:disc">Exclude可以从联合中删除类型<ul id="212694d5-ea46-8087-b101-c652d1d7820e" class="bulleted-list"><li style="list-style-type:circle">type Primitive = string | number |boolean</li></ul><ul id="212694d5-ea46-804f-9504-ffbe3f5e3f7d" class="bulleted-list"><li style="list-style-type:circle">const value：Exclude&lt;Primitive，string&gt; = true；，string不可使用</li></ul></li></ul><p id="212694d5-ea46-80c8-8cf1-e51cde95dadb" class="">
+</p><p id="212694d5-ea46-807e-8c42-db0d8c6d7b5c" class=""><strong>类型：ReturnType，返回</strong></p><ul id="212694d5-ea46-8035-b309-d47c7d7b1289" class="bulleted-list"><li style="list-style-type:disc">ReturnType可以提取函数类型的返回类型<ul id="212694d5-ea46-80c5-9edb-c0ba31934132" class="bulleted-list"><li style="list-style-type:circle">type PointGenerator = （） ⇒{x：number；y：number；}</li></ul><ul id="212694d5-ea46-80c7-8893-d06d5c3925b8" class="bulleted-list"><li style="list-style-type:circle">const point：ReturnType&lt;PointGenerator&gt; ={<ul id="212694d5-ea46-8073-a670-c00072cc34a8" class="bulleted-list"><li style="list-style-type:square">x：10；</li></ul><ul id="212694d5-ea46-8097-a605-f0334b4aadfd" class="bulleted-list"><li style="list-style-type:square">y：10</li></ul></li></ul><ul id="212694d5-ea46-8082-abe1-ee68e03a30f8" class="bulleted-list"><li style="list-style-type:circle">}</li></ul></li></ul><p id="212694d5-ea46-80b0-aa29-f10c7a5585d7" class="">
+</p><p id="212694d5-ea46-80bd-8e11-eaf0213c33ae" class=""><strong>类型：Parameters，参数</strong></p><ul id="212694d5-ea46-8084-afd0-d914d75425df" class="bulleted-list"><li style="list-style-type:disc">Parameters可以将函数类型的参数类型提取为数组<ul id="212694d5-ea46-80b6-809b-d80cadbb9eed" class="bulleted-list"><li style="list-style-type:circle">typePointPrinter = （p：{x：number；y：number}） ⇒void；</li></ul><ul id="212694d5-ea46-8010-9f8c-d0cbabe8741a" class="bulleted-list"><li style="list-style-type:circle">const point：Parameters&lt;PointPrinter&gt;【0】 = {<ul id="212694d5-ea46-80b9-a5f3-e6328333ace3" class="bulleted-list"><li style="list-style-type:square">x：10，</li></ul><ul id="212694d5-ea46-80b0-9910-f74c0eecbfa4" class="bulleted-list"><li style="list-style-type:square">y：10，</li></ul></li></ul><ul id="212694d5-ea46-80be-b2a3-f6dd19d5bede" class="bulleted-list"><li style="list-style-type:circle">}</li></ul></li></ul><p id="212694d5-ea46-80ed-ae71-eb2c1e48936f" class="">
+</p><p id="212694d5-ea46-80c8-ae12-dcdd7bea8e57" class=""><strong>类型：Readonly，只读</strong></p><ul id="212694d5-ea46-803b-8430-cbfef213c80c" class="bulleted-list"><li style="list-style-type:disc">Readonly用于创建一个新类型，其中所有属性都是只读的，意味着分配值之后就无法修改</li></ul><ul id="212694d5-ea46-809e-8c29-e304d8dbde8f" class="bulleted-list"><li style="list-style-type:disc">TS会在编译时阻止这种情况，编译为JS后，仍然可以覆盖只读属性<ul id="212694d5-ea46-8056-81d9-f5188c6d711d" class="bulleted-list"><li style="list-style-type:circle">Interface Person {<ul id="212694d5-ea46-80c5-a4cc-ce1cf1b557a2" class="bulleted-list"><li style="list-style-type:square">name：string；</li></ul><ul id="212694d5-ea46-80ea-bea4-ca77c247660b" class="bulleted-list"><li style="list-style-type:square">age：number；</li></ul></li></ul><ul id="212694d5-ea46-805a-8700-d2b7b43604f4" class="bulleted-list"><li style="list-style-type:circle">}</li></ul><ul id="212694d5-ea46-800c-acfb-cefeba449340" class="bulleted-list"><li style="list-style-type:circle">const person：Readonly&lt;Person&gt; = {<ul id="212694d5-ea46-8024-80c2-fad6746da4fc" class="bulleted-list"><li style="list-style-type:square">name：“Tom”，</li></ul><ul id="212694d5-ea46-80ee-b1c5-f2f8819eb88b" class="bulleted-list"><li style="list-style-type:square">age：35，</li></ul></li></ul><ul id="212694d5-ea46-809f-868b-fbbd00c1ab3c" class="bulleted-list"><li style="list-style-type:circle">}</li></ul><ul id="212694d5-ea46-808d-a79a-dc179569c0a3" class="bulleted-list"><li style="list-style-type:circle"><a href="http://person.name">person.name</a> = ‘bob’；Ts会报错，无法修改只读属性</li></ul></li></ul><p id="212694d5-ea46-806d-b518-dbe1e34bb9a8" class="">
+</p><p id="212694d5-ea46-80d3-9d0a-c96f90aceec8" class="">
+</p><p id="212694d5-ea46-80ce-bbaa-e889849e25b8" class=""><strong><span style="border-bottom:0.05em solid">TS Keyof：</span></strong></p><ul id="212694d5-ea46-80ef-a91b-ca51d4ad3531" class="bulleted-list"><li style="list-style-type:disc">keyof是TS中的一个关键字，可以在对象类型中提取键类型</li></ul><p id="212694d5-ea46-8076-b45b-e7e090db9640" class="">
+</p><p id="212694d5-ea46-8095-ae8c-e9db33158002" class=""><strong>keyof使用明确的键</strong></p><ul id="212694d5-ea46-805a-a5bd-c702d13938f4" class="bulleted-list"><li style="list-style-type:disc">在具有显示键的对象类型上使用时，keyof将使用这些键创建联合类型<ul id="212694d5-ea46-8061-b9af-df33bb7c1da3" class="bulleted-list"><li style="list-style-type:circle">interface Person{<ul id="212694d5-ea46-80a8-b965-d83030cad1c1" class="bulleted-list"><li style="list-style-type:square">name：string；</li></ul><ul id="212694d5-ea46-8043-b531-ed1f60a3bdd8" class="bulleted-list"><li style="list-style-type:square">age：number；</li></ul></li></ul><ul id="212694d5-ea46-80a0-aff2-eb0d23558d5c" class="bulleted-list"><li style="list-style-type:circle">}</li></ul><ul id="212694d5-ea46-8006-868b-dc32ecd15701" class="bulleted-list"><li style="list-style-type:circle">function printPersonProperty（person：Person，property：keyofPerson）{<ul id="212694d5-ea46-80e3-afe5-e3a03ef3d5b3" class="bulleted-list"><li style="list-style-type:square">console.log（·￥{property}：“￥person【property】”·）</li></ul></li></ul><ul id="212694d5-ea46-80c6-b679-dae9b1bd1e05" class="bulleted-list"><li style="list-style-type:circle">}</li></ul><ul id="212694d5-ea46-8094-ba1d-e868b13d7149" class="bulleted-list"><li style="list-style-type:circle">let person = {<ul id="212694d5-ea46-80e2-8067-fc8a17ffceb4" class="bulleted-list"><li style="list-style-type:square">name = ”Max“</li></ul><ul id="212694d5-ea46-8041-8245-e513e1beee50" class="bulleted-list"><li style="list-style-type:square">age = 27</li></ul></li></ul><ul id="212694d5-ea46-8012-ac98-cf92c49fe10b" class="bulleted-list"><li style="list-style-type:circle">}</li></ul><ul id="212694d5-ea46-8043-8f51-f7b25c338048" class="bulleted-list"><li style="list-style-type:circle">printPersonProperty（person，‘name’）</li></ul></li></ul><p id="212694d5-ea46-800f-8bad-ebc989cf66c6" class="">
+</p><p id="212694d5-ea46-8046-a6d0-fc17c07a97e1" class=""><strong>keyof带有索引签名</strong></p><ul id="212694d5-ea46-8074-a84f-efd449257d75" class="bulleted-list"><li style="list-style-type:disc">keyof还可以与索引签名一起使用来提取索引类型<ul id="212694d5-ea46-8060-b739-cfe3a5fa9a20" class="bulleted-list"><li style="list-style-type:circle">type StringMap = {【key：string】：unknown}</li></ul><ul id="212694d5-ea46-8082-be85-eeec0236d31e" class="bulleted-list"><li style="list-style-type:circle">function createStringPair（property：keyof StringMap，value：String）：StringMap{<ul id="212694d5-ea46-805c-92b2-d2df508ba34c" class="bulleted-list"><li style="list-style-type:square">return {【property】：value}</li></ul></li></ul><ul id="212694d5-ea46-802f-94cf-c39b4a41c8fe" class="bulleted-list"><li style="list-style-type:circle">}</li></ul></li></ul><p id="212694d5-ea46-80e0-bc2d-edfc70da6817" class="">
+</p><p id="212694d5-ea46-8041-850c-c03405a39087" class=""><strong><span style="border-bottom:0.05em solid">TS的空值Null和Undefined：</span></strong></p><ul id="212694d5-ea46-8029-8e35-d212c3a7cdbf" class="bulleted-list"><li style="list-style-type:disc">TS有一个强大的系统来处理null或undefined值</li></ul><ul id="212694d5-ea46-80f0-96b2-e60c11d68e74" class="bulleted-list"><li style="list-style-type:disc">默认情况下null和undefined处理是禁用的，通过设置strictNullChecks为true启用</li></ul><p id="212694d5-ea46-804e-b081-e3daec593117" class="">
+</p><p id="212694d5-ea46-80ad-b1fd-c03dccdce893" class=""><strong>类型：null和undefined</strong></p><ul id="212694d5-ea46-80ea-9740-ebce915c0084" class="bulleted-list"><li style="list-style-type:disc">null和undefined为原始类型，可以向其他类型一样使用，例如string<ul id="212694d5-ea46-8099-a137-c7296d0675be" class="bulleted-list"><li style="list-style-type:circle">let value：string | undefined| null = null</li></ul><ul id="212694d5-ea46-80ab-8843-d347fcfafa64" class="bulleted-list"><li style="list-style-type:circle">value = ‘hello’</li></ul><ul id="212694d5-ea46-8052-936e-fc0034f5d1c2" class="bulleted-list"><li style="list-style-type:circle">value = undefined</li></ul></li></ul><ul id="212694d5-ea46-8096-992a-d3701954c4c0" class="bulleted-list"><li style="list-style-type:disc">启用strickNullChecks，Ts要求设置值，处分undefined明确添加到类型中</li></ul><p id="212694d5-ea46-803e-8873-dcfc61534476" class="">
+</p><p id="212694d5-ea46-80c1-92bf-e2fa9ae39bfd" class=""><strong>可选链式调用</strong></p><ul id="212694d5-ea46-80b9-a26b-f9a0bf1f19b1" class="bulleted-list"><li style="list-style-type:disc">可选链式调用时JS特性，可以与TS的空值处理很好的兼容，允许以紧凑的语法访问对象上可能存在或不存在的属性，？.访问属性时，它可以与运算符一起使用<ul id="212694d5-ea46-8035-822b-f8c8bde12fbc" class="bulleted-list"><li style="list-style-type:circle">interface House{<ul id="212694d5-ea46-80d9-8965-fb2da12f8477" class="bulleted-list"><li style="list-style-type:square">sqft：number；</li></ul><ul id="212694d5-ea46-80a3-9a56-ebbabd1c69f4" class="bulleted-list"><li style="list-style-type:square">yard？：{<ul id="212694d5-ea46-80bd-bfcf-ec1e9c6d34a0" class="bulleted-list"><li style="list-style-type:disc">sqft：number；</li></ul></li></ul><ul id="212694d5-ea46-8083-a6d7-dc36c9c1eda2" class="bulleted-list"><li style="list-style-type:square">}</li></ul></li></ul><ul id="212694d5-ea46-8056-9cd9-f5a8c861aa95" class="bulleted-list"><li style="list-style-type:circle">}</li></ul><ul id="212694d5-ea46-80ad-a15e-d5b834974d95" class="bulleted-list"><li style="list-style-type:circle">function printYardSize（house：House）{<ul id="212694d5-ea46-80f3-a4ee-c4c542bb705c" class="bulleted-list"><li style="list-style-type:square">const yardSize = house.yard？.sqft；</li></ul><ul id="212694d5-ea46-80de-bac2-ed42e97322b1" class="bulleted-list"><li style="list-style-type:square">if （yardSize === undefined）{<ul id="212694d5-ea46-8012-b531-d798dfc09a3d" class="bulleted-list"><li style="list-style-type:disc">console.log（‘NoYard’）</li></ul></li></ul><ul id="212694d5-ea46-8096-8dd9-c533b681ede2" class="bulleted-list"><li style="list-style-type:square">}else{<ul id="212694d5-ea46-8026-a8fb-e61bad9d9185" class="bulleted-list"><li style="list-style-type:disc">console.log（·yard is ￥{yardSize} sqft·）</li></ul></li></ul><ul id="212694d5-ea46-809a-999d-f37edfc791eb" class="bulleted-list"><li style="list-style-type:square">}</li></ul></li></ul><ul id="212694d5-ea46-80ee-8b5d-c17342dc8862" class="bulleted-list"><li style="list-style-type:circle">}</li></ul><ul id="212694d5-ea46-807e-9192-c51d82893112" class="bulleted-list"><li style="list-style-type:circle">let home：Home = {<ul id="212694d5-ea46-8026-9e41-fd949e3af6a0" class="bulleted-list"><li style="list-style-type:square">sqft：500</li></ul></li></ul><ul id="212694d5-ea46-80cb-8e00-d0302a1b3d65" class="bulleted-list"><li style="list-style-type:circle">}</li></ul><ul id="212694d5-ea46-8033-b553-f0e20c8e5613" class="bulleted-list"><li style="list-style-type:circle">printYardSize（home），结果为NoYard。</li></ul></li></ul><p id="212694d5-ea46-8015-a8b9-f623af1890a6" class="">
+</p><p id="212694d5-ea46-80b7-9e92-f7438ca7d8ed" class=""><strong>空值合并：</strong></p><ul id="212694d5-ea46-8011-9089-eb51a152b42d" class="bulleted-list"><li style="list-style-type:disc">空值合并时JS特性，也能与TS的空值处理很好的兼容，允许编写专门用于处理null或undefined的表达式，当表达式中可以出现其他假值但有效时，该功能很有用，可以与？？运算符一起在表达式中使用，类似于使用&amp;&amp;运算符<ul id="212694d5-ea46-808a-b569-da84caef8468" class="bulleted-list"><li style="list-style-type:circle">fucntion printMileage（mileage：number|null|undefined）{<ul id="212694d5-ea46-80ec-96db-fd5b19a9763a" class="bulleted-list"><li style="list-style-type:square">console.log（·Mileage：￥{mileage？？‘Not Available’}·）</li></ul></li></ul><ul id="212694d5-ea46-80c4-8a54-c8b5dfb5c9cf" class="bulleted-list"><li style="list-style-type:circle">}</li></ul><ul id="212694d5-ea46-806d-bcef-c893b7111868" class="bulleted-list"><li style="list-style-type:circle">printMileage（null）  运行结果为Not Available</li></ul><ul id="212694d5-ea46-80b8-ac4a-c7692cea32ef" class="bulleted-list"><li style="list-style-type:circle">printMileage（0）  运行结果为Mileage：0</li></ul></li></ul><p id="212694d5-ea46-803f-8818-e70db0cc585d" class="">
+</p><p id="212694d5-ea46-807f-9ad4-c5d713c31ab3" class=""><strong>空断言：</strong></p><ul id="212694d5-ea46-8037-aabf-c6eda33974a4" class="bulleted-list"><li style="list-style-type:disc">TS的推理系统并不完美，有时忽略一个值为null或undefined的可能性存在。简单的方法时使用强制类型转换，TS给出了！运算符来解决问题<ul id="212694d5-ea46-8051-ae59-c253e5bb1ea8" class="bulleted-list"><li style="list-style-type:circle">function getValue（）：string | undefined{<ul id="212694d5-ea46-8009-aa4e-ece6a706c5a1" class="bulleted-list"><li style="list-style-type:square">return ‘hello’</li></ul></li></ul><ul id="212694d5-ea46-80ac-97fb-f40dfcb0718f" class="bulleted-list"><li style="list-style-type:circle">}</li></ul><ul id="212694d5-ea46-8029-b43f-f94c2a64d745" class="bulleted-list"><li style="list-style-type:circle">let value = getValue（）</li></ul><ul id="212694d5-ea46-8091-b944-e042ad67e461" class="bulleted-list"><li style="list-style-type:circle">console.log（‘value length’ + value！.length）；</li></ul></li></ul><ul id="212694d5-ea46-80e9-bd87-f43581e5b97c" class="bulleted-list"><li style="list-style-type:disc"><strong>并不安全，谨慎使用</strong></li></ul><p id="212694d5-ea46-802d-b737-c7cc87eabbc2" class="">
+</p><p id="212694d5-ea46-80be-9c90-c574702301c5" class=""><strong>数组边界处理：</strong></p><ul id="212694d5-ea46-80e4-82e0-fd3f06578626" class="bulleted-list"><li style="list-style-type:disc">技术strickNullChecks启用，默认情况下TS会假定数组访问永远不会返回未定义内容（除非未定义内容是数组类型的一部分）</li></ul><ul id="212694d5-ea46-80f8-b23a-e9c11da163ef" class="bulleted-list"><li style="list-style-type:disc">noUncheckedIndexedAccess可以使用配置来修改这种行为<ul id="212694d5-ea46-807e-ad57-e52393f7265b" class="bulleted-list"><li style="list-style-type:circle">let array：number【】 = 【1，2，3】</li></ul><ul id="212694d5-ea46-8033-bc14-f90dd55bc0a5" class="bulleted-list"><li style="list-style-type:circle">let value = array【0】  启用配置之后，类型为number或undefined</li></ul></li></ul><p id="212694d5-ea46-805b-a0fb-e657981c7e59" class="">
+</p><p id="212694d5-ea46-8011-b67e-cabfe590fd48" class=""><strong><span style="border-bottom:0.05em solid">TS绝对类型化：</span></strong></p><ul id="212694d5-ea46-8005-8b6e-f8fae5c6d52a" class="bulleted-list"><li style="list-style-type:disc">有时在JS系统中 npm包是不可用的类型，比如项目不在维护，对TS不感兴趣，没有兼容TS</li></ul><p id="212694d5-ea46-80a0-93f8-ebd33cd03d0a" class="">
+</p><p id="212694d5-ea46-80d5-a40d-fad5e3e2a25b" class=""><strong>在TS中使用非类型化的NPM包</strong></p><ul id="212694d5-ea46-80a3-a815-d89ef453ddb1" class="bulleted-list"><li style="list-style-type:disc">由于缺乏类型，使用TS的非类型化NPM包将不具有类型安全性</li></ul><ul id="212694d5-ea46-809f-b9f2-e0260abcb8c4" class="bulleted-list"><li style="list-style-type:disc">Definitely Typed是一个为没有类型的NPM包提供TS定义的中央存储库的项目<ul id="212694d5-ea46-803d-a158-eedb8cfc584b" class="bulleted-list"><li style="list-style-type:circle">npm install —save-dev @types/jquery</li></ul></li></ul><ul id="212694d5-ea46-8000-bb5b-eac41a90fe10" class="bulleted-list"><li style="list-style-type:disc">安装声明包后通常不需要其他步骤来使用类型，TS会在使用包本身时自动选择类型</li></ul><ul id="212694d5-ea46-80ad-991b-c2a6dc6f9b9e" class="bulleted-list"><li style="list-style-type:disc">当缺少类型时，VScode等编辑器会建议安装对应的包</li></ul><p id="212694d5-ea46-80e8-8f46-e2c3b8ecbb5b" class="">
+</p><p id="212694d5-ea46-801d-82b8-fccdbada7189" class="">
+</p><p id="212694d5-ea46-805a-8bef-c36181992802" class=""><strong><span style="border-bottom:0.05em solid">TS5.X最新更新内容：</span></strong></p><ul id="212694d5-ea46-804f-a4ff-d83214bf5cfe" class="bulleted-list"><li style="list-style-type:disc">模板字面量类型<ul id="212694d5-ea46-80c4-b536-ed3d5ca83f46" class="bulleted-list"><li style="list-style-type:circle">Template Literal Types现在，可以使用模板字面量创建更精确的类型，可以定义依赖于编译时字符串实际值的自定义类型<ul id="212694d5-ea46-80aa-abb3-ca35c2759133" class="bulleted-list"><li style="list-style-type:square">type Color = ‘red’ | ‘green’ | ”blue“</li></ul><ul id="212694d5-ea46-80e9-81bc-d85bd3624246" class="bulleted-list"><li style="list-style-type:square">type HexColor&lt;T extends Color&gt; = ‘#￥{string}’</li></ul><ul id="212694d5-ea46-8025-940d-eb240728d003" class="bulleted-list"><li style="list-style-type:square">let myColor：HexColor&lt;”blue“&gt; = ‘#0000FF’</li></ul></li></ul></li></ul><ul id="212694d5-ea46-80d4-a22c-d2e2f10a0672" class="bulleted-list"><li style="list-style-type:disc">索引签名标签<ul id="212694d5-ea46-8036-a37a-c6bb43e76923" class="bulleted-list"><li style="list-style-type:circle">Index Signature Labels允许我们使用计算属性名称来标记索引签名，有助于在处理动态对象时提供更具描述性的类型信息<ul id="212694d5-ea46-80fb-871b-fc985db43ebb" class="bulleted-list"><li style="list-style-type:square">type DynamicObject = {【key：string as ‘dynamic_${string}’：】：string}</li></ul><ul id="212694d5-ea46-80a0-9864-fa5afa933a8d" class="bulleted-list"><li style="list-style-type:square">let obj：DynamicObject = {dynamic_key：”value“}；</li></ul></li></ul></li></ul></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
